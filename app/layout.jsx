@@ -1,4 +1,5 @@
 import "./globals.css";
+import Nav from "@components/Nav";
 
 export const metadata = {
   title: "Create Next App",
@@ -7,11 +8,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang='th'>
       <body
         className={`antialiased vsc-initialized`}
       >
         <main className="relative">
+          <Nav />
           <section className="padding-x max-container w-full">
             {children}
           </section>
