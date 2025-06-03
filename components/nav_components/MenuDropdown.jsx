@@ -20,7 +20,7 @@ function MenuDropdown({ setIsShow, checkPath }) {
                 } group-first:rounded-t-lg group-first:h-3/4 group-first:top-[25%] group-last:rounded-b-lg group-last:h-3/4 group-last:bottom-[25%] `}
               ></span>
               <p
-                className={`px-4 ${
+                className={`px-5 ${
                   checkPath(item) ? "text-red-400" : "text-slate-gray"
                 }`}
               >
