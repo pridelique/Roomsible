@@ -1,10 +1,7 @@
 "use client";
-import { navBuildings, navLink } from "@data";
-import Image from "@node_modules/next/image";
-import Link from "@node_modules/next/link";
+import { navLink } from "@data";
+import { useEffect, useRef, useState } from "react";
 import NavButton from "./NavButton";
-import { useState } from "react";
-import { arrow_down, arrow_down_selected } from "@public/assets/icons";
 import MenuList from "./MenuList";
 import MenuBuilding from "./MenuBuilding";
 import MenuDropdown from "./MenuDropdown";
@@ -16,10 +13,26 @@ function Menu({
   handleLogin,
   checkPath,
 }) {
+
   const [menuDropdown, setMenuDropdown] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsShow(false);
+        setMenuDropdown(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  })
 
   return (
-    <div className="flex md:hidden w-full bg-white shadow-md relative z-9 text-base flex-col">
+    <div className="flex md:hidden w-full bg-white shadow-md relative z-9 text-base flex-col" ref={menuRef}>
       {/* Link */}
       <ul className="w-full">
         {navLink

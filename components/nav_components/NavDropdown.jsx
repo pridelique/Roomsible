@@ -2,9 +2,9 @@ import { navBuildings } from "@data";
 import Link from "@node_modules/next/link";
 import React from "react";
 
-function NavDropdown({ checkPath }) {
+function NavDropdown({ checkPath, ref }) {
   return (
-    <div className="absolute top-full border border-gray-300 shadow-lg z-9 bg-white">
+    <div className="absolute top-full border border-gray-300 shadow-lg z-9 bg-white" ref={ref}>
       <ul>
         {navBuildings.map((item) => (
           <li key={item.id}>

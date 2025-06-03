@@ -2,12 +2,25 @@
 
 import NavBuilding from "./NavBuilding";
 import NavList from "./NavList";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NavDropdown from "./NavDropdown";
 
 function NavLink({ navLink, session, checkPath }) {
   const [navDropdown, setNavDropdown] = useState(false);
-  
+  const navDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navDropdownRef.current && !navDropdownRef.current.contains(event.target)) {
+        setNavDropdown(false)
+      }
+    }
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  })
+
   return (
     <ul className="hidden md:flex md:gap-8 lg:gap-16 text-slate-gray">
       {navLink
@@ -31,6 +44,7 @@ function NavLink({ navLink, session, checkPath }) {
               />
               {navDropdown && (
                 <NavDropdown
+                  ref={navDropdownRef}
                   checkPath={checkPath}
                 />
               )}
