@@ -1,5 +1,6 @@
+'use client';
 import { useState } from 'react';
-export default function BookingForm()
+export default function BookingFormPage()
 {
     const [mode,setMode]=useState('class');
     const [teacher,setTeacher]=useState('');
