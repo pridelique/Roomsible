@@ -26,6 +26,7 @@ function NavLink({ navLink, session, checkPath }) {
               <NavBuilding
                 item={item}
                 setNavDropdown={setNavDropdown}
+                navDropdown={navDropdown}
                 checkPath={checkPath}
               />
               {navDropdown && (
