@@ -108,7 +108,7 @@ function BookingForm()
                     className="w-full border px-3 py-2 rounded"
                     placeholder="ประเภทกิจกรรมที่จะทำ..."
                     value={activityDetail}
-                    onCharnge={(e)=>setActivityDetail(e.target.value)}/>
+                    onChange={(e)=>setActivityDetail(e.target.value)}/>
                 </div>
             )}
 
