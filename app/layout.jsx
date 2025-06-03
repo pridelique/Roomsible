@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       >
         <main className="relative">
           <Nav />
-          <section className="padding-x max-container w-full">
+          <section className="padding-x max-container w-full pt-25">
             {children}
           </section>
         </main>
