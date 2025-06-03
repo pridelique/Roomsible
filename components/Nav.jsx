@@ -65,3 +65,4 @@ function Nav() {
 }
 
 export default Nav;
+npm run dev
