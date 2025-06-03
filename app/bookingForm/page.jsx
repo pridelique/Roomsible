@@ -1,5 +1,6 @@
+'use client'
 import { useState } from 'react';
-export default function BookingForm()
+function BookingForm()
 {
     const [mode,setMode]=useState('class');
     const [teacher,setTeacher]=useState('');
@@ -118,3 +119,4 @@ export default function BookingForm()
         </div> 
     );
 }
+export default BookingForm
