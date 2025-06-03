@@ -1,4 +1,4 @@
-const building = {
+const buildings = {
   1 : {
     name: "เอกอำนวยการ",
     row: 4,
@@ -116,6 +116,37 @@ const building = {
       ],
     ],
   },
+  2: {
+    name: "ตึก 2",
+    row: 4,
+    col: 14,
+    rooms: [
+      Array.from({ length: 14 }, (_, i) => ({
+        number: 2401 + i,
+        name: `ห้องเรียน 2${(4 - 1) * 100 + (i + 1)}`,
+        status: "available",
+        col_span: 1,
+      })),
+      Array.from({ length: 14 }, (_, i) => ({
+        number: 2301 + i,
+        name: `ห้องเรียน 2${(3 - 1) * 100 + (i + 1)}`,
+        status: "available",
+        col_span: 1,
+      })),
+      Array.from({ length: 14 }, (_, i) => ({
+        number: 2201 + i,
+        name: `ห้องเรียน 2${(2 - 1) * 100 + (i + 1)}`,
+        status: "available",
+        col_span: 1,
+      })),
+      Array.from({ length: 14 }, (_, i) => ({
+        number: 2101 + i,
+        name: `ห้องเรียน 2${(1 - 1) * 100 + (i + 1)}`,
+        status: "available",
+        col_span: 1,
+      })),
+    ],
+  },
 };
 
-export default building;
+export default buildings;
