@@ -64,7 +64,7 @@ const buildings = {
         {
           number: 1301,
           name: "ดนตรีไทย",
-          status: "unavailable",
+          status: "pending",
           col_span: 1,
         },
       ],
@@ -72,7 +72,7 @@ const buildings = {
         {
           number: 1204,
           name: "ห้องแผนงาน",
-          status: "unavailable",
+          status: "booking",
           col_span: 1,
         },
         {
@@ -84,7 +84,7 @@ const buildings = {
         {
           number: 1202,
           name: "กลุ่มบริหารงบประมาณฯ",
-          status: "unavailable",
+          status: "booked",
           col_span: 2,
         },
         {
@@ -98,7 +98,7 @@ const buildings = {
         {
           number: 1102,
           name: "ห้องพยาบาล",
-          status: "unavailable",
+          status: "booked",
           col_span: 2,
         },
         {
@@ -110,7 +110,7 @@ const buildings = {
         {
           number: 1101,
           name: "ห้องประชุมเอลิซาเบธ",
-          status: "unavailable",
+          status: "pending",
           col_span: 2,
         },
       ],
@@ -130,19 +130,19 @@ const buildings = {
       Array.from({ length: 14 }, (_, i) => ({
         number: 2301 + i,
         name: `ห้องเรียน 2${(3 - 1) * 100 + (i + 1)}`,
-        status: "available",
+        status: "unavailable",
         col_span: 1,
       })),
       Array.from({ length: 14 }, (_, i) => ({
         number: 2201 + i,
         name: `ห้องเรียน 2${(2 - 1) * 100 + (i + 1)}`,
-        status: "available",
+        status: "booked",
         col_span: 1,
       })),
       Array.from({ length: 14 }, (_, i) => ({
         number: 2101 + i,
         name: `ห้องเรียน 2${(1 - 1) * 100 + (i + 1)}`,
-        status: "available",
+        status: "pending",
         col_span: 1,
       })),
     ],
