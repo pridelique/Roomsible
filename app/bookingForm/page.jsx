@@ -21,31 +21,31 @@ function BookingForm()
     }
 
     return (
-        <div className="bg-white p-6 rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300">
-            <h2 className="text-xl font-bold text-center mb-2">ห้อง 1303</h2>
-            <p className="text-center mb-4">คาบ 1 (08.30-09.20)</p>
+        <div className="bg-white p-15 rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 mt-25">
+            <h2 className="text-3xl font-semibold text-center mb-2 text-gray-700">ห้อง 1303</h2>
+            <p className="text-center mb-6 text-gray-600 text-lg">คาบ 1 (08.30-09.20)</p>
             
-            <div className="flex justify-center mb-4 text-sm font-medium space-x-6">
+            <div className="flex justify-center mb-4 text-lg space-x-6">
                 <span
                     className={`cursor-pointer ${
-                        mode==='class' ? 'underline underline-offset-4 text-blue-600 font-semibold' : 'text-gray-500'
+                        mode==='class' ? 'underline underline-offset-4 text-[#466AB0] font-semibold' : 'text-gray-500'
                     }`}
                     onClick={()=>setMode('class')}
                 >การเรียนการสอน</span>
                 <span
                     className={`cursor-pointer ${
-                        mode==='activity' ? 'underline underline-offset-4 text-blue-600 font-semibold' : 'text-gray-500'
+                        mode==='activity' ? 'underline underline-offset-4 text-[#466AB0] font-semibold' : 'text-gray-500'
                     }`}
                     onClick={()=>setMode('activity')}
                 >กิจกรรม</span>
             </div>
 
             {mode==='class' ? (
-                <div className="space-y-4">
+                <div className="space-y-4 w-[90%] mx-auto block">
                     <div>
-                        <label className="block font-semibold mb-1">ครูผู้สอน</label>
+                        <label className="block font-semibold mb-1 text-gray-700">ครูผู้สอน</label>
                         <select
-                            className="w-full border px-3 py-2 rounded appearance-none bg-white bg-no-repeat pr-8"
+                            className="w-full border border-gray-500 px-3 py-2 rounded-xl appearance-none bg-white bg-no-repeat pr-8"
                             value={teacher}
                             onChange={(e)=>setTeacher(e.target.value)}
                             style={{
@@ -62,9 +62,9 @@ function BookingForm()
                         </select>
                     </div>
                     <div>
-                        <label className="block font-semibold mb-1">วิชา</label>
+                        <label className="block font-semibold mb-1 text-gray-700">รายวิชา</label>
                         <select
-                            className="w-full border px-3 py-2 rounded appearance-none bg-white bg-no-repeat pr-8"
+                            className="w-full border border-gray-500 px-3 py-2 rounded-xl appearance-none bg-white bg-no-repeat pr-8"
                             value={subject}
                             onChange={(e)=>setSubject(e.target.value)}
                             style={{
@@ -81,9 +81,9 @@ function BookingForm()
                         </select>
                     </div>
                     <div>
-                        <label className="block font-semibold mb-1">ห้องที่สอน</label>
+                        <label className="block font-semibold mb-1 text-gray-700">ห้องที่สอน</label>
                         <select
-                            className="w-full border px-3 py-2 rounded appearance-none bg-white bg-no-repeat pr-8"
+                            className="w-full border border-gray-500 px-3 py-2 rounded-xl appearance-none bg-white bg-no-repeat pr-8"
                             value={studentRoom}
                             onChange={(e)=>setStudentRoom(e.target.value)}
                             style={{
@@ -101,11 +101,11 @@ function BookingForm()
                     </div>
                 </div>
             ) : (
-                <div>
-                    <label className="block font-semibold mb-1">รายละเอียด</label>
+                <div className="w-[90%] mx-auto block">
+                    <label className="ิblock font-semibold mb-1 text-gray-700">รายละเอียด</label>
                     <input
                     type="text"
-                    className="w-full border px-3 py-2 rounded"
+                    className="block w-full border border-gray-500 px-3 py-2 rounded-xl"
                     placeholder="ประเภทกิจกรรมที่จะทำ..."
                     value={activityDetail}
                     onChange={(e)=>setActivityDetail(e.target.value)}/>
@@ -113,7 +113,7 @@ function BookingForm()
             )}
 
             <button
-                className="mt-6 w-full py-2 rounded-full bg-gradient-to-r from-yellow-200 to-pink-200 shadow-md font-semibold"
+                className="mt-10 w-[90%] py-2 rounded-full bg-gradient-to-r from-[#FFFAC9] to-[#FDE7E7] shadow-md font-semibold mx-auto block"
                 onClick={handleSubmit}
             >ยืนยันการจอง</button>
         </div> 
