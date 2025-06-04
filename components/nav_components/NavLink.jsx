@@ -46,6 +46,7 @@ function NavLink({ navLink, session, checkPath }) {
                 <NavDropdown
                   ref={navDropdownRef}
                   checkPath={checkPath}
+                  setNavDropdown={setNavDropdown}
                 />
               )}
             </li>
