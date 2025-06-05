@@ -58,12 +58,31 @@ function HistoryPage() {
     setActiveDetailId(null);
   };
   return (
-     
-    <div className="p-10 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6">ประวัติการจอง</h2>
+  <div className="relative">
+    <img
+      src="/assets/images/historyImage.jpg"
+      className="w-full h-64 object-cover"/>
+      <div className="flex items-center mb-10 relative">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 w-40 h-40 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 shadow-lg z-10">          
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-15 h-15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A9.985 9.985 0 0112 15c2.21 0 4.244.715 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+      </div>
+      
+      <div className="p-10 max-w-4xl mx-auto flex flex-col">
+        <div className="text-2xl text-gray-700 space-y-1">
+          <div className="mx-auto flex justify-center mb-5 mt-5 bg-white p-3 shadow-md">
+            <span className="mx-1">นางสาวชนัญธิดา</span>
+            <span className="mx-1">ธนะสารสมบูรณ์</span>
+            <span className="mx-1">ม.6.8</span>
+          </div>
+        </div>
+      
+      <h2 className="text-2xl font-semibold mb-6 text-gray-700">ประวัติการจอง</h2>
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
         <table className="w-full text-left">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-100 text-gray-700">
             <tr>
               <th className="py-2 px-4">วันที่</th>
               <th className="py-2 px-4">คาบเรียน</th>
@@ -72,7 +91,7 @@ function HistoryPage() {
               <th className="py-2 px-4">สถานะ</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-gray-500">
               {bookings.map((booking)=>(
                 <tr key={booking.id} className="border-b relative">
                   <td className="py-2 px-4">{booking.date}</td>
@@ -127,7 +146,7 @@ function HistoryPage() {
         </table>
       </div>
     </div>
-
+  </div>
   )
 }
 
