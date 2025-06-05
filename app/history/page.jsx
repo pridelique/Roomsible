@@ -72,7 +72,7 @@ function HistoryPage() {
       
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
         <div className="text-2xl text-gray-700 space-y-1">
-          <div className="mx-auto flex justify-center mb-5 mt-5 bg-white p-3 shadow-md">
+          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md">
             <span className="mx-1">นางสาวชนัญธิดา</span>
             <span className="mx-1">ธนะสารสมบูรณ์</span>
             <span className="mx-1">ม.6.8</span>
