@@ -3,7 +3,9 @@ import buildings from "@data/buildings";
 import Room from "./Room";
 import React, { useEffect, useRef, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { useRouter } from "@node_modules/next/navigation";
 function Building({ id }) {
+  const router = useRouter()
   const outerRef = useRef(null);
   const innerRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -13,6 +15,10 @@ function Building({ id }) {
     width: "100%",
     justifyContent: "center",
   });
+
+  const handleOnClick = (roomNumber) => {
+    router.push(`/building/${id}/schedule?roomNumber=${roomNumber}`)
+  }
 
   useEffect(() => {
     const resize = () => {
@@ -68,7 +74,7 @@ function Building({ id }) {
             return (
               <React.Fragment>
                 <div
-                  className="rounded-lg max-w-xl border border-gray-300 mx-auto my-4 "
+                  className="rounded-lg max-w-xl border border-gray-300 mx-auto "
                   ref={outerRef}
                 >
                   <TransformComponent>
@@ -82,7 +88,7 @@ function Building({ id }) {
                           className="gap-1 grid p-4"
                           style={{
                             gridTemplateColumns: `repeat(${buildings[id]["col"]}, 80px)`,
-                            gridTemplateRows: `repeat(${buildings[id]["row"]}, 80px)`,
+                            gridTemplateRows: `repeat(${buildings[id]["row"]}, 100px)`,
                           }}
                         >
                           {buildings[id]["rooms"].map((row, rowIndex) => (
@@ -91,6 +97,7 @@ function Building({ id }) {
                                 <Room
                                   key={`${rowIndex}-${colIndex}`}
                                   {...room}
+                                  onClick={handleOnClick}
                                 />
                               ))}
                             </React.Fragment>
@@ -100,7 +107,8 @@ function Building({ id }) {
                     </div>
                   </TransformComponent>
                 </div>
-                <div className="flex gap-2 justify-center">
+                <h2 className='mt-2 ml-2 text-center'>{buildings[id]['name']}</h2>
+                <div className="flex gap-2 justify-center mt-2">
                   <button
                     className="bg-gray-100 rounded-xl px-4 py-2 shadow-lg"
                     onClick={() => zoomIn()}
