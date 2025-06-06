@@ -11,6 +11,11 @@ import home_selected from './home_selected.png';
 
 import arrow_down from './arrow_down.png';
 import arrow_down_selected from './arrow_down_selected.png';
+
+import warning from './warning.png'
+import x_mark from './x_mark.png'
+import check_mark from './check_mark.png'
+
 export {
   menu,
 
@@ -24,5 +29,9 @@ export {
   home_selected,
 
   arrow_down,
-  arrow_down_selected
+  arrow_down_selected,
+
+  warning,
+  x_mark,
+  check_mark,
 };
