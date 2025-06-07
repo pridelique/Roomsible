@@ -35,19 +35,19 @@ export default function FullScreenQRScanner() {
               setLoading(true);
               setTimeout(() => {
                 setLoading(false);
-                var random = Math.ceil(Math.random()*3)
+                var random = Math.ceil(Math.random() * 3);
                 console.log(random);
-                
+
                 if (random == 1) {
                   setError({
-                    type : 'incorrect'
-                  })
+                    type: "incorrect",
+                  });
                 } else if (random == 2) {
                   setError({
-                    type : 'no-booking',
-                    roomNumber : 1202,
-                    time : '08.30 - 09.20 น.'
-                  })
+                    type: "no-booking",
+                    roomNumber: 1202,
+                    time: "08.30 - 09.20 น.",
+                  });
                 } else {
                   setSuccess({
                     roomNumber: 1202,
@@ -60,8 +60,6 @@ export default function FullScreenQRScanner() {
                 //     time : '08.30 - 09.20 น.'
                 //   })
               }, 2000);
-            } else if (err) {
-              setError(err.message);
             }
           }
         )
@@ -90,12 +88,20 @@ export default function FullScreenQRScanner() {
     <div className="w-screen h-screen absolute left-0 top-0 overflow-hidden">
       <div className="mt-19"></div>
       <div className="w-full h-full relative left-0 top-0 overflow-hidden p-0 m-0 z-8">
+        {/* <p className="absolute">แสกน QR Code เพื่อเช็คอินเข้าห้อง</p> */}
+        <div className="absolute inset-0 flex flex-col items-center opacity-60 text-white h-full justify-between">
+          <p className="mt-6 text-xl md:text-2xl lg:text-3xl font-semibold">
+            สแกน QR Code เพื่อเช็คอิน
+          </p>
+          <p className="mb-24 text-sm md:text-base lg:text-lg">
+            วาง QR Code ให้อยู่ในกรอบเพื่อเริ่มเช็คอิน
+          </p>
+        </div>
         {/* กล้องเต็มหน้าจอ */}
         <video
           ref={videoRef}
           className="w-full h-full object-cover flex items-start justify-center"
         />
-        {/* <div className='absolute top-19 w-full h-full bg-green-300'> */}
         <div
           className={`absolute left-1/2 -translate-1/2  p-32 z-10 ${
             isStop && "hidden"
@@ -146,7 +152,7 @@ export default function FullScreenQRScanner() {
           </p>
           <hr className="w-full border border-gray-300 mt-4" />
           <button
-            className="mt-4 text-lg bg-green-500 px-10 py-2 w-4/5 rounded-full"
+            className="mt-4 text-lg bg-green-500 py-2 w-4/5 rounded-full"
             onClick={startScaning}
           >
             ตกลง
@@ -170,7 +176,7 @@ export default function FullScreenQRScanner() {
           </p>
           <hr className="w-full border border-gray-300 mt-4" />
           <button
-            className="mt-4 text-lg bg-green-500 px-10 py-2 w-4/5 rounded-full"
+            className="mt-4 text-lg bg-green-500 py-2 w-4/5 rounded-full"
             onClick={startScaning}
           >
             ตกลง
@@ -178,15 +184,27 @@ export default function FullScreenQRScanner() {
         </div>
       )}
 
+      {/* ข้อความสำเร็จ */}
       {success && (
         <div
           className="absolute left-1/2 -translate-1/2 bg-white text-white pb-4 rounded-xl z-[12] shadow-lg text-center w-full max-w-[340px] flex flex-col justify-center items-center "
           style={{ top: elementTop }}
         >
           <div className="w-full relative">
-            <Image src={bordersw} alt="school" width={340} height={340} className="rounded-t-xl"/>
+            <Image
+              src={bordersw}
+              alt="school"
+              width={340}
+              height={340}
+              className="rounded-t-xl"
+            />
             <div className="absolute top-1/2 left-1/2 -translate-1/2 bg-white rounded-full shadow-lg">
-              <Image src={check_mark} alt="check_mark" width={111} height={111} />
+              <Image
+                src={check_mark}
+                alt="check_mark"
+                width={111}
+                height={111}
+              />
             </div>
           </div>
 
@@ -199,8 +217,7 @@ export default function FullScreenQRScanner() {
             <hr className="w-full border border-gray-300 mt-4" />
             <Link
               href="/"
-              className="mt-4 text-lg bg-green-500 px-10 py-2 w-4/5 rounded-full"
-              onClick={startScaning}
+              className="mt-4 text-lg bg-green-500 py-2 w-4/5 rounded-full"
             >
               กลับไปหน้าแรก
             </Link>
