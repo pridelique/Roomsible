@@ -4,11 +4,15 @@ import Room from "./Room";
 import React, { useEffect, useRef, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useRouter } from "@node_modules/next/navigation";
+import Image from "@node_modules/next/image";
+import { zoom_in, zoom_out } from "@public/assets/icons";
+import { status } from "@data";
 function Building({ id }) {
-  const router = useRouter()
+  const router = useRouter();
   const outerRef = useRef(null);
   const innerRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [fullscreen, setFullscreen] = useState(false);
   const [scale, setScale] = useState(1);
   const [maxScale, setMaxScale] = useState(1);
   const [containerStyle, setcontainerStyle] = useState({
@@ -17,8 +21,14 @@ function Building({ id }) {
   });
 
   const handleOnClick = (roomNumber) => {
-    router.push(`/building/${id}/schedule?roomNumber=${roomNumber}`)
-  }
+    router.push(`/building/${id}/schedule?roomNumber=${roomNumber}`);
+  };
+
+  const handleZoom = (centerView) => {
+    if (fullscreen) centerView(1);
+    else centerView(maxScale);
+    setFullscreen(!fullscreen);
+  };
 
   useEffect(() => {
     const resize = () => {
@@ -68,13 +78,21 @@ function Building({ id }) {
           centerOnInit={true}
           onZoom={(ref) => {
             ref.centerView();
+            if (ref.state.scale === maxScale) setFullscreen(true);
+            if (ref.state.scale === 1) setFullscreen(false);
           }}
         >
-          {({ zoomIn, zoomOut, resetTransform, setTransform, ...rest }) => {
+          {({ centerView }) => {
             return (
               <React.Fragment>
+                <h2 className="text-center text-xl md:text-2xl lg:text-3xl text-gray-700">
+                  อาคาร {id} {buildings[id]["name"]}
+                </h2>
+                <p className="text-center text-slate-gray mt-1 text-sm md:text-base lg:text-lg">
+                  เลือกห้องที่ว่างอยู่เพื่อทำการจอง
+                </p>
                 <div
-                  className="rounded-lg max-w-xl border border-gray-300 mx-auto "
+                  className="rounded-lg max-w-xl border border-gray-300 mx-auto relative mt-4"
                   ref={outerRef}
                 >
                   <TransformComponent>
@@ -106,50 +124,39 @@ function Building({ id }) {
                       </div>
                     </div>
                   </TransformComponent>
-                </div>
-                <h2 className='mt-2 ml-2 text-center'>{buildings[id]['name']}</h2>
-                <div className="flex gap-2 justify-center mt-2">
-                  <button
-                    className="bg-gray-100 rounded-xl px-4 py-2 shadow-lg"
-                    onClick={() => zoomIn()}
-                  >
-                    zoom in
-                  </button>
-                  <button
-                    className="bg-gray-100 rounded-xl px-4 py-2 shadow-lg"
-                    onClick={() => zoomOut()}
-                  >
-                    zoom out
-                  </button>
-                  <button
-                    className="bg-gray-100 rounded-xl px-4 py-2 shadow-lg"
-                    onClick={() => resetTransform()}
-                  >
-                    reset
-                  </button>
+                  {maxScale != 1 && (
+                    <div
+                      className="absolute bottom-0 right-0 rounded-full hover:bg-gray-200 opacity-40 p-2 m-2 flex justify-center items-center object-cover cursor-pointer"
+                      onClick={() => handleZoom(centerView)}
+                    >
+                      <Image
+                        src={fullscreen ? zoom_in : zoom_out}
+                        alt="zoom"
+                        width={20}
+                        height={20}
+                        draggable={false}
+                        className="select-none"
+                      />
+                    </div>
+                  )}
                 </div>
               </React.Fragment>
             );
           }}
         </TransformWrapper>
       </div>
+      <div className="mt-3 grid grid-cols-2 max-w-xl mx-auto">
+        {status.map((item) => (
+          <div className="flex gap-2 justify-start items-center text-slate-gray" key={item.statusEng}>
+            <div
+              className="size-4 rounded-sm shadow-lg"
+              style={{ backgroundColor: item.color }}
+            ></div>
+            <span>{item.statusThai}</span>
+          </div>
+        ))}
+      </div>
     </>
-    // <div className="overflow-x-auto border rounded-md p-4">
-    //   <div className="gap-2 grid"
-    //   style={{ gridTemplateColumns: `repeat(${buildings[id]["col"]}, minmax(80px, 1fr))`, gridTemplateRows: `repeat(${buildings[id]["row"]}, minmax(80px, 1fr))` }}>
-
-    //     {buildings[id]["rooms"].map((row, rowIndex) => (
-    //       <React.Fragment key={rowIndex}>
-    //         {row.map((room, colIndex) => (
-    //           <Room
-    //             key={`${rowIndex}-${colIndex}`}
-    //             {...room}
-    //           />
-    //         ))}
-    //       </React.Fragment>
-    //     ))}
-    //   </div>
-    // </div>
   );
 }
 

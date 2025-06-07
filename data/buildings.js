@@ -7,25 +7,25 @@ const buildings = {
       [
         {
           roomNumber: 1404,
-          name: "ห้องเรียน 1404",
+          name: "1404",
           status: "available",
           col_span: 1,
         },
         {
           roomNumber: 1403,
-          name: "ห้องเรียน 1403",
+          name: "1403",
           status: "available",
           col_span: 1,
         },
         {
           roomNumber: 1402,
-          name: "ห้องเรียน 1402",
+          name: "1402",
           status: "available",
           col_span: 1,
         },
         {
           roomNumber: 1401,
-          name: "ห้องเรียน 1401",
+          name: "1401",
           status: "available",
           col_span: 1,
         },
@@ -39,25 +39,25 @@ const buildings = {
       [
         {
           roomNumber: 1305,
-          name: "ห้องเรียน 1305",
+          name: "1305",
           status: "available",
           col_span: 1,
         },
         {
           roomNumber: 1304,
-          name: "ห้องเรียน 1304",
+          name: "1304",
           status: "available",
           col_span: 1,
         },
         {
           roomNumber: 1303,
-          name: "ห้องเรียน 1303",
+          name: "1303",
           status: "available",
           col_span: 1,
         },
         {
           roomNumber: 1302,
-          name: "ห้องเรียน 1302",
+          name: "1302",
           status: "available",
           col_span: 1,
         },
@@ -123,25 +123,25 @@ const buildings = {
     rooms: [
       Array.from({ length: 14 }, (_, i) => ({
         roomNumber: 2401 + i,
-        name: `ห้องเรียน 2${(4 - 1) * 100 + (i + 1)}`,
+        name: `2${(4 - 1) * 100 + (i + 1)}`,
         status: "available",
         col_span: 1,
       })),
       Array.from({ length: 14 }, (_, i) => ({
         roomNumber: 2301 + i,
-        name: `ห้องเรียน 2${(3 - 1) * 100 + (i + 1)}`,
+        name: `2${(3 - 1) * 100 + (i + 1)}`,
         status: "unavailable",
         col_span: 1,
       })),
       Array.from({ length: 14 }, (_, i) => ({
         roomNumber: 2201 + i,
-        name: `ห้องเรียน 2${(2 - 1) * 100 + (i + 1)}`,
+        name: `2${(2 - 1) * 100 + (i + 1)}`,
         status: "booked",
         col_span: 1,
       })),
       Array.from({ length: 14 }, (_, i) => ({
         roomNumber: 2101 + i,
-        name: `ห้องเรียน 2${(1 - 1) * 100 + (i + 1)}`,
+        name: `2${(1 - 1) * 100 + (i + 1)}`,
         status: "pending",
         col_span: 1,
       })),
