@@ -33,7 +33,7 @@ function Schedule() {
                     <React.Fragment key={day}>
                         <div className="border border-gray-300 flex items-center justify-center font-semibold bg-white">{day}</div>
                         {timeSlots.map((_,index)=> (
-                            <div key={`${day}-${index}`} className="border border-gray-200 hover:bg-blue-50"></div>
+                            <div key={`${day}-${index}`} className="border border-gray-200 bg-red-200 hover:bg-blue-50"></div>
                         ))}
                     </React.Fragment>
                 ))}
