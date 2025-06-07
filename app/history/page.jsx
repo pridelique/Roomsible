@@ -63,7 +63,7 @@ function HistoryPage() {
       src="/assets/images/historyImage.jpg"
       className="w-full h-64 object-cover"/>
       <div className="flex items-center mb-10 relative">
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 w-40 h-40 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 shadow-lg z-10">          
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 w-40 h-40 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 shadow-lg z-2">          
           <svg xmlns="http://www.w3.org/2000/svg" className="w-15 h-15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A9.985 9.985 0 0112 15c2.21 0 4.244.715 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
