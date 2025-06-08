@@ -5,14 +5,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useRouter } from "@node_modules/next/navigation";
 import Image from "@node_modules/next/image";
-import { zoom_in, zoom_out } from "@public/assets/icons";
+import { hand_zoom, zoom_in, zoom_out } from "@public/assets/icons";
 import { status } from "@data";
+import { set } from "mongoose";
 function Building({ id }) {
   const router = useRouter();
   const outerRef = useRef(null);
   const innerRef = useRef(null);
+  const buttonRef = useRef(null);
+  const centerViewRef = useRef(null);
   const [loading, setLoading] = useState(true);
-  const [fullscreen, setFullscreen] = useState(false);
+  const [zooming, setZooming] = useState(false);
+  const [fullscreen, setFullscreen] = useState(true);
   const [scale, setScale] = useState(1);
   const [maxScale, setMaxScale] = useState(1);
   const [containerStyle, setcontainerStyle] = useState({
@@ -27,6 +31,12 @@ function Building({ id }) {
   const handleZoom = (centerView) => {
     if (fullscreen) centerView(1);
     else centerView(maxScale);
+    if(window.timeOutZooming) clearTimeout(window.timeOutZooming);
+    setZooming(true);
+    window.timeOutZooming = setTimeout(() => {
+      setZooming(false);
+    },5000)
+
     setFullscreen(!fullscreen);
   };
 
@@ -53,12 +63,19 @@ function Building({ id }) {
         });
     };
     resize();
+    setTimeout(() => resize(), 10)
+    setLoading(false);    
     window.addEventListener("resize", resize);
-    setLoading(false);
     return () => {
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    if (!loading && centerViewRef.current) {
+      centerViewRef.current(maxScale);
+    }
+  },[scale, maxScale]);
 
   return (
     <>
@@ -69,7 +86,6 @@ function Building({ id }) {
       )}
       <div className={`${loading ? "opacity-0" : "opacity-100"}`}>
         <TransformWrapper
-          limitToBounds={true}
           panning={{
             lockAxisY: true,
           }}
@@ -78,23 +94,45 @@ function Building({ id }) {
           centerOnInit={true}
           onZoom={(ref) => {
             ref.centerView();
+            setZooming(true);
             if (ref.state.scale === maxScale) setFullscreen(true);
             if (ref.state.scale === 1) setFullscreen(false);
           }}
+          onZoomStop={() => {
+            if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
+            window.timeOutZooming = setTimeout(() => {
+              setZooming(false);
+            }, 5000);
+          }}
         >
           {({ centerView }) => {
+            centerViewRef.current = centerView;
             return (
               <React.Fragment>
-                <h2 className="text-center text-xl md:text-2xl lg:text-3xl text-gray-700">
+                <h2 className="text-center text-2xl md:text-3xl lg:text-4xl text-gray-700 font-semibold">
                   อาคาร {id} {buildings[id]["name"]}
                 </h2>
-                <p className="text-center text-slate-gray mt-1 text-sm md:text-base lg:text-lg">
+                <p className="text-center text-slate-gray mt-2 text-sm md:text-base">
                   เลือกห้องที่ว่างอยู่เพื่อทำการจอง
                 </p>
                 <div
                   className="rounded-lg max-w-xl border border-gray-300 mx-auto relative mt-4"
                   ref={outerRef}
                 >
+                  {!zooming && (
+                    <div className="absolute top-1/2 left-1/2 -translate-1/2 z-9 animate-pulse w-full text-center text-slate-gray text-lg sm:text-xl flex gap-2 justify-center items-center">
+                      <Image
+                        src={hand_zoom}
+                        alt="hand zoom"
+                        width={24}
+                        height={24}
+                        draggable={false}
+                        className="select-none"
+                      />
+                      <p>ลากหรือใช้ปุ่มซูมเพื่อดูแผนผังอาคาร</p>
+                    </div>
+                  )}
+
                   <TransformComponent>
                     <div className="flex" style={containerStyle}>
                       <div
@@ -124,37 +162,43 @@ function Building({ id }) {
                       </div>
                     </div>
                   </TransformComponent>
-                  {maxScale != 1 && (
-                    <div
-                      className="absolute bottom-0 right-0 rounded-full hover:bg-gray-200 opacity-40 p-2 m-2 flex justify-center items-center object-cover cursor-pointer"
-                      onClick={() => handleZoom(centerView)}
-                    >
-                      <Image
-                        src={fullscreen ? zoom_in : zoom_out}
-                        alt="zoom"
-                        width={20}
-                        height={20}
-                        draggable={false}
-                        className="select-none"
-                      />
-                    </div>
-                  )}
+                  <button
+                    className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-200 opacity-40 p-2 m-2  object-cover cursor-pointer justify-center items-center ${
+                      maxScale === 1 ? "hidden" : "flex"
+                    } `}
+                    onClick={() => handleZoom(centerView)}
+                    ref={buttonRef}
+                  >
+                    <Image
+                      src={fullscreen ? zoom_in : zoom_out}
+                      alt="zoom"
+                      width={20}
+                      height={20}
+                      draggable={false}
+                      className="select-none"
+                    />
+                  </button>
                 </div>
               </React.Fragment>
             );
           }}
         </TransformWrapper>
-      </div>
-      <div className="mt-3 grid grid-cols-2 max-w-xl mx-auto">
-        {status.map((item) => (
-          <div className="flex gap-2 justify-start items-center text-slate-gray" key={item.statusEng}>
-            <div
-              className="size-4 rounded-sm shadow-lg"
-              style={{ backgroundColor: item.color }}
-            ></div>
-            <span>{item.statusThai}</span>
+        <div className="flex justify-start max-w-xl mx-auto mt-4">
+          <div className="grid grid-cols-3 max-w-xl w-fit pl-5 gap-x-2 sm:gap-x-3">
+            {status.map((item) => (
+              <div
+                className="flex gap-2 justify-start items-center text-slate-gray text-sm md:text-base"
+                key={item.statusEng}
+              >
+                <div
+                  className="size-3 sm:size-4 rounded-sm shadow-lg"
+                  style={{ backgroundColor: item.color }}
+                ></div>
+                <span>{item.statusThai}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </>
   );

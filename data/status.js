@@ -9,27 +9,27 @@ const statusColors = {
 const status = [
   {
     statusEng: "available",
-    statusThai: "ห้องว่าง",
+    statusThai: "ว่าง",
     color: statusColors['available']
   },
   {
     statusEng: "unavailable",
-    statusThai: "ห้องที่ไม่สามารถจองได้",
+    statusThai: "ไม่ว่าง",
     color: statusColors['unavailable']
   },
   {
     statusEng: "booked",
-    statusThai: "ห้องที่ถูกจองไว้แล้ว",
+    statusThai: "จองแล้ว",
     color: statusColors['booked']
   },
   {
     statusEng: "booking",
-    statusThai: "ห้องที่คุณจองไว้",
+    statusThai: "คุณจอง",
     color: statusColors['booking']
   },
   {
     statusEng: "pending",
-    statusThai: "ห้องที่รอดำเนินการ",
+    statusThai: "รอยืนยัน",
     color: statusColors['pending']
   },
 ];

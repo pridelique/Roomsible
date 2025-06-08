@@ -14,6 +14,7 @@ import arrow_down_selected from './arrow_down_selected.png';
 
 import zoom_in from './zoom_in.png'
 import zoom_out from './zoom_out.png'
+import hand_zoom from './hand_zoom.png'
 
 export {
   menu,
@@ -32,4 +33,5 @@ export {
 
   zoom_in,
   zoom_out,
+  hand_zoom,
 };
