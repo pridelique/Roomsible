@@ -19,12 +19,18 @@ function Schedule() {
     });
     return (
     <div>
-        <h2 className="text-4xl font-semibold mb-10 mt-5">ตารางเวลา ตีกเอกอำนวยการ : ห้อง 1303</h2>    
-        <div className="overflow-x-auto border border-gray-500 shadow-md rounded-md custom-scroll">
-            <div className="min-w-[1200px] grid grid-cols-[100px_repeat(9,120px)] grid-rows-[60px_repeat(5,60px)] border border-gray-300">
+        <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold mb-10 mt-5">ตารางเวลา ตึกเอกอำนวยการ : ห้อง 1303</h2>    
+        <div className="overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll">
+            <div
+                className="w-full border border-gray-300"
+                style={{
+                    display:"grid",
+                    gridTemplateColumns:`100px repeat(${timeSlots.length},120px)`,
+                    gridTemplateRows:`60px repeat(${days.length},60px)`,
+            }}>
                 <div className="border border-gray-300 flex items-center justify-center font-bold bg-white">วัน/เวลา</div>
                 {timeSlots.map((period,index)=> (
-                    <div key={index} className="border border-gray-300 flex flex-col items-center justify-center font-bold bg-white text-sm px-1 text.center">
+                    <div key={index} className="border border-gray-300 flex flex-col items-center justify-center font-bold bg-white text-sm px-1 text-center">
                         <div className="text-gray-700">{period.label}</div>
                         <div className="text-xs text-gray-500">{period.time}</div>
                     </div>
