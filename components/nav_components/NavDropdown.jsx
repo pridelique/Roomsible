@@ -4,7 +4,7 @@ import React from "react";
 
 function NavDropdown({ checkPath, ref }) {
   return (
-    <div className="absolute top-full border border-gray-300 shadow-lg z-9 bg-white" ref={ref}>
+    <div className="absolute top-full border border-gray-300 shadow-lg z-9 bg-white rounded-xl overflow-hidden" ref={ref}>
       <ul>
         {navBuildings.map((item) => (
           <li key={item.id}>
