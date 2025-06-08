@@ -5,6 +5,10 @@ import Image from "@node_modules/next/image";
 import { check_mark, warning, x_mark } from "@public/assets/icons";
 import Link from "@node_modules/next/link";
 import { bordersw } from "@public/assets/images";
+import QRCodeFrame from "@components/QRFrame";
+import QRCodeMask from "@components/QRMask";
+import QRCodeErrorMessage from "@components/QRErrorMessage";
+import QRSuccessMessage from "@components/QRSuccessMessage";
 
 export default function FullScreenQRScanner() {
   const videoRef = useRef(null);
@@ -13,7 +17,7 @@ export default function FullScreenQRScanner() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [isStop, setIsStop] = useState(true);
-  const [qrcodeTop, setQrcodeTop] = useState("200%");
+  const [qrcodeTop, setQrcodeTop] = useState(10000);
   const [elementTop, setElementTop] = useState("50%");
   const startScaning = () => {
     setResult("");
@@ -50,6 +54,7 @@ export default function FullScreenQRScanner() {
                   });
                 } else {
                   setSuccess({
+                    buildingId: 1,
                     roomNumber: 1202,
                     time: "08.30 - 09.20 น.",
                   });
@@ -73,10 +78,10 @@ export default function FullScreenQRScanner() {
     const resize = () => {
       const video = videoRef.current;
       const screenHeight = window.innerHeight;
+      const screenWidth = window.innerWidth;
       // console.log(video.clientWidth, video.clientHeight);
-      setQrcodeTop(`${(screenHeight - 76) / 2}px`);
-      setElementTop(`${(screenHeight + 76) / 2}px`);
-      console.log(window.innerHeight);
+      setQrcodeTop((screenHeight - 76) / 2);
+      setElementTop((screenHeight + 76) / 2);
     };
     resize();
     startScaning();
@@ -87,45 +92,33 @@ export default function FullScreenQRScanner() {
   return (
     <div className="w-screen h-screen absolute left-0 top-0 overflow-hidden">
       <div className="mt-19"></div>
-      <div className="w-full h-full relative left-0 top-0 overflow-hidden p-0 m-0 z-8">
-        {/* <p className="absolute">แสกน QR Code เพื่อเช็คอินเข้าห้อง</p> */}
-        <div className="absolute inset-0 flex flex-col items-center opacity-60 text-white h-full justify-between">
-          <p className="mt-6 text-xl md:text-2xl lg:text-3xl font-semibold">
-            สแกน QR Code เพื่อเช็คอิน
-          </p>
-          <p className="mb-24 text-sm md:text-base lg:text-lg">
-            วาง QR Code ให้อยู่ในกรอบเพื่อเริ่มเช็คอิน
-          </p>
-        </div>
+      <div className="w-full h-full relative left-0 top-0 overflow-hidden p-0 m-0 z-1">
         {/* กล้องเต็มหน้าจอ */}
         <video
           ref={videoRef}
           className="w-full h-full object-cover flex items-start justify-center"
         />
-        <div
-          className={`absolute left-1/2 -translate-1/2  p-32 z-10 ${
-            isStop && "hidden"
-          }`}
-          style={{ top: qrcodeTop }}
-        >
-          {/* top left */}
-          <div className="absolute top-0 left-0 size-12 border-t-8 border-l-8 border-red-400 "></div>
-          <div className="absolute top-0 right-0 size-12 border-t-8 border-r-8 border-red-400 "></div>
-          <div className="absolute bottom-0 left-0 size-12 border-b-8 border-l-8 border-red-400 "></div>
-          <div className="absolute bottom-0 right-0 size-12 border-b-8 border-r-8 border-red-400 "></div>
+        {/* QR Code Element */}
+        <div className={`${isStop && "hidden"}`}>
+          <div className="absolute inset-0 flex flex-col items-center opacity-70 text-white h-full justify-between z-3">
+            <p className="mt-14 text-2xl md:text-3xl lg:text-4xl font-semibold">
+              สแกน QR Code เพื่อเช็คอิน
+            </p>
+            <p className="mb-24 text-sm md:text-base lg:text-lg">
+              วาง QR Code ให้อยู่ในกรอบเพื่อเริ่มเช็คอิน
+            </p>
+          </div>
+          <QRCodeFrame qrcodeTop={qrcodeTop} />
+          <QRCodeMask qrcodeTop={qrcodeTop} />
         </div>
-        {/* </div> */}
       </div>
-      {/* Loading... */}
 
+      {/* Loading... */}
       {loading && (
-        <>
-          {/* <div className="absolute bg-black opacity-30 top-0 w-screen h-screen z-[11]"></div> */}
-          <div
-            className="absolute left-1/2 -translate-1/2 p-10 rounded-full border-6 border-t-6 border-transparent border-t-red-400 animate-spin z-[12]"
-            style={{ top: elementTop }}
-          ></div>
-        </>
+        <div
+          className="absolute left-1/2 -translate-1/2 p-10 rounded-full border-6 border-t-6 border-transparent border-t-red-400 animate-spin z-4"
+          style={{ top: elementTop }}
+        ></div>
       )}
 
       {/* Overlay สำหรับแสดงผลลัพธ์ */}
@@ -137,92 +130,17 @@ export default function FullScreenQRScanner() {
       )}
 
       {/* แสดงข้อผิดพลาด */}
-      {error?.type === "incorrect" && (
-        <div
-          className="absolute left-1/2 -translate-1/2 bg-white text-white px-8 pt-6 pb-4 rounded-xl z-[12] shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center"
-          style={{ top: elementTop }}
-        >
-          <div>
-            <Image src={warning} alt="warning" width={36} height={36} />
-          </div>
-
-          <h3 className="text-xl text-gray-700 mt-2">ขออภัย</h3>
-          <p className="leading-5 mt-1 text-slate-gray px-3">
-            ข้อมูล QR Code ไม่ถูกต้องกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง
-          </p>
-          <hr className="w-full border border-gray-300 mt-4" />
-          <button
-            className="mt-4 text-lg bg-green-500 py-2 w-4/5 rounded-full"
-            onClick={startScaning}
-          >
-            ตกลง
-          </button>
-        </div>
-      )}
-
-      {error?.type === "no-booking" && (
-        <div
-          className="absolute left-1/2 -translate-1/2 bg-white text-white px-8 pt-6 pb-4 rounded-xl z-[12] shadow-lg text-center w-full max-w-[340px] flex flex-col justify-center items-center"
-          style={{ top: elementTop }}
-        >
-          <div>
-            <Image src={x_mark} alt="x_mark" width={36} height={36} />
-          </div>
-
-          <h3 className="text-xl text-gray-700 mt-2">ขออภัย</h3>
-          <p className="leading-5 mt-1 text-slate-gray px-3">
-            คุณไม่ได้จองห้อง {error?.roomNumber} <br />
-            ในเวลา {error?.time} กรุณาตรวจสอบและทำรายการใหม่อีกครั้ง
-          </p>
-          <hr className="w-full border border-gray-300 mt-4" />
-          <button
-            className="mt-4 text-lg bg-green-500 py-2 w-4/5 rounded-full"
-            onClick={startScaning}
-          >
-            ตกลง
-          </button>
-        </div>
+      {error && (
+        <QRCodeErrorMessage
+          error={error}
+          elementTop={elementTop}
+          startScaning={startScaning}
+        />
       )}
 
       {/* ข้อความสำเร็จ */}
       {success && (
-        <div
-          className="absolute left-1/2 -translate-1/2 bg-white text-white pb-4 rounded-xl z-[12] shadow-lg text-center w-full max-w-[340px] flex flex-col justify-center items-center "
-          style={{ top: elementTop }}
-        >
-          <div className="w-full relative">
-            <Image
-              src={bordersw}
-              alt="school"
-              width={340}
-              height={340}
-              className="rounded-t-xl"
-            />
-            <div className="absolute top-1/2 left-1/2 -translate-1/2 bg-white rounded-full shadow-lg">
-              <Image
-                src={check_mark}
-                alt="check_mark"
-                width={111}
-                height={111}
-              />
-            </div>
-          </div>
-
-          <div className="px-8 flex flex-col justify-center items-center w-full mt-1">
-            <h3 className="text-2xl text-green-500 mt-2">ยืนยันสำเร็จ</h3>
-            <p className="leading-5 mt-1 text-slate-gray px-3">
-              คุณได้ทำการเช็คอินห้อง {success?.roomNumber} <br />
-              ในเวลา {success?.time} เรียบร้อยแล้ว
-            </p>
-            <hr className="w-full border border-gray-300 mt-4" />
-            <Link
-              href="/"
-              className="mt-4 text-lg bg-green-500 py-2 w-4/5 rounded-full"
-            >
-              กลับไปหน้าแรก
-            </Link>
-          </div>
-        </div>
+        <QRSuccessMessage success={success} elementTop={elementTop}/>
       )}
     </div>
   );
