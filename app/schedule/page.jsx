@@ -1,4 +1,5 @@
 import React from 'react';
+import '../globals.css';
 function Schedule() {
     const days=['วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์'];
     const timeSlots=Array.from({length:9},(_,i)=> {
@@ -18,9 +19,9 @@ function Schedule() {
     });
     return (
     <div>
-        <h2 className="text-4xl font-semibold mb-10 mt-5">1303</h2>    
-        <div className="overflow-x-auto border border-gray-700 shadow-md rounded-md">
-            <div className="min-w-[1000px] grid grid-cols-[100px_repeat(9,120px)] grid-rows-[60px_repeat(5,60px)] border border-gray-300">
+        <h2 className="text-4xl font-semibold mb-10 mt-5">ตารางเวลา ตีกเอกอำนวยการ : ห้อง 1303</h2>    
+        <div className="overflow-x-auto border border-gray-500 shadow-md rounded-md custom-scroll">
+            <div className="min-w-[1200px] grid grid-cols-[100px_repeat(9,120px)] grid-rows-[60px_repeat(5,60px)] border border-gray-300">
                 <div className="border border-gray-300 flex items-center justify-center font-bold bg-white">วัน/เวลา</div>
                 {timeSlots.map((period,index)=> (
                     <div key={index} className="border border-gray-300 flex flex-col items-center justify-center font-bold bg-white text-sm px-1 text.center">
