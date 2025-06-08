@@ -1,5 +1,7 @@
 'use client'
 import { useState } from 'react';
+import Select from 'react-select';
+import '../globals.css';
 function BookingForm()
 {
     const [mode,setMode]=useState('class');
@@ -19,6 +21,21 @@ function BookingForm()
             console.log({activityDetail});
         }
     }
+    const teacherList=['ครูสมชาย','ครูสมศรี','ครูแจ่มใส']; 
+    const teacherOptions=teacherList.map(name=>({
+    value:name,
+    label:name,
+    }));
+    const subjectOptions=[
+    {value:'ฟิสิกส์',label:'ฟิสิกส์'},
+    {value:'เคมี',label:'เคมี'},
+    {value:'ชีวะ',label:'ชีวะ'},
+    ];
+    const roomOptions=[
+    {value:'ม.1.1',label:'ม.1.1'},
+    {value:'ม.1.2',label:'ม.1.2'},
+    {value:'ม.1.3',label:'ม.1.3'},
+    ];
 
     return (
         <div className="bg-white p-15 rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 mt-25">
@@ -44,68 +61,49 @@ function BookingForm()
                 <div className="space-y-4 w-[90%] mx-auto block">
                     <div>
                         <label className="block font-semibold mb-1 text-gray-700">ครูผู้สอน</label>
-                        <select
-                            className="w-full border border-gray-500 px-3 py-2 rounded-xl appearance-none bg-white bg-no-repeat pr-8"
-                            value={teacher}
-                            onChange={(e)=>setTeacher(e.target.value)}
-                            style={{
-                                backgroundImage: `url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")`,
-        backgroundPosition: 'right 0.5rem center',
-                                backgroundPosition:'right 0.5rem center',
-                                backgroundSize:'1rem',
-                            }}
-                        >
-                            <option value="">เลือกครู</option>
-                            <option value="ครูสมชาย">ครูสมชาย</option>
-                            <option value="ครูสมศรี">ครูสมศรี</option>
-                            <option value="ครูแจ่มใส">ครูแจ่มใส</option>
-                        </select>
+                        <Select
+                            className="react-select-container shadow-md"
+                            classNamePrefix="react-select"
+                            options={teacherOptions}
+                            value={teacherOptions.find(option=>option.value===teacher)}
+                            onChange={selected=>setTeacher(selected?.value||'')}
+                            placeholder="เลือก">
+                        </Select>
                     </div>
-                    <div>
-                        <label className="block font-semibold mb-1 text-gray-700">รายวิชา</label>
-                        <select
-                            className="w-full border border-gray-500 px-3 py-2 rounded-xl appearance-none bg-white bg-no-repeat pr-8"
-                            value={subject}
-                            onChange={(e)=>setSubject(e.target.value)}
-                            style={{
-                                backgroundImage: `url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")`,
-        backgroundPosition: 'right 0.5rem center',
-                                backgroundPosition:'right 0.5rem center',
-                                backgroundSize:'1rem',
-                            }}
-                        >
-                            <option value="">เลือกวิชา</option>
-                            <option value="ฟิสิกส์">ฟิสิกส์</option>
-                            <option value="เคมี">เคมี</option>
-                            <option value="ชีวะ">ชีวะ</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block font-semibold mb-1 text-gray-700">ห้องที่สอน</label>
-                        <select
-                            className="w-full border border-gray-500 px-3 py-2 rounded-xl appearance-none bg-white bg-no-repeat pr-8"
-                            value={studentRoom}
-                            onChange={(e)=>setStudentRoom(e.target.value)}
-                            style={{
-                                backgroundImage: `url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")`,
-        backgroundPosition: 'right 0.5rem center',
-                                backgroundPosition:'right 0.5rem center',
-                                backgroundSize:'1rem',
-                            }}
-                        >
-                            <option value="">เลือกห้องนักเรียน</option>
-                            <option value="ม.1.1">ม.1.1</option>
-                            <option value="ม.1.2">ม.1.2</option>
-                            <option value="ม.1.3">ม.1.3</option>
-                        </select>
+                    <div className="flex gap-4">
+                        <div className="w-1/2">
+                            <label className="block font-semibold mb-1 text-gray-700">รายวิชา</label>
+                            <Select
+                                className="shadow-md"
+                                isSearchable={false}
+                                options={subjectOptions}
+                                value={subjectOptions.find(option=>option.value===subject)}
+                                onChange={selected=>setSubject(selected?.value||'')}
+                                placeholder="เลือก"
+                                classNamePrefix="react-select">
+                            </Select>
+                        </div>
+                        <div className="w-1/2">
+                            <label className="block font-semibold mb-1 text-gray-700">ห้องที่สอน</label>
+                            <Select
+                                className="shadow-md"
+                                isSearchable={false}
+                                options={roomOptions}
+                                value={roomOptions.find(option => option.value === studentRoom)}
+                                onChange={selected => setStudentRoom(selected?.value || '')}
+                                placeholder="เลือก"
+                                classNamePrefix="react-select">
+                            </Select>
+
+                        </div>
                     </div>
                 </div>
             ) : (
                 <div className="w-[90%] mx-auto block">
-                    <label className="ิblock font-semibold mb-1 text-gray-700">รายละเอียด</label>
+                    <label className="block font-semibold mb-1 text-gray-700">รายละเอียด</label>
                     <input
                     type="text"
-                    className="block w-full border border-gray-500 px-3 py-2 rounded-xl"
+                    className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-md"
                     placeholder="ประเภทกิจกรรมที่จะทำ..."
                     value={activityDetail}
                     onChange={(e)=>setActivityDetail(e.target.value)}/>
@@ -113,7 +111,7 @@ function BookingForm()
             )}
 
             <button
-                className="mt-10 w-[90%] py-2 rounded-full bg-gradient-to-r from-[#FFFAC9] to-[#FDE7E7] shadow-md font-semibold mx-auto block"
+                className="mt-10 w-[90%] py-2 rounded-full bg-gradient-to-r from-red-300 to-red-600 shadow-md mx-auto block text-white border border-gray-300 hover:bg-white hover:text-gray-600 hover:bg-none"
                 onClick={handleSubmit}
             >ยืนยันการจอง</button>
         </div> 
