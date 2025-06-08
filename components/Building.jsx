@@ -28,14 +28,18 @@ function Building({ id }) {
     router.push(`/building/${id}/schedule?roomNumber=${roomNumber}`);
   };
 
+  const resetMessage = () => {
+    if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
+    window.timeOutZooming = setTimeout(() => {
+      setZooming(false);
+    }, 5000);
+  };
+
   const handleZoom = (centerView) => {
     if (fullscreen) centerView(1);
     else centerView(maxScale);
-    if(window.timeOutZooming) clearTimeout(window.timeOutZooming);
     setZooming(true);
-    window.timeOutZooming = setTimeout(() => {
-      setZooming(false);
-    },5000)
+    resetMessage()
 
     setFullscreen(!fullscreen);
   };
@@ -63,8 +67,8 @@ function Building({ id }) {
         });
     };
     resize();
-    setTimeout(() => resize(), 10)
-    setLoading(false);    
+    setTimeout(() => resize(), 10);
+    setLoading(false);
     window.addEventListener("resize", resize);
     return () => {
       window.removeEventListener("resize", resize);
@@ -75,7 +79,7 @@ function Building({ id }) {
     if (!loading && centerViewRef.current) {
       centerViewRef.current(maxScale);
     }
-  },[scale, maxScale]);
+  }, [scale, maxScale]);
 
   return (
     <>
@@ -98,12 +102,9 @@ function Building({ id }) {
             if (ref.state.scale === maxScale) setFullscreen(true);
             if (ref.state.scale === 1) setFullscreen(false);
           }}
-          onZoomStop={() => {
-            if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
-            window.timeOutZooming = setTimeout(() => {
-              setZooming(false);
-            }, 5000);
-          }}
+          onZoomStop={() => resetMessage()}
+          onPanning={() => setZooming(true)}
+          onPanningStop={() => resetMessage()}
         >
           {({ centerView }) => {
             centerViewRef.current = centerView;
@@ -119,8 +120,8 @@ function Building({ id }) {
                   className="rounded-lg max-w-xl border border-gray-300 mx-auto relative mt-4"
                   ref={outerRef}
                 >
-                  {!zooming && (
-                    <div className="absolute top-1/2 left-1/2 -translate-1/2 z-9 animate-pulse w-full text-center text-slate-gray text-lg sm:text-xl flex gap-2 justify-center items-center">
+                  {!zooming && maxScale !== 1 && (
+                    <div className="absolute top-1/2 left-1/2 -translate-1/2 z-9 animate-pulse w-full text-center text-slate-gray text-lg sm:text-xl flex gap-2 justify-center items-center select-none">
                       <Image
                         src={hand_zoom}
                         alt="hand zoom"
@@ -183,8 +184,8 @@ function Building({ id }) {
             );
           }}
         </TransformWrapper>
-        <div className="flex justify-start max-w-xl mx-auto mt-4">
-          <div className="grid grid-cols-3 max-w-xl w-fit pl-5 gap-x-2 sm:gap-x-3">
+        <div className="flex justify-center max-w-xl mx-auto mt-4">
+          <div className="grid grid-cols-3 max-w-xl w-fit gap-x-2 sm:gap-x-3">
             {status.map((item) => (
               <div
                 className="flex gap-2 justify-start items-center text-slate-gray text-sm md:text-base"
