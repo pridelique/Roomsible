@@ -90,7 +90,7 @@ function HistoryPage() {
       
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
         <div className="text-gray-700 space-y-1">
-          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md mx-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md mx-1 text-lg md:text-xl lg:text-2xl">
             <span className="mx-1">นางสาวชนัญธิดา</span>
             <span className="mx-1">ธนะสารสมบูรณ์</span>
             <span className="mx-1">ม.6.8</span>
@@ -116,9 +116,9 @@ function HistoryPage() {
                   <td className="py-2 px-1">{booking.time}</td>
                   <td className="py-2 px-1">{booking.room}</td>
                   <td className="py-2 px-1">{booking.usage}</td>
-                  <td className="py-2 px-1 relative">
+                  <td className="py-2 px-1 relative text-center">
                     <div className="flex items-center justify-between">
-                      <div className="text-sm">
+                      <div className="sm:text-md md:text-lg ">
                         {booking.status==='booked'&&(
                           <div className="text-blue-500">จองแล้ว</div>
                         )}
@@ -129,7 +129,7 @@ function HistoryPage() {
                           <div className="text-red-500">ยกเลิก</div>
                         )}
                       </div>
-                      <div className="relative" ref={(el)=>(menuRefs.current[booking.id]=el)}>
+                      <div className="relative top-1 right-2" ref={(el)=>(menuRefs.current[booking.id]=el)}>
                         <button className="text-xl px-2 text-gray-600"
                           onClick={()=>toggleMenu(booking.id)}>⋮</button>
                         {activeMenuId===booking.id&&(
