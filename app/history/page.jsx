@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState,useEffect,useRef } from 'react';
 function HistoryPage() {
   const [bookings,setBookings]=useState([
     {
@@ -57,6 +57,24 @@ function HistoryPage() {
     setActiveMenuId(null);
     setActiveDetailId(null);
   };
+  const menuRefs=useRef({});
+  useEffect(()=> {
+    const handleClickOutside=(event)=> {
+    const isClickInsideAnyMenu=Object.values(menuRefs.current).some(
+      (ref)=>ref&&ref.contains(event.target)
+    );
+
+    if (!isClickInsideAnyMenu) {
+      setActiveMenuId(null);
+      setActiveDetailId(null);
+    }
+  };
+
+  document.addEventListener('click',handleClickOutside);
+  return()=> {
+    document.removeEventListener('click',handleClickOutside);
+    };
+  }, []);
   return (
   <div className="relative">
     <img
@@ -71,34 +89,34 @@ function HistoryPage() {
       </div>
       
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
-        <div className="text-2xl text-gray-700 space-y-1">
-          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md">
-            <span className="mx-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">นางสาวชนัญธิดา</span>
-            <span className="mx-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">ธนะสารสมบูรณ์</span>
-            <span className="mx-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">ม.6.8</span>
+        <div className="text-gray-700 space-y-1">
+          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md mx-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+            <span className="mx-1">นางสาวชนัญธิดา</span>
+            <span className="mx-1">ธนะสารสมบูรณ์</span>
+            <span className="mx-1">ม.6.8</span>
           </div>
         </div>
       
       <h2 className="text-2xl font-semibold mb-6 text-gray-700">ประวัติการจอง</h2>
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-100 text-gray-700">
+      <div className="overflow-visible w-full border border-gray-300 shadow-md rounded-md custom-scroll">
+        <table className="w-full text-center">
+          <thead className="bg-gray-100 text-gray-700 text-base sm:text-lg">
             <tr>
-              <th className="py-2 px-4">วันที่</th>
-              <th className="py-2 px-4">คาบเรียน</th>
-              <th className="py-2 px-4">ห้อง</th>
-              <th className="py-2 px-4">การใช้งาน</th>
-              <th className="py-2 px-4">สถานะ</th>
+              <th className="py-2 px-1">วันที่</th>
+              <th className="py-2 px-1">คาบเรียน</th>
+              <th className="py-2 px-1">ห้อง</th>
+              <th className="py-2 px-1">การใช้งาน</th>
+              <th className="py-2 px-1">สถานะ</th>
             </tr>
           </thead>
-          <tbody className="text-gray-500">
+          <tbody className="text-gray-500 text-base sm:text-md md:text-lg">
               {bookings.map((booking)=>(
                 <tr key={booking.id} className="border-b relative">
-                  <td className="py-2 px-4">{booking.date}</td>
-                  <td className="py-2 px-4">{booking.time}</td>
-                  <td className="py-2 px-4">{booking.room}</td>
-                  <td className="py-2 px-4">{booking.usage}</td>
-                  <td className="py-2 px-4 relative">
+                  <td className="py-2 px-1">{booking.date}</td>
+                  <td className="py-2 px-1">{booking.time}</td>
+                  <td className="py-2 px-1">{booking.room}</td>
+                  <td className="py-2 px-1">{booking.usage}</td>
+                  <td className="py-2 px-1 relative">
                     <div className="flex items-center justify-between">
                       <div className="text-sm">
                         {booking.status==='booked'&&(
@@ -111,11 +129,11 @@ function HistoryPage() {
                           <div className="text-red-500">ยกเลิก</div>
                         )}
                       </div>
-                      <div className="relative">
+                      <div className="relative" ref={(el)=>(menuRefs.current[booking.id]=el)}>
                         <button className="text-xl px-2 text-gray-600"
                           onClick={()=>toggleMenu(booking.id)}>⋮</button>
                         {activeMenuId===booking.id&&(
-                          <div className="absolute right-0 mt-2 w-36 bg-white border rounded shadow text-sm z-10">
+                          <div className="-translate-y-3 absolute right-0 mt-2 w-36 bg-white border border-gray-400 rounded shadow-md text-sm z-2">
                             <div  
                               onClick={()=>setActiveDetailId(booking.id)}
                               className="px-4 py-2 hover:bg-gray-100 cursor-pointer">รายละเอียด</div>
@@ -125,7 +143,7 @@ function HistoryPage() {
                           </div>
                         )}
                         {activeDetailId===booking.id&&(
-                          <div className="absolute right-36 top-0 w-56 bg-white border rounded shadow text-sm p-4 z-20">
+                          <div className="-translate-y-8 translate-x-4 z-3 absolute right-36 top-0 w-56 bg-white border rounded shadow-md text-sm p-4 border-gray-400">
                             <div className="font-medium mb-2">รายละเอียดการจอง</div>
                             <div>{booking.detail}</div>
                             <div
@@ -138,9 +156,6 @@ function HistoryPage() {
                   </td>
                 </tr>
               ))}
-              <tr><td colSpan={5} className="py-4" /></tr>
-              <tr><td colSpan={5} className="py-4" /></tr>
-              <tr><td colSpan={5} className="py-4" /></tr>
 
             </tbody>
         </table>
