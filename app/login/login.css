@@ -1,0 +1,34 @@
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: 1px;
+    font-family: "Times New Roman", Times, serif;
+}
+.background {
+    background: #ffa8a8;
+    background: radial-gradient(circle, rgba(255, 168, 168, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.login-form {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+}
