@@ -45,13 +45,19 @@ function Nav() {
         <NavLink navLink={navLink} session={session} checkPath={checkPath} />
 
         {/* ปุ่ม login logout */}
-        <div className="hidden md:flex">
-          <NavButton
-            session={session}
-            handleLogin={handleLogin}
-            handleLogout={handleLogout}
-          />
-        </div>
+         <div className="hidden md:flex">
+            <NavButton
+              session={session}
+              handleLogin={() => {
+                if (!session) {
+            window.location.href = "/login";
+                } else {
+            handleLogout();
+                }
+              }}
+              handleLogout={handleLogout}
+            />
+          </div>
 
         {/* ปุ่มเมนู */}
         <button
