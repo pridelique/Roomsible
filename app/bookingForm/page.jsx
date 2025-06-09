@@ -103,7 +103,7 @@ function BookingForm()
                     <label className="block font-semibold mb-1 text-gray-700">รายละเอียด</label>
                     <input
                     type="text"
-                    className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-md"
+                    className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-xl"
                     placeholder="ประเภทกิจกรรมที่จะทำ..."
                     value={activityDetail}
                     onChange={(e)=>setActivityDetail(e.target.value)}/>
@@ -111,7 +111,7 @@ function BookingForm()
             )}
 
             <button
-                className="mt-10 w-[90%] py-2 rounded-full bg-gradient-to-r from-red-300 to-red-600 shadow-md mx-auto block text-white border border-gray-300 hover:bg-white hover:text-gray-600 hover:bg-none"
+                className="mt-10 w-[90%] py-2 rounded-full hover:bg-gradient-to-r from-red-300 to-red-600 shadow-md mx-auto block hover:text-white border border-gray-300 bg-white text-gray-600 "
                 onClick={handleSubmit}
             >ยืนยันการจอง</button>
         </div> 
