@@ -1,5 +1,4 @@
 import './login.css'
-import Nav from "./components/Nav";
 
 function LoginPage() {
   return (
