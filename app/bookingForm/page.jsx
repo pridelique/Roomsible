@@ -38,7 +38,7 @@ function BookingForm()
     ];
 
     return (
-        <div className="bg-white p-15 rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 mt-25">
+        <div className="bg-white p-15 rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 mt-23">
             <h2 className="text-3xl font-semibold text-center mb-2 text-gray-700">ห้อง 1303</h2>
             <p className="text-center mb-7 text-gray-600 text-lg">คาบ 1 (08.30-09.20)</p>
             
