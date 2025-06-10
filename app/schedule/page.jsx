@@ -1,6 +1,7 @@
+'use client'
 import React from 'react';
 import '../globals.css';
-import { useParams,useSearchParams } from "@node_modules/next/navigation"
+import { useParams,useSearchParams } from "next/navigation"
 
 function Schedule() {
     const days=['วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์'];
@@ -21,8 +22,8 @@ function Schedule() {
     });
 
     const param=useParams()
-    const searchParams=useSearchParams();
-    const buildingId=Params.id
+    const searchParams=useSearchParams()
+    const buildingId=param.id
     const roomNumber=searchParams.get('roomNumber')
     return (
     <div>
