@@ -10,7 +10,7 @@ function Logo() {
         alt="schoolname"
         width={0}
         height={50}
-        className="block md:max-lg:hidden ml-2"
+        className="hidden lg:flex ml-2"
       />
     </Link>
   );
