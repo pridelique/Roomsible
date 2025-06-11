@@ -2,7 +2,7 @@
 
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
-import { building, home, link, menu } from "@public/assets/icons";
+import { building, menu } from "@public/assets/icons";
 import { useContext, useEffect, useState } from "react";
 import NavButton from "./nav_components/NavButton";
 import { usePathname } from "@node_modules/next/navigation";
@@ -15,7 +15,7 @@ import { DateTimeContext } from "@app/DateTimeProvider";
 
 function Nav() {
   const [isShow, setIsShow] = useState(false);
-  const [isShowtime, setIsShowTime] = useState(true);
+  const [isShowtime, setIsShowTime] = useState(false);
   const { day, setDay, period, setPeriod } = useContext(DateTimeContext)
   const [dateDropdown, setDateDropdown] = useState(false);
   const [timeDropDown, setTimeDropdown] = useState(false);
@@ -41,12 +41,6 @@ function Nav() {
     if (item.label === "ตึก") return pathname.startsWith("/building");
     return pathname === item.path;
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsShowTime(false);
-    }, 800);
-  },[])
 
   return (
     <header className="z-10 absolute w-full text-[17px]">
