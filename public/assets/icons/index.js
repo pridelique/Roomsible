@@ -16,6 +16,9 @@ import zoom_in from './zoom_in.png'
 import zoom_out from './zoom_out.png'
 import hand_zoom from './hand_zoom.png'
 
+import date from './date.png';
+import clock from './clock.png';
+import link from './link.png';
 export {
   menu,
 
@@ -34,4 +37,8 @@ export {
   zoom_in,
   zoom_out,
   hand_zoom,
+
+  date,
+  clock,
+  link,
 };
