@@ -43,4 +43,77 @@
     margin: 0 auto;
   }
 
+  .setup-grid {
+    @apply grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 col-span-1 col-span-2 col-span-3 col-span-4 col-span-5;
+  }
+}
+.custom-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #d1d5db; 
+  border-radius: 9999px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af; 
+}
+.react-select__control {
+  @apply border border-gray-300 shadow-md rounded-xl px-3 py-1 focus:outline-none bg-white;
+  border-color: #D1D5DB;
+  box-shadow: none;
+}
+
+.react-select__control--is-focused {
+  border-color: #D1D5DB !important;
+  box-shadow: 0 0 0 1px #D1D5DB !important;
+}
+
+.react-select__menu {
+  @apply mt-1 border border-gray-300 shadow-lg rounded-xl bg-white z-10;
+}
+
+.react-select__option {
+  @apply px-4 py-2 cursor-pointer hover:bg-gray-100;
+}
+
+.react-select__single-value {
+  @apply text-gray-700;
+}
+.custom-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #d1d5db; 
+  border-radius: 9999px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af; 
+}
+.react-select__control {
+  @apply border border-gray-300 shadow-md rounded-xl px-3 py-1 focus:outline-none bg-white;
+  border-color: #D1D5DB;
+  box-shadow: none;
+}
+
+.react-select__control--is-focused {
+  border-color: #D1D5DB !important;
+  box-shadow: 0 0 0 1px #D1D5DB !important;
+}
+
+.react-select__menu {
+  @apply mt-1 border border-gray-300 shadow-lg rounded-xl bg-white z-10;
+}
+
+.react-select__option {
+  @apply px-4 py-2 cursor-pointer hover:bg-gray-100;
+}
+
+.react-select__single-value {
+  @apply text-gray-700;
 }

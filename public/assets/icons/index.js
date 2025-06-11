@@ -12,6 +12,14 @@ import home_selected from './home_selected.png';
 import arrow_down from './arrow_down.png';
 import arrow_down_selected from './arrow_down_selected.png';
 
+import zoom_in from './zoom_in.png'
+import zoom_out from './zoom_out.png'
+import hand_zoom from './hand_zoom.png'
+
+import date from './date.png';
+import clock from './clock.png';
+import link from './link.png';
+
 import warning from './warning.png'
 import x_mark from './x_mark.png'
 import check_mark from './check_mark.png'
@@ -30,6 +38,14 @@ export {
 
   arrow_down,
   arrow_down_selected,
+
+  zoom_in,
+  zoom_out,
+  hand_zoom,
+
+  date,
+  clock,
+  link,
 
   warning,
   x_mark,
