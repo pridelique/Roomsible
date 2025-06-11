@@ -2,16 +2,23 @@
 
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
-import { menu } from "@public/assets/icons";
-import {  useState } from "react";
+import { building, menu } from "@public/assets/icons";
+import { useContext, useEffect, useState } from "react";
 import NavButton from "./nav_components/NavButton";
 import { usePathname } from "@node_modules/next/navigation";
 import Logo from "./nav_components/Logo";
 import Menu from "./nav_components/Menu";
 import NavLink from "./nav_components/NavLink";
+import Date from "./nav_components/Date";
+import Time from "./nav_components/Time";
+import { DateTimeContext } from "@app/DateTimeProvider";
 
 function Nav() {
   const [isShow, setIsShow] = useState(false);
+  const [isShowtime, setIsShowTime] = useState(false);
+  const { day, setDay, period, setPeriod } = useContext(DateTimeContext)
+  const [dateDropdown, setDateDropdown] = useState(false);
+  const [timeDropDown, setTimeDropdown] = useState(false);
   const [session, setSession] = useState("sdf");
   const pathname = usePathname();
 
@@ -21,6 +28,10 @@ function Nav() {
 
   const handleLogin = () => {
     setSession("user");
+  };
+
+  const handleToggleTime = () => {
+    setIsShowTime(!isShowtime);
   };
 
   const checkPath = (item) => {
@@ -42,22 +53,45 @@ function Nav() {
         <Logo />
 
         {/* Link */}
-        <NavLink navLink={navLink} session={session} checkPath={checkPath} />
-
-        {/* ปุ่ม login logout */}
-         <div className="hidden md:flex">
-            <NavButton
+        <ul className="hidden md:flex md:gap-1 lg:gap-2 text-slate-gray items-center">
+          {isShowtime ? (
+            <>
+              <Date day={day} setDay={setDay} dateDropdown={dateDropdown} setDateDropdown={setDateDropdown}/>
+              <li>
+                {/* ปุ่ม toggle time */}
+                <button
+                  className="w-fit h-fit flex justify-center items-center transition-transform duration-300 mt-0.5 p-2 mx-2 rounded-full hover:bg-gray-200 cursor-pointer opacity-60"
+                  onClick={() => handleToggleTime()}
+                >
+                  <Image src={building} alt="building" width={20} height={20} />
+                </button>
+              </li>
+              <Time period={period} setPeriod={setPeriod} timeDropdown={timeDropDown} setTimeDropdown={setTimeDropdown}/>
+            </>
+          ) : (
+            <NavLink
+              navLink={navLink}
               session={session}
-              handleLogin={() => {
-                if (!session) {
-            window.location.href = "/login";
-                } else {
-            handleLogout();
-                }
-              }}
-              handleLogout={handleLogout}
+              checkPath={checkPath}
+              handleToggleTime={handleToggleTime}
             />
-          </div>
+          )}
+        </ul>
+
+        {/* วัน คาบ */}
+        <ul className="flex md:hidden gap-3 text-slate-gray">
+          <Date day={day} setDay={setDay} dateDropdown={dateDropdown} setDateDropdown={setDateDropdown}/>
+          <Time period={period} setPeriod={setPeriod} timeDropdown={timeDropDown} setTimeDropdown={setTimeDropdown}/>
+        </ul>
+
+        <div className="hidden md:flex justify-center items-center gap-4">
+          {/* ปุ่ม login logout */}
+          <NavButton
+            session={session}
+            handleLogin={handleLogin}
+            handleLogout={handleLogout}
+          />
+        </div>
 
         {/* ปุ่มเมนู */}
         <button
