@@ -4,7 +4,6 @@ import { BrowserQRCodeReader } from "@zxing/browser";
 import Image from "@node_modules/next/image";
 import { check_mark, warning, x_mark } from "@public/assets/icons";
 import Link from "@node_modules/next/link";
-import { bordersw } from "@public/assets/images";
 import QRCodeFrame from "@components/QRFrame";
 import QRCodeMask from "@components/QRMask";
 import QRCodeErrorMessage from "@components/QRErrorMessage";
