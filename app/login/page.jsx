@@ -1,17 +1,24 @@
 'use client'
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { SessionContext } from "@app/SessionProvider";
 
 function login() {
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     const imageSrc = `/assets/images/loginImage.jpg`;
     const router=useRouter();
+    const { setUser } = useContext(SessionContext);
+    const handleLogin = () => {
+      setUser(email)
+      router.push('/')
+    }
+
   return (
     <div className="flex items-center justify-center text-center">
-      <div className="bg-white rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 mt-25 mb-7">
+      <div className="bg-white rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 mb-7">
         <img
             src={imageSrc} className="mb-7 rounded-t-3xl"/>
             <div className="p-4">
@@ -47,7 +54,7 @@ function login() {
             </div>
           </div>
           <button
-            onClick={() => router.push('/')}
+            onClick={() => handleLogin()}
             className="mb-15 mt-10 w-[90%] py-2 rounded-full shadow-md mx-auto block border border-gray-300 bg-white text-gray-600 hover:bg-gradient-to-r from-red-300 to-red-600 hover:text-white">
             เข้าสู่ระบบ
           </button>

@@ -4,7 +4,7 @@ import { buildings } from "@data";
 import { useRouter } from "@node_modules/next/navigation";
 import { useRef, useEffect, useState, useContext } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { add, addDays, format, getDay, set } from "date-fns";
+import { addDays, format, getDay, set } from "date-fns";
 import { DateTimeContext } from "./DateTimeProvider";
 import { timeSlots } from "@data";
 const mapDay = {

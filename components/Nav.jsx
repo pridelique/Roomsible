@@ -3,15 +3,16 @@
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
 import { building, menu } from "@public/assets/icons";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import NavButton from "./nav_components/NavButton";
-import { usePathname } from "@node_modules/next/navigation";
+import { usePathname, useRouter } from "@node_modules/next/navigation";
 import Logo from "./nav_components/Logo";
 import Menu from "./nav_components/Menu";
 import NavLink from "./nav_components/NavLink";
 import Date from "./nav_components/Date";
 import Time from "./nav_components/Time";
 import { DateTimeContext } from "@app/DateTimeProvider";
+import { SessionContext } from "@app/SessionProvider";
 
 function Nav() {
   const [isShow, setIsShow] = useState(false);
@@ -19,15 +20,18 @@ function Nav() {
   const { day, setDay, period, setPeriod } = useContext(DateTimeContext)
   const [dateDropdown, setDateDropdown] = useState(false);
   const [timeDropDown, setTimeDropdown] = useState(false);
-  const [session, setSession] = useState("sdf");
+  // const [session, setSession] = useState(null);
   const pathname = usePathname();
-
+  const router = useRouter();
+  const { user, setUser } = useContext(SessionContext)
+  console.log(user);
+  
   const handleLogout = () => {
-    setSession(null);
+    setUser(null);
   };
 
   const handleLogin = () => {
-    setSession("user");
+    router.push("/login");
   };
 
   const handleToggleTime = () => {
@@ -71,7 +75,7 @@ function Nav() {
           ) : (
             <NavLink
               navLink={navLink}
-              session={session}
+              session={user}
               checkPath={checkPath}
               handleToggleTime={handleToggleTime}
             />
@@ -87,7 +91,7 @@ function Nav() {
         <div className="hidden md:flex justify-center items-center gap-4">
           {/* ปุ่ม login logout */}
           <NavButton
-            session={session}
+            session={user}
             handleLogin={handleLogin}
             handleLogout={handleLogout}
           />
@@ -106,7 +110,7 @@ function Nav() {
       {isShow && (
         <Menu
           setIsShow={setIsShow}
-          session={session}
+          session={user}
           handleLogin={handleLogin}
           handleLogout={handleLogout}
           checkPath={checkPath}
