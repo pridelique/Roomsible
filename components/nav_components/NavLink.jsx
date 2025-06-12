@@ -55,10 +55,9 @@ function NavLink({ navLink, session, checkPath, handleToggleTime }) {
                   setNavDropdown={setNavDropdown}
                   navDropdown={navDropdown}
                   checkPath={checkPath}
-                  setNavDropdown={setNavDropdown}
                 />
                 {navDropdown && (
-                  <NavDropdown ref={navDropdownRef} checkPath={checkPath} />
+                  <NavDropdown ref={navDropdownRef} checkPath={checkPath} setNavDropdown={setNavDropdown}/>
                 )}
               </li>
               {session && (
