@@ -5,7 +5,7 @@ import { useRouter } from "@node_modules/next/navigation";
 import { useRef, useEffect, useState, useContext } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { addDays, format, getDay, set } from "date-fns";
-import { DateTimeContext } from "./DateTimeProvider";
+import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
 const mapDay = {
   วันจันทร์: 0,
@@ -272,7 +272,7 @@ export default function HomePage() {
                       </div>
                       {/* ตึก 7 */}
                       <div
-                        className="relative text-center cursor-pointer mt-160 hover:scale-105 duration-300 ease-in-out transition-all w-fit"
+                        className="relative text-center cursor-pointer mt-160 hover:scale-105 duration-300 ease-in-out transition-all w-fit ml-10"
                         onClick={() => handleOnClick(7)}
                       >
                         <Building id={7} showName={false} />

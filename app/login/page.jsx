@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { SessionContext } from "@app/SessionProvider";
+import { SessionContext } from "@provider/SessionProvider";
 
 function login() {
     const [email,setEmail]=useState('');
@@ -55,7 +55,7 @@ function login() {
           </div>
           <button
             onClick={() => handleLogin()}
-            className="mb-15 mt-10 w-[90%] py-2 rounded-full shadow-md mx-auto block border border-gray-300 bg-white text-gray-600 hover:bg-gradient-to-r from-red-300 to-red-600 hover:text-white">
+            className="mb-15 mt-10 w-[90%] py-2 rounded-full shadow-md mx-auto block border border-gray-300 bg-white text-gray-600 hover:bg-gradient-to-r from-red-300 to-red-600 hover:text-white cursor-pointer">
             เข้าสู่ระบบ
           </button>
         </div>

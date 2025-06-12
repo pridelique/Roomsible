@@ -11,8 +11,8 @@ import Menu from "./nav_components/Menu";
 import NavLink from "./nav_components/NavLink";
 import Date from "./nav_components/Date";
 import Time from "./nav_components/Time";
-import { DateTimeContext } from "@app/DateTimeProvider";
-import { SessionContext } from "@app/SessionProvider";
+import { DateTimeContext } from "@provider/DateTimeProvider";
+import { SessionContext } from "@provider/SessionProvider";
 
 function Nav() {
   const [isShow, setIsShow] = useState(false);

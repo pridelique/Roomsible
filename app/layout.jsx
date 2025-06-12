@@ -1,7 +1,7 @@
 import "./globals.css";
 import Nav from "@components/Nav";
-import { DateTimeProvider } from "./DateTimeProvider";
-import { SessionProvider } from "./SessionProvider";
+import { DateTimeProvider } from "../provider/DateTimeProvider";
+import { SessionProvider } from "../provider/SessionProvider";
 
 export const metadata = {
   title: "Roomsible",
