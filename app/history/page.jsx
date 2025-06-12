@@ -90,15 +90,13 @@ function HistoryPage() {
       
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
         <div className="text-gray-700 space-y-1">
-          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md mx-1 text-sm md:text-lg lg:text-2xl">
-            <span className="mx-1">นางสาวชนัญธิดา</span>
-            <span className="mx-1">ธนะสารสมบูรณ์</span>
-            <span className="mx-1">ม.6.8</span>
+          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md text-sm md:text-lg lg:text-2xl">
+            <div className="mx-1">นางสาวชนัญธิดา ธนะสารสมบูรณ์ ม.6.8</div>
           </div>
         </div>
-      
-      <h2 className="text-2xl font-semibold mb-6 text-gray-700">ประวัติการจอง</h2>
-      <div className="overflow-visible w-full border border-gray-300 shadow-md rounded-md custom-scroll">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-700 ml-7">ประวัติการจอง</h2>
+    <div className="flex flex-col items-center">
+      <div className="overflow-visible w-[90%] border border-gray-300 shadow-md rounded-md custom-scroll">
         <table className="w-full text-center">
           <thead className="bg-gray-100 text-gray-700 text-base sm:text-lg">
             <tr>
@@ -160,6 +158,7 @@ function HistoryPage() {
             </tbody>
         </table>
       </div>
+    </div>
     </div>
   </div>
   )
