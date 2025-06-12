@@ -1,4 +1,4 @@
-import './login.css'
+// import 'login.css'
 import Image from 'next/image'
 
 function LoginPage() {

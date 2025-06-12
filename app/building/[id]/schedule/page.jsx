@@ -1,15 +1,17 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import '@app/globals.css';
-import { useParams,useSearchParams } from "next/navigation"
+import { useParams,useRouter,useSearchParams } from "next/navigation"
 
 function Schedule() {
-    const param=useParams()
-    const searchParams=useSearchParams()
-    const buildingId=param.id
-    const roomNumber=searchParams.get('roomNumber')
+    const router = useRouter()
+    const param = useParams()
+    const searchParams = useSearchParams()
+    const buildingId = param.id
+    const roomNumber = searchParams.get('roomNumber')
     const innerRef = useRef(null);
     const [maxWidth, setMaxWidth] = useState(0);
+    const [status, setStatus] = useState({})
     const days=['วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์'];
     const timeSlots=Array.from({length:9},(_,i)=> {
         const startMinutes=8*60+30+i*50;
@@ -22,10 +24,14 @@ function Schedule() {
         };
 
         return {
-            label:`คาบที่ ${i + 1}`,
+            label:i + 1,
             time:`(${formatTime(startMinutes)}–${formatTime(endMinutes)})`,
         };
     });
+
+    const handleOnClick = (day, period) => {
+        router.push(`/building/${buildingId}/schedule/form?roomNumber=${roomNumber}&day=${day}&period=${period.label}`);
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -35,6 +41,22 @@ function Schedule() {
             setMaxWidth(innerWidth); 
         }
         handleResize(); // Initial call to set the width
+    },[])
+
+    useEffect(() => {
+        days.map((day) => {
+            timeSlots.map((period) => {
+                setStatus((prev) => {
+                    return {
+                        ...prev,
+                        [`${day}-${period.label}`]: Math.ceil(Math.random()*2)%2
+                    }
+                })
+                console.log(`${day}-${period.label}`);
+                
+            })
+        })
+        
     },[])
 
 
@@ -56,7 +78,7 @@ function Schedule() {
                 <div className="border border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">วัน/เวลา</div>
                 {timeSlots.map((period,index)=> (
                     <div key={index} className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center">
-                        <div className="text-gray-700">{period.label}</div>
+                        <div className="text-gray-700">คาบที่ {period.label}</div>
                         <div className="text-xs text-gray-500">{period.time}</div>
                     </div>
                 ))}
@@ -64,8 +86,14 @@ function Schedule() {
                 {days.map((day)=> (
                     <React.Fragment key={day}>
                         <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">{day}</div>
-                        {timeSlots.map((_,index)=> (
-                            <div key={`${day}-${index}`} className={`border border-gray-200 hover:bg-blue-50 ${(day.length + index)%2 === 1 ? 'bg-red-200' : 'bg-green-200'}`}></div>
+                        {timeSlots.map((period,index)=> (
+                            <div 
+                                key={`${day}-${index}`} 
+                                className={`border border-gray-200  ${status[`${day}-${period.label}`] ? 'bg-green-200 cursor-pointer hover:bg-green-300' : 'bg-red-200'}`}
+                                onClick={status[`${day}-${period.label}`] ? () => handleOnClick(day, period) : undefined}
+                            >
+
+                            </div>
                         ))}
                     </React.Fragment>
                 ))}

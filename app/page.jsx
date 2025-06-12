@@ -6,10 +6,7 @@ import { useRef, useEffect, useState, useContext } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { add, addDays, format, getDay, set } from "date-fns";
 import { DateTimeContext } from "./DateTimeProvider";
-import timeTable from "@data/timeTable";
-import { hand_zoom } from "@public/assets/icons";
-import Image from "@node_modules/next/image";
-
+import { timeSlots } from "@data";
 const mapDay = {
   วันจันทร์: 0,
   วันอังคาร: 1,
@@ -297,7 +294,7 @@ export default function HomePage() {
                           {format(selectedDate, "dd-MM-yyyy")}
                         </p>
                         <p className="text-6xl mt-8">
-                          ({timeTable[period].from} - {timeTable[period].to} น.)
+                          ({timeSlots[period].from} - {timeSlots[period].to} น.)
                         </p>
                       </div>
                     </div>

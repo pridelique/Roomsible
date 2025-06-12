@@ -1,4 +1,4 @@
-const timeTable = [
+const timeSlots = [
     { from: '08.00', to: '08.30' },   // Homeroom
     { from: '08.30', to: '09.20' },   // 1
     { from: '09.20', to: '10.10' },   // 2
@@ -12,4 +12,4 @@ const timeTable = [
     { from: '16.00', to: '16.50' },   // 10
 ];
 
-export default timeTable;
+export default timeSlots;
