@@ -65,7 +65,7 @@ function BookingForm() {
   ];
 
   return (
-    <>
+    <section className="padding-x max-container w-full pt-6">
       {isSubmiting ? (
         <>
           {loading && (
@@ -74,9 +74,8 @@ function BookingForm() {
             </div>
           )}
 
-          <div className="absolute top-0 left-0 flex justify-center items-center h-screen w-screen">
             {error && (
-              <div className=" bg-white text-white px-8 pt-6 pb-4 rounded-xl z-3 shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center">
+              <div className="absolute top-1/2 left-1/2 -translate-1/2 bg-white text-white px-8 pt-6 pb-4 rounded-xl z-3 shadow-lg text-center w-full max-w-[340px] flex flex-col justify-center items-center">
                 <div>
                   <Image src={warning} alt="warning" width={36} height={36} />
                 </div>
@@ -100,7 +99,7 @@ function BookingForm() {
             )}
 
             {success && (
-              <div className="items-center justify-center text-center">
+              <div className="absolute top-1/2 left-1/2 -translate-1/2 flex items-center justify-center text-center">
                 <div className="bg-white rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 mt-25 mb-7">
                   <Image
                     src={buildingImages[id]}
@@ -114,12 +113,12 @@ function BookingForm() {
                       การจองสำเร็จ
                     </div>
                     <p className="text-gray-600 mt-2">
-                      จองห้อง {roomNumber} {day} คาบที่ {period}  เรียบร้อยแล้ว
+                      จองห้อง {roomNumber} {day} คาบที่ {period} เรียบร้อยแล้ว
                     </p>
                     <button
                       onClick={() => router.push("/")}
-                      className='mb-15 mt-10 w-[90%] py-2 rounded-full shadow-md mx-auto block border border-gray-300 bg-white text-gray-600
-                       hover:bg-gradient-to-r from-green-300 to-green-600 hover:text-white cursor-pointer'
+                      className="mb-15 mt-10 w-[90%] py-2 rounded-full shadow-md mx-auto block border border-gray-300 bg-white text-gray-600
+                       hover:bg-gradient-to-r from-green-300 to-green-600 hover:text-white cursor-pointer"
                     >
                       กลับหน้าแรก
                     </button>
@@ -127,7 +126,6 @@ function BookingForm() {
                 </div>
               </div>
             )}
-          </div>
         </>
       ) : (
         <div className="bg-white p-15 rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300">
@@ -239,7 +237,7 @@ function BookingForm() {
           </button>
         </div>
       )}
-    </>
+    </section>
   );
 }
 export default BookingForm;

@@ -116,7 +116,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section>
+    <section className="padding-x max-container w-full pt-6">
       {loading && (
         <div className="fixed inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
           <div className="border-3 border-gray-100 border-t-3 border-t-red-400 rounded-full p-6 animate-spin shadow-inner"></div>
@@ -130,10 +130,10 @@ export default function HomePage() {
       </p>
       <div className="relative w-full h-full">
         <TransformWrapper
-          // onZoom={() => setZooming(true)}
-          // onPanning={() => setZooming(true)}
-          // onZoomStop={() => resetMessage()}
-          // onPanningStop={() => resetMessage()}
+        // onZoom={() => setZooming(true)}
+        // onPanning={() => setZooming(true)}
+        // onZoomStop={() => resetMessage()}
+        // onPanningStop={() => resetMessage()}
         >
           <div
             className=" rounded-lg w-full overflow-hidden shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]"
