@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
         <SessionProvider>
           <body className="antialiased vsc-initialized min-w-screen min-h-screen flex flex-col">
             <Nav />
-            <main className="flex-1 w-full h-full">{children}</main>
+            <main className="relative flex-1 w-full h-full">{children}</main>
           </body>
         </SessionProvider>
       </DateTimeProvider>

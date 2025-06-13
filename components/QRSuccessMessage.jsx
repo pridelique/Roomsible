@@ -1,13 +1,11 @@
 import Image from "@node_modules/next/image";
 import Link from "@node_modules/next/link";
-import { check_mark } from "@public/assets/icons";
 import { buildingImages } from "@public/assets/images";
 
-function QRSuccessMessage({ success, elementTop }) {
+function QRSuccessMessage({ success }) {
   return (
     <div
-      className="absolute left-1/2 -translate-1/2 bg-white text-white pb-4 rounded-xl z-3 shadow-lg text-center w-full max-w-[340px] flex flex-col justify-center items-center "
-      style={{ top: elementTop }}
+      className="absolute top-1/2 left-1/2 -translate-1/2 bg-white text-white pb-4 rounded-xl z-3 shadow-lg text-center w-full max-w-[340px] flex flex-col justify-center items-center "
     >
       <div className="w-full relative">
         <Image
