@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from "react";
 import NavDropdown from "./NavDropdown";
 import Image from "@node_modules/next/image";
 import { clock } from "@public/assets/icons";
-import { set } from "mongoose";
 
 function NavLink({ navLink, session, checkPath, handleToggleTime }) {
   const [navDropdown, setNavDropdown] = useState(false);
