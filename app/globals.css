@@ -117,3 +117,23 @@
 .react-select__single-value {
   @apply text-gray-700;
 }
+@font-face {
+  font-family: 'Trirong-Light';
+  src: url('/fonts/Trirong-Light.ttf') format('truetype');
+  font-weight: 300; /* light */
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Trirong-Medium';
+  src: url('/fonts/Trirong-Medium.ttf') format('truetype');
+  font-weight: 700; /* regular หรือ bold */
+  font-style: normal;
+}
+body {
+  font-family: 'Trirong-Light', sans-serif;
+  font-weight: 300;
+}
+strong, b {
+  font-family: 'Trirong-Medium', sans-serif;
+  font-weight: 700;
+}

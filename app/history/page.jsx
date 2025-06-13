@@ -90,15 +90,16 @@ function HistoryPage() {
       
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
         <div className="text-gray-700 space-y-1">
-          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md mx-1 text-sm md:text-lg lg:text-2xl">
-            <span className="mx-1">นางสาวชนัญธิดา</span>
-            <span className="mx-1">ธนะสารสมบูรณ์</span>
-            <span className="mx-1">ม.6.8</span>
+          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md text-sm md:text-lg lg:text-2xl">
+            <div className="text-center">
+              <div>นางสาวชนัญธิดา ธนะสารสมบูรณ์</div>
+              <div className="text-base text-gray-500">ม.6.8</div>
+              </div>
           </div>
         </div>
-      
-      <h2 className="text-2xl font-semibold mb-6 text-gray-700">ประวัติการจอง</h2>
-      <div className="overflow-visible w-full border border-gray-300 shadow-md rounded-md custom-scroll">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-700 ml-7">ประวัติการจอง</h2>
+    <div className="flex flex-col items-center">
+      <div className="overflow-x-auto w-full border border-gray-300 shadow-md rounded-md custom-scroll">
         <table className="w-full text-center">
           <thead className="bg-gray-100 text-gray-700 text-base sm:text-lg">
             <tr>
@@ -107,6 +108,7 @@ function HistoryPage() {
               <th className="py-2 px-1">ห้อง</th>
               <th className="py-2 px-1">การใช้งาน</th>
               <th className="py-2 px-1">สถานะ</th>
+              <th className="py-2 px-1">{}</th>
             </tr>
           </thead>
           <tbody className="text-gray-500 text-base sm:text-md md:text-lg">
@@ -117,7 +119,7 @@ function HistoryPage() {
                   <td className="py-2 px-1">{booking.room}</td>
                   <td className="py-2 px-1">{booking.usage}</td>
                   <td className="py-2 px-1 relative text-center">
-                    <div className="flex items-center justify-between">
+                    <div className="items-center justify-between">
                       <div className="sm:text-md md:text-lg ">
                         {booking.status==='booked'&&(
                           <div className="text-blue-500">จองแล้ว</div>
@@ -129,6 +131,10 @@ function HistoryPage() {
                           <div className="text-red-500">ยกเลิก</div>
                         )}
                       </div>
+                    </div>
+                  </td>
+                  <td className="py-2 px-1 relative text-center">
+                    <div className="items-center justify-between">
                       <div className="relative top-1 right-2" ref={(el)=>(menuRefs.current[booking.id]=el)}>
                         <button className="text-xl px-2 text-gray-600"
                           onClick={()=>toggleMenu(booking.id)}>⋮</button>
@@ -143,7 +149,7 @@ function HistoryPage() {
                           </div>
                         )}
                         {activeDetailId===booking.id&&(
-                          <div className="-translate-y-8 translate-x-4 z-3 absolute right-36 top-0 w-56 bg-white border rounded shadow-md text-sm p-4 border-gray-400">
+                          <div className="-translate-y-8 translate-x-20 z-3 absolute right-36 top-0 w-56 bg-white border rounded shadow-md text-sm p-4 border-gray-400">
                             <div className="font-medium mb-2">รายละเอียดการจอง</div>
                             <div>{booking.detail}</div>
                             <div
@@ -160,6 +166,7 @@ function HistoryPage() {
             </tbody>
         </table>
       </div>
+    </div>
     </div>
   </div>
   )

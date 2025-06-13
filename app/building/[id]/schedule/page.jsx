@@ -2,8 +2,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import "@app/globals.css";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+'use client'
+import React, { useEffect, useRef, useState } from 'react';
+import '@app/globals.css';
+import { useParams,useRouter,useSearchParams } from "next/navigation";
 
 function Schedule() {
+    const buildingNames={
+    1:"อาคาร 1 เอกอำนวยการ",
+    2:"อาคาร 2 สานศิลป์สถาน",
+    3:"อาคาร 3 อาคารสมเด็จฯ",
+    4:"อาคาร 4 เพชรคหกรรม",
+    5:"อาคาร 5 ล้ำวิทย์เนาว์",
+    6:"อาคาร 6 เก้าทศวรรษ",
+    7:"อาคาร 7 เบญจภัทรดิเรก"
+    };
   const router = useRouter();
   const param = useParams();
   const searchParams = useSearchParams();
@@ -28,7 +41,7 @@ function Schedule() {
       time: `(${formatTime(startMinutes)}–${formatTime(endMinutes)})`,
     };
   });
-
+    const buildingName = buildingNames[buildingId];
   const handleOnClick = (day, period) => {
     router.push(
       `/building/${buildingId}/schedule/form?roomNumber=${roomNumber}&day=${day}&period=${period.label}`
@@ -62,7 +75,7 @@ function Schedule() {
   return (
     <section className="padding-x max-container w-full pt-6">
       <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-10 mt-5">
-        ตารางเวลา ตึกเอกอำนวยการ : ห้อง {roomNumber}
+        ตารางเวลา {buildingName} : ห้อง {roomNumber}
       </h2>
       <div
         className="overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll mx-auto"
