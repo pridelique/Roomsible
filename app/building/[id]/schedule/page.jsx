@@ -94,6 +94,28 @@ function Schedule() {
               key={index}
               className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center"
             >
+                <div className="border border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">วัน/เวลา</div>
+                {timeSlots.map((period,index)=> (
+                    <div key={index} className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center">
+                        <div className="text-gray-700">คาบที่ {period.label}</div>
+                        <div className="text-xs text-gray-500">{period.time}</div>
+                    </div>
+                ))}
+
+                {days.map((day)=> (
+                    <React.Fragment key={day}>
+                        <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">{day}</div>
+                        {timeSlots.map((period,index)=> (
+                            <div 
+                                key={`${day}-${index}`} 
+                                className={`border border-gray-200  ${status[`${day}-${period.label}`] ? 'bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]' : 'bg-[#FCA5A5]'}`}
+                                onClick={status[`${day}-${period.label}`] ? () => handleOnClick(day, period) : undefined}
+                            >
+
+                            </div>
+                        ))}
+                    </React.Fragment>
+                ))}
               <div className="text-gray-700">คาบที่ {period.label}</div>
               <div className="text-xs text-gray-500">{period.time}</div>
             </div>
