@@ -98,7 +98,7 @@ function Schedule() {
                         {timeSlots.map((period,index)=> (
                             <div 
                                 key={`${day}-${index}`} 
-                                className={`border border-gray-200  ${status[`${day}-${period.label}`] ? 'bg-green-200 cursor-pointer hover:bg-green-300' : 'bg-red-200'}`}
+                                className={`border border-gray-200  ${status[`${day}-${period.label}`] ? 'bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]' : 'bg-[#FCA5A5]'}`}
                                 onClick={status[`${day}-${period.label}`] ? () => handleOnClick(day, period) : undefined}
                             >
 
