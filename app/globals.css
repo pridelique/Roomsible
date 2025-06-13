@@ -118,22 +118,22 @@
   @apply text-gray-700;
 }
 @font-face {
-  font-family: 'IannnnnDogLight';
-  src: url('/fonts/iannnnn-dog-light.ttf') format('truetype');
+  font-family: 'Trirong-Light';
+  src: url('/fonts/Trirong-Light.ttf') format('truetype');
   font-weight: 300; /* light */
   font-style: normal;
 }
 @font-face {
-  font-family: 'IannnnnDogRegular';
-  src: url('/fonts/iannnnn-dog-regular.ttf') format('truetype');
+  font-family: 'Trirong-Medium';
+  src: url('/fonts/Trirong-Medium.ttf') format('truetype');
   font-weight: 700; /* regular หรือ bold */
   font-style: normal;
 }
 body {
-  font-family: 'IannnnnDogLight', sans-serif;
+  font-family: 'Trirong-Light', sans-serif;
   font-weight: 300;
 }
 strong, b {
-  font-family: 'IannnnnDogRegular', sans-serif;
+  font-family: 'Trirong-Medium', sans-serif;
   font-weight: 700;
 }
