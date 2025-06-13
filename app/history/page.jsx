@@ -91,12 +91,13 @@ function HistoryPage() {
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
         <div className="text-gray-700 space-y-1">
           <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md text-sm md:text-lg lg:text-2xl">
-            <div className="mx-1">นางสาวชนัญธิดา ธนะสารสมบูรณ์ ม.6.8</div>
+            <div className="mx-1">นางสาวชนัญธิดา ธนะสารสมบูรณ์</div>
+            <div className="mx-1">ม.6.8</div>
           </div>
         </div>
         <h2 className="text-2xl font-semibold mb-6 text-gray-700 ml-7">ประวัติการจอง</h2>
     <div className="flex flex-col items-center">
-      <div className="overflow-visible w-[90%] border border-gray-300 shadow-md rounded-md custom-scroll">
+      <div className="overflow-x-auto w-full border border-gray-300 shadow-md rounded-md custom-scroll">
         <table className="w-full text-center">
           <thead className="bg-gray-100 text-gray-700 text-base sm:text-lg">
             <tr>
@@ -105,6 +106,7 @@ function HistoryPage() {
               <th className="py-2 px-1">ห้อง</th>
               <th className="py-2 px-1">การใช้งาน</th>
               <th className="py-2 px-1">สถานะ</th>
+              <th className="py-2 px-1">{}</th>
             </tr>
           </thead>
           <tbody className="text-gray-500 text-base sm:text-md md:text-lg">
@@ -115,7 +117,7 @@ function HistoryPage() {
                   <td className="py-2 px-1">{booking.room}</td>
                   <td className="py-2 px-1">{booking.usage}</td>
                   <td className="py-2 px-1 relative text-center">
-                    <div className="flex items-center justify-between">
+                    <div className="items-center justify-between">
                       <div className="sm:text-md md:text-lg ">
                         {booking.status==='booked'&&(
                           <div className="text-blue-500">จองแล้ว</div>
@@ -127,6 +129,10 @@ function HistoryPage() {
                           <div className="text-red-500">ยกเลิก</div>
                         )}
                       </div>
+                    </div>
+                  </td>
+                  <td className="py-2 px-1 relative text-center">
+                    <div className="items-center justify-between">
                       <div className="relative top-1 right-2" ref={(el)=>(menuRefs.current[booking.id]=el)}>
                         <button className="text-xl px-2 text-gray-600"
                           onClick={()=>toggleMenu(booking.id)}>⋮</button>
