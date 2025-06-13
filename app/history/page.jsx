@@ -91,7 +91,10 @@ function HistoryPage() {
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
         <div className="text-gray-700 space-y-1">
           <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md text-sm md:text-lg lg:text-2xl">
-            <div className="mx-1">นางสาวชนัญธิดา ธนะสารสมบูรณ์ ม.6.8</div>
+            <div className="text-center">
+              <div>นางสาวชนัญธิดา ธนะสารสมบูรณ์</div>
+              <div className="text-base text-gray-500">ม.6.8</div>
+              </div>
           </div>
         </div>
         <h2 className="text-2xl font-semibold mb-6 text-gray-700 ml-7">ประวัติการจอง</h2>
