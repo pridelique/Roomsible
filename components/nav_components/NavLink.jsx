@@ -6,13 +6,14 @@ import React, { useEffect, useRef, useState } from "react";
 import NavDropdown from "./NavDropdown";
 import Image from "@node_modules/next/image";
 import { clock } from "@public/assets/icons";
+import { set } from "mongoose";
 
 function NavLink({ navLink, session, checkPath, handleToggleTime }) {
   const [navDropdown, setNavDropdown] = useState(false);
   const navDropdownRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event) => {      
       if (
         navDropdownRef.current &&
         !navDropdownRef.current.contains(event.target)
@@ -39,7 +40,7 @@ function NavLink({ navLink, session, checkPath, handleToggleTime }) {
                   <li className="mt-0.5 hover:bg-gray-100 p-1 rounded-full">
                     <button
                       className="w-fit h-fit flex justify-center items-center cursor-pointer opacity-80"
-                      onClick={() => handleToggleTime()}
+                      onClick={() => setTimeout(() => handleToggleTime(), 0)}
                     >
                       <Image src={clock} alt="clock" width={26} height={26} />
                     </button>
@@ -64,7 +65,7 @@ function NavLink({ navLink, session, checkPath, handleToggleTime }) {
                 <li className="mt-0.5 hover:bg-gray-100 p-1 rounded-full">
                   <button
                     className="w-fit h-fit flex justify-center items-center cursor-pointer opacity-80"
-                    onClick={() => handleToggleTime()}
+                    onClick={() => setTimeout(() => handleToggleTime(), 0)}
                   >
                     <Image src={clock} alt="clock" width={26} height={26} />
                   </button>

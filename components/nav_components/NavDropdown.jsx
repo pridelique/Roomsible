@@ -10,7 +10,7 @@ function NavDropdown({ setNavDropdown, checkPath, ref }) {
         {navBuildings.map((item) => (
           <li key={item.id}>
             <Link
-              onClick={() => {setNavDropdown(false)}}
+              onClick={() => setTimeout(() => setNavDropdown(false), 0)}
               href={`/building/${item.id}`}
               className="w-64 text-start  block px-5 py-2.5 hover:bg-gray-100"
             >
