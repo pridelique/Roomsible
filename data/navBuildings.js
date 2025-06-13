@@ -1,37 +1,37 @@
 const navBuildings = [
     {
         id: 1,
-        name: 'Main Building',
+        name: 'เอกอำนวยการ',
         label: 'ตึก',
     },
     {
         id: 2,
-        name: 'Science Building',
+        name: 'สานศิลป์สถาน',
         label: 'ตึก',
     },
     {
         id: 3,
-        name: 'Library',
+        name: 'อาคารสมเด็จฯ',
         label: 'ตึก',
     },
     {
         id: 4,
-        name: 'Engineering Building',
+        name: 'เพชรคหกรรม',
         label: 'ตึก',
     },
     {
         id: 5,
-        name: 'Dormitory',
+        name: 'ล้ำวิทย์เนาว์',
         label: 'ตึก',
     },
     {
         id: 6,
-        name: 'Sports Complex',
+        name: 'เก้าทศวรรษ',
         label: 'ตึก',
     },
     {
         id: 7,
-        name: 'Cafeteria',
+        name: 'เบญจภัทรดิเรก',
         label: 'ตึก',
     },
 ]
