@@ -1,9 +1,5 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import "@app/globals.css";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-'use client'
-import React, { useEffect, useRef, useState } from 'react';
 import '@app/globals.css';
 import { useParams,useRouter,useSearchParams } from "next/navigation";
 
