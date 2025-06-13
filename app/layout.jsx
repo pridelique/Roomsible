@@ -12,18 +12,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="th">
-      <body className={`antialiased vsc-initialized`}>
-        <DateTimeProvider>
-          <SessionProvider>
-            <main className="relative">
-              <Nav />
-              <section className="padding-x max-container w-full pt-25">
-                {children}
-              </section>
-            </main>
-          </SessionProvider>
-        </DateTimeProvider>
-      </body>
+      <DateTimeProvider>
+        <SessionProvider>
+          <body className="antialiased vsc-initialized min-w-screen min-h-screen flex flex-col">
+            <Nav />
+            <main className="relative flex-1 w-full h-full">{children}</main>
+          </body>
+        </SessionProvider>
+      </DateTimeProvider>
     </html>
   );
 }

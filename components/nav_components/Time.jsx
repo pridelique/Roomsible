@@ -35,7 +35,7 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
     <li className="text-slate-gray relative">
       <div
         className="cursor-pointer hover:bg-gray-100 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg max-[460px]:gap-3"
-        onClick={() => setTimeDropdown(!timeDropdown)}
+        onClick={() => setTimeout(() => setTimeDropdown(!timeDropdown), 0)}
       >
         <div className="flex gap-2 justify-center items-center max-[460px]:gap-3">
           <Image
@@ -58,10 +58,10 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
               <li
                 key={period}
                 className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-center"
-                onClick={() => {
+                onClick={() => setTimeout(() => {
                   setPeriod(period);
                   setTimeDropdown(false);
-                }}
+                }, 0)}
               >
                 <p>คาบ {period}</p>
               </li>

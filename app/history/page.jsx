@@ -76,7 +76,7 @@ function HistoryPage() {
     };
   }, []);
   return (
-  <div className="relative">
+  <div className="relative max-container mx-auto">
     <img
       src="/assets/images/historyImage.jpg"
       className="w-full h-64 object-cover"/>

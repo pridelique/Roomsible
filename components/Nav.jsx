@@ -2,8 +2,8 @@
 
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
-import { building, menu } from "@public/assets/icons";
-import { useContext, useState } from "react";
+import { building, date, menu } from "@public/assets/icons";
+import { use, useContext, useEffect, useRef, useState } from "react";
 import NavButton from "./nav_components/NavButton";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
 import Logo from "./nav_components/Logo";
@@ -20,11 +20,9 @@ function Nav() {
   const { day, setDay, period, setPeriod } = useContext(DateTimeContext)
   const [dateDropdown, setDateDropdown] = useState(false);
   const [timeDropDown, setTimeDropdown] = useState(false);
-  // const [session, setSession] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
   const { user, setUser } = useContext(SessionContext)
-  console.log(user);
   
   const handleLogout = () => {
     setUser(null);
@@ -47,7 +45,7 @@ function Nav() {
   };
 
   return (
-    <header className="z-10 absolute w-full text-[17px]">
+    <header className="z-10 relative w-full text-[17px]">
       <nav
         className={`flex justify-between items-center w-full padding-x py-3 ${
           isShow ? "shadow-sm" : "shadow-md"
@@ -65,7 +63,7 @@ function Nav() {
                 {/* ปุ่ม toggle time */}
                 <button
                   className="w-fit h-fit flex justify-center items-center transition-transform duration-300 mt-0.5 p-2 mx-2 rounded-full hover:bg-gray-200 cursor-pointer opacity-60"
-                  onClick={() => handleToggleTime()}
+                  onClick={() => setTimeout(() => handleToggleTime(), 0)}
                 >
                   <Image src={building} alt="building" width={20} height={20} />
                 </button>
@@ -84,8 +82,8 @@ function Nav() {
 
         {/* วัน คาบ */}
         <ul className="flex md:hidden gap-3 text-slate-gray">
-          <Date day={day} setDay={setDay} dateDropdown={dateDropdown} setDateDropdown={setDateDropdown}/>
-          <Time period={period} setPeriod={setPeriod} timeDropdown={timeDropDown} setTimeDropdown={setTimeDropdown}/>
+          <Date day={day} setDay={setDay} dateDropdown={dateDropdown} setDateDropdown={setDateDropdown} />
+          <Time period={period} setPeriod={setPeriod} timeDropdown={timeDropDown} setTimeDropdown={setTimeDropdown} />
         </ul>
 
         <div className="hidden md:flex justify-center items-center gap-4">
@@ -100,7 +98,7 @@ function Nav() {
         {/* ปุ่มเมนู */}
         <button
           className="rounded-xl hover:bg-gray-100 p-2 flex md:hidden justify-center items-center"
-          onClick={() => setIsShow(!isShow)}
+          onClick={() => setTimeout(() => setIsShow(!isShow),0)}
         >
           <Image src={menu} alt="menu" width={28} height={28} />
         </button>

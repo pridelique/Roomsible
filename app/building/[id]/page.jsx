@@ -40,7 +40,7 @@ function BuildingPage({ params }) {
     if (fullscreen) centerView(1);
     else centerView(maxScale);
     setZooming(true);
-    resetMessage()
+    resetMessage();
 
     setFullscreen(!fullscreen);
   };
@@ -75,7 +75,7 @@ function BuildingPage({ params }) {
       window.removeEventListener("resize", resize);
     };
   }, [id]);
-  
+
   useEffect(() => {
     if (!loading && centerViewRef.current) {
       centerViewRef.current(maxScale);
@@ -83,12 +83,12 @@ function BuildingPage({ params }) {
   }, [scale, maxScale]);
 
   return (
-    <>
+    <section className="padding-x max-container w-full pt-6">
       {loading && (
-          <div className="fixed inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
-              <div className="border-3 border-gray-100 border-t-3 border-t-red-400 rounded-full p-6 animate-spin shadow-inner"></div>
-          </div>
-        )}
+        <div className="fixed inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
+          <div className="border-3 border-gray-100 border-t-3 border-t-red-400 rounded-full p-6 animate-spin shadow-inner"></div>
+        </div>
+      )}
       <div className={`${loading ? "opacity-0" : "opacity-100"}`}>
         <TransformWrapper
           panning={{
@@ -117,6 +117,38 @@ function BuildingPage({ params }) {
                 <p className="text-center text-slate-gray mt-2 text-sm md:text-base">
                   เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
                 </p>
+                <div className="flex justify-center max-w-xl mx-auto mt-4 my-6">
+                  <div className="flex flex-col max-w-xl w-fit gap-2">
+                    <div className="flex gap-6 justify-center items-center">
+                      {status.slice(0, 3).map((item) => (
+                        <div
+                          className="flex gap-2 justify-start items-center text-slate-gray text-sm md:text-base"
+                          key={item.statusEng}
+                        >
+                          <div
+                            className="size-3 sm:size-4 rounded-sm shadow-lg"
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <span>{item.statusThai}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-6 justify-center items-center">
+                      {status.slice(3, 5).map((item) => (
+                        <div
+                          className="flex gap-2 justify-start items-center text-slate-gray text-sm md:text-base"
+                          key={item.statusEng}
+                        >
+                          <div
+                            className="size-3 sm:size-4 rounded-sm shadow-lg"
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <span>{item.statusThai}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
                 <div
                   className="rounded-xl max-w-xl mx-auto relative mt-4 shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]"
                   ref={outerRef}
@@ -142,7 +174,7 @@ function BuildingPage({ params }) {
                         ref={innerRef}
                         style={{ transform: `scale(${scale})` }}
                       >
-                        <Building id={id} handleOnClick={handleOnClick}/>
+                        <Building id={id} handleOnClick={handleOnClick} />
                       </div>
                     </div>
                   </TransformComponent>
@@ -167,24 +199,8 @@ function BuildingPage({ params }) {
             );
           }}
         </TransformWrapper>
-        <div className="flex justify-center max-w-xl mx-auto mt-4 my-6">
-          <div className="grid grid-cols-3 max-w-xl w-fit gap-x-2 sm:gap-x-3">
-            {status.map((item) => (
-              <div
-                className="flex gap-2 justify-start items-center text-slate-gray text-sm md:text-base"
-                key={item.statusEng}
-              >
-                <div
-                  className="size-3 sm:size-4 rounded-sm shadow-lg"
-                  style={{ backgroundColor: item.color }}
-                ></div>
-                <span>{item.statusThai}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
-    </>
+    </section>
   );
 }
 

@@ -9,7 +9,7 @@ function MenuList({ item, setIsShow, checkPath }) {
         className={`block px-6 py-3.5 ${
           checkPath(item) ? "text-red-400" : "text-slate-gray"
         } hover:bg-gray-100 w-full`}
-        onClick={() => setIsShow(false)}
+        onClick={() => setTimeout(() =>  setIsShow(false), 0)}
       >
         <div className="flex item-center gap-3">
           <div className="flex items-center justify-center">

@@ -5,7 +5,7 @@ function NavBuilding({ item, navDropdown, setNavDropdown, checkPath }) {
   return (
     <button
       className="cursor-pointer px-4 py-2 flex gap-2 items-center md:mx-3 lg:mx-6"
-      onClick={() => setNavDropdown(!navDropdown)}
+      onClick={() => setTimeout(() => setNavDropdown(!navDropdown), 0)}
     >
       <p className={` ${checkPath(item) ? "text-red-400" : "text-slate-gray"}`}>
         {item.label}

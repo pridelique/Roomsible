@@ -1,8 +1,7 @@
-function QRCodeFrame({ qrcodeTop }) {
+function QRCodeFrame() {
   return (
     <div
-      className="absolute left-1/2 -translate-1/2  p-32 z-2 "
-      style={{ top: qrcodeTop }}
+      className="absolute top-1/2 left-1/2 -translate-1/2  p-32 z-2 "
     >
       {/* QR Code Frame */}
       <div className="absolute top-0 left-0 size-12 border-t-8 border-l-8 border-gray-200 rounded-tl-xl">
