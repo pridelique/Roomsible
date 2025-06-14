@@ -64,14 +64,14 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
       </div>
       {dateDropdown && (
         <div
-          className="absolute top-full right-0 border border-gray-300 w-full bg-white z-9 rounded-lg shadow-lg overflow-hidden"
+          className="absolute top-full right-0 border border-gray-300 w-full bg-white z-9 rounded-lg shadow-lg overflow-hidden min-w-[130px]"
           ref={dropdownRef}
         >
           <ul>
             {days.map((day) => (
               <li
                 key={day}
-                className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-center"
+                className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-center"
                 onClick={() => setTimeout(() => {
                   setDay(day);
                   setDateDropdown(false);

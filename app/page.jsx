@@ -72,10 +72,16 @@ export default function HomePage() {
   useEffect(
     (date = new Date()) => {
       const dayCount = getDay(date);
-      if (dayCount === 0) setMonday(addDays(date, 1));
-      else if (day === 6) setMonday(addDays(date, 2));
-      else setMonday(addDays(date, -dayCount + 1));
-      setSelectedDate(addDays(addDays(date, -dayCount + 1), mapDay[day]));
+      if (dayCount === 0) {
+        setMonday(addDays(date, 1));
+        setSelectedDate(addDays(addDays(date, 1), mapDay[day]));
+      } else if (dayCount === 6) {
+        setMonday(addDays(date, 2));
+        setSelectedDate(addDays(addDays(date, 2), mapDay[day]));
+      } else {
+        setMonday(addDays(date, -dayCount + 1));
+        setSelectedDate(addDays(addDays(date, -dayCount + 1), mapDay[day]));
+      }
     },
     [day]
   );
@@ -186,7 +192,7 @@ export default function HomePage() {
                         <Building id={5} showName={false} />
                         <div className="absolute w-full h-full top-0 z-2"></div>
                       </div>
-                      <h2 className="mt-124 text-[40px] leading-13 text-slate-gray w-fit text-center ml-10">
+                      <h2 className="mt-124 text-[40px] leading-13 text-slate-gray w-fit text-center ml-3.5">
                         อาคาร 5 {buildings[5].name}
                       </h2>
                     </div>
@@ -220,7 +226,7 @@ export default function HomePage() {
                           <Building id={6} showName={false} />
                           <div className="absolute w-full h-full top-0 z-2"></div>
                         </div>
-                        <h2 className="mt-154 text-[40px] leading-13 text-slate-gray w-fit text-center ml-23">
+                        <h2 className="mt-154 text-[40px] leading-13 text-slate-gray w-fit text-center ml-16.5">
                           อาคาร 6 {buildings[6].name}
                         </h2>
                       </div>
@@ -235,8 +241,10 @@ export default function HomePage() {
                           className="relative text-center cursor-pointer hover:scale-105 duration-300 ease-in-out transition-all"
                           onClick={() => handleOnClick(3)}
                         >
-                          <Building id={3} showName={false} />
-                          <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
+                          <div className="px-4">
+                            <Building id={3} showName={false} />
+                          </div>
+                          <h2 className="mt-4 text-[40px] leading-13 text-slate-gray text-lg">
                             อาคาร 3 {buildings[3].name}
                           </h2>
                           <div className="absolute w-full h-full top-0 z-2"></div>
@@ -250,7 +258,7 @@ export default function HomePage() {
                             onClick={() => handleOnClick(2)}
                           >
                             <Building id={2} showName={false} />
-                            <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
+                            <h2 className="mt-4 text-[36px] leading-13 text-slate-gray">
                               อาคาร 2 <br />
                               {buildings[2].name}
                             </h2>
@@ -270,9 +278,26 @@ export default function HomePage() {
                           </div>
                         </div>
                       </div>
+                      {/* วัน & คาบ */}
+                      <div className="mt-40 flex items-center justify-center gap-20 text-gray-600">
+                        <div className="flex flex-col justify-end items-end font-semibold">
+                          <h2 className="text-[93px]">{day}</h2>
+                          <h3 className="text-7xl mt-7">คาบที่ {period}</h3>
+                        </div>
+                        <span className="border-2 border-gray-500 h-56 mt-5"></span>
+                        <div className="flex flex-col justify-center items-start">
+                          <p className="text-6xl mt-1">
+                            {format(selectedDate, "dd-MM-yyyy")}
+                          </p>
+                          <p className="text-6xl mt-8">
+                            ({timeSlots[period].from} - {timeSlots[period].to}{" "}
+                            น.)
+                          </p>
+                        </div>
+                      </div>
                       {/* ตึก 7 */}
                       <div
-                        className="relative text-center cursor-pointer mt-160 hover:scale-105 duration-300 ease-in-out transition-all w-fit ml-10"
+                        className="relative text-center cursor-pointer mt-60 hover:scale-105 duration-300 ease-in-out transition-all w-fit ml-10"
                         onClick={() => handleOnClick(7)}
                       >
                         <Building id={7} showName={false} />
@@ -283,7 +308,7 @@ export default function HomePage() {
                       </div>
                     </div>
                     {/* วัน คาบ */}
-                    <div className="absolute p-20 top-200 right-20 flex items-center justify-center gap-20 text-gray-600">
+                    {/* <div className="absolute p-20 top-200 left-272 flex items-center justify-center gap-20 text-gray-600">
                       <div className="flex flex-col justify-end items-end font-semibold">
                         <h2 className="text-8xl">{day}</h2>
                         <h3 className="text-7xl mt-7">คาบที่ {period}</h3>
@@ -297,7 +322,7 @@ export default function HomePage() {
                           ({timeSlots[period].from} - {timeSlots[period].to} น.)
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

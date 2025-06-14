@@ -117,7 +117,7 @@ function BuildingPage({ params }) {
                 <p className="text-center text-slate-gray mt-2 text-sm md:text-base">
                   เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
                 </p>
-                <div className="flex justify-center max-w-xl mx-auto mt-4 my-6">
+                <div className="flex justify-center max-w-xl mx-auto mt-3">
                   <div className="flex flex-col max-w-xl w-fit gap-2">
                     <div className="flex gap-6 justify-center items-center">
                       {status.slice(0, 3).map((item) => (
@@ -150,7 +150,7 @@ function BuildingPage({ params }) {
                   </div>
                 </div>
                 <div
-                  className="rounded-xl max-w-xl mx-auto relative mt-4 shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]"
+                  className="rounded-xl max-w-xl mx-auto mt-3 mb-6 relative shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]"
                   ref={outerRef}
                 >
                   {!zooming && maxScale !== 1 && (
@@ -179,7 +179,7 @@ function BuildingPage({ params }) {
                     </div>
                   </TransformComponent>
                   <button
-                    className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-200 opacity-40 p-2 m-2  object-cover cursor-pointer justify-center items-center ${
+                    className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-200 opacity-40 p-2 m-2 object-cover cursor-pointer justify-center items-center ${
                       maxScale === 1 ? "hidden" : "flex"
                     } `}
                     onClick={() => handleZoom(centerView)}
