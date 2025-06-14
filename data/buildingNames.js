@@ -1,4 +1,4 @@
-const navBuildings = [
+const buildingNames = [
     {
         id: 1,
         name: 'เอกอำนวยการ',
@@ -36,4 +36,4 @@ const navBuildings = [
     },
 ]
 
-export default navBuildings;
+export default buildingNames;

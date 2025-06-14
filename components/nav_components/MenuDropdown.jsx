@@ -1,11 +1,11 @@
 import Link from "@node_modules/next/link";
-import { navBuildings } from "@data";
+import { buildingNames } from "@data";
 
 function MenuDropdown({ setIsShow, checkPath }) {
   return (
     <div className=" bg-white w-full">
       <ul>
-        {navBuildings.map((item) => (
+        {buildingNames.map((item) => (
           <li key={item.id} className="group">
             <Link
               href={`/building/${item.id}`}

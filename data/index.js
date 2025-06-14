@@ -1,12 +1,12 @@
 import navLink from "./navLink";
-import navBuildings from "./navBuildings";
+import buildingNames from "./buildingNames";
 import buildings from "./buildings";
 import { statusColors ,status } from "./status";
 import timeSlots from "./timeSlots";
 
 export { 
     navLink,
-    navBuildings,
+    buildingNames,
     buildings,
     statusColors,
     status,

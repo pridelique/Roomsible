@@ -7,6 +7,7 @@ import Image from "@node_modules/next/image";
 import { hand_zoom, zoom_in, zoom_out } from "@public/assets/icons";
 import { status } from "@data";
 import Building from "@components/Building";
+import StatusLabel from "@components/StatusLabel";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
@@ -121,30 +122,12 @@ function BuildingPage({ params }) {
                   <div className="flex flex-col max-w-xl w-fit gap-2">
                     <div className="flex gap-6 justify-center items-center">
                       {status.slice(0, 3).map((item) => (
-                        <div
-                          className="flex gap-2 justify-start items-center text-slate-gray text-sm md:text-base"
-                          key={item.statusEng}
-                        >
-                          <div
-                            className="size-3 sm:size-4 rounded-sm shadow-lg"
-                            style={{ backgroundColor: item.color }}
-                          ></div>
-                          <span>{item.statusThai}</span>
-                        </div>
+                        <StatusLabel {...item} key={item.statusEng}/>
                       ))}
                     </div>
                     <div className="flex gap-6 justify-center items-center">
                       {status.slice(3, 5).map((item) => (
-                        <div
-                          className="flex gap-2 justify-start items-center text-slate-gray text-sm md:text-base"
-                          key={item.statusEng}
-                        >
-                          <div
-                            className="size-3 sm:size-4 rounded-sm shadow-lg"
-                            style={{ backgroundColor: item.color }}
-                          ></div>
-                          <span>{item.statusThai}</span>
-                        </div>
+                        <StatusLabel {...item} key={item.statusEng}/>
                       ))}
                     </div>
                   </div>

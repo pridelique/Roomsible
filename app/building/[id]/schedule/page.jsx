@@ -1,19 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import '@app/globals.css';
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import "@app/globals.css";
+import { buildingNames, statusColors, timeSlots } from "@data";
+import StatusLabel from "@components/StatusLabel";
 
 function Schedule() {
-  const buildingNames = {
-    1: "อาคาร 1 เอกอำนวยการ",
-    2: "อาคาร 2 สานศิลป์สถาน",
-    3: "อาคาร 3 อาคารสมเด็จฯ",
-    4: "อาคาร 4 เพชรคหกรรม",
-    5: "อาคาร 5 ล้ำวิทย์เนาว์",
-    6: "อาคาร 6 เก้าทศวรรษ",
-    7: "อาคาร 7 เบญจภัทรดิเรก"
-  };
-
   const router = useRouter();
   const param = useParams();
   const searchParams = useSearchParams();
@@ -24,23 +16,21 @@ function Schedule() {
   const [status, setStatus] = useState({});
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
-  const timeSlots = Array.from({ length: 9 }, (_, i) => {
-    const startMinutes = 8 * 60 + 30 + i * 50;
-    const endMinutes = startMinutes + 50;
+  // const timeSlots = Array.from({ length: 9 }, (_, i) => {
+  //   const startMinutes = 8 * 60 + 30 + i * 50;
+  //   const endMinutes = startMinutes + 50;
 
-    const formatTime = (mins) => {
-      const h = Math.floor(mins / 60);
-      const m = mins % 60;
-      return `${h}:${m.toString().padStart(2, "0")}`;
-    };
+  //   const formatTime = (mins) => {
+  //     const h = Math.floor(mins / 60);
+  //     const m = mins % 60;
+  //     return `${h}.${m.toString().padStart(2, "0")}`;
+  //   };
 
-    return {
-      label: i + 1,
-      time: `(${formatTime(startMinutes)}–${formatTime(endMinutes)})`,
-    };
-  });
-
-  const buildingName = buildingNames[buildingId];
+  //   return {
+  //     label: i + 1,
+  //     time: `(${formatTime(startMinutes)} - ${formatTime(endMinutes)})`,
+  //   };
+  // });
 
   const handleOnClick = (day, period) => {
     router.push(
@@ -71,9 +61,18 @@ function Schedule() {
 
   return (
     <section className="padding-x max-container w-full pt-6">
-      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-10 mt-5">
-        ตารางเวลา {buildingName} : ห้อง {roomNumber}
-      </h2>
+      <div className="text-center mb-4">
+        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
+          ตารางการใช้งานห้อง {roomNumber}
+        </h2>
+        {/* <div className="text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl">
+          <h3 className="mt-1">อาคาร {buildingId} {buildingNames[buildingId].name}</h3>
+          <h3 className="mt-0.5">ห้อง {roomNumber}</h3>
+        </div> */}
+        <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
+          เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
+        </p>
+      </div>
       <div
         className="overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll mx-auto"
         style={{ maxWidth: maxWidth + 2 }}
@@ -97,7 +96,9 @@ function Schedule() {
               className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center"
             >
               <div className="text-gray-700">คาบที่ {period.label}</div>
-              <div className="text-xs text-gray-500">{period.time}</div>
+              <div className="text-xs text-gray-500 mt-0.5">
+                {period.from} - {period.to}
+              </div>
             </div>
           ))}
 
@@ -125,6 +126,10 @@ function Schedule() {
             </React.Fragment>
           ))}
         </div>
+      </div>
+      <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
+        <StatusLabel statusThai={'ว่าง'} color={statusColors.available} />
+        <StatusLabel statusThai={'จองแล้ว'} color={statusColors.booked} />
       </div>
     </section>
   );
