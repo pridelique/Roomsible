@@ -2,8 +2,8 @@
 
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
-import { building, date, menu } from "@public/assets/icons";
-import { use, useContext, useEffect, useRef, useState } from "react";
+import { building, menu } from "@public/assets/icons";
+import { useContext, useState } from "react";
 import NavButton from "./nav_components/NavButton";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
 import Logo from "./nav_components/Logo";
@@ -13,7 +13,7 @@ import Date from "./nav_components/Date";
 import Time from "./nav_components/Time";
 import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
-
+import MenuIcon from "@public/assets/icons/menu.svg";
 function Nav() {
   const [isShow, setIsShow] = useState(false);
   const [isShowtime, setIsShowTime] = useState(false);
@@ -100,7 +100,7 @@ function Nav() {
           className="rounded-xl hover:bg-gray-100 p-2 flex md:hidden justify-center items-center"
           onClick={() => setTimeout(() => setIsShow(!isShow),0)}
         >
-          <Image src={menu} alt="menu" width={28} height={28} />
+          <MenuIcon className='size-[28px]'/>
         </button>
       </nav>
 

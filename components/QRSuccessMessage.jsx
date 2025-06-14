@@ -28,7 +28,7 @@ function QRSuccessMessage({ success }) {
           ในเวลา {success?.time} เรียบร้อยแล้ว
         </p>
         <hr className="w-full border border-gray-300 my-6" />
-        <Link href="/" className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 shadow-sm font-medium text-center cursor-pointer py-2 w-4/5 rounded-2xl">
+        <Link href="/" className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 shadow-sm text-center cursor-pointer py-2 w-4/5 rounded-2xl">
           กลับไปหน้าแรก
         </Link>
       </div>
