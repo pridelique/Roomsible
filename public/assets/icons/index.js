@@ -21,6 +21,7 @@ import clock from './clock.png';
 import link from './link.png';
 
 import warning from './warning.png'
+import Warning from './warning.svg'
 import x_mark from './x_mark.png'
 import check_mark from './check_mark.png'
 
@@ -48,6 +49,7 @@ export {
   link,
 
   warning,
+  Warning,
   x_mark,
   check_mark,
 };

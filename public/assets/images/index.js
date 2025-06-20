@@ -2,6 +2,7 @@ import logo from './logo.png';
 import schoolname from './schoolname.png';
 
 import bordersw from './bordersw.jpg';
+import loginImgae from './loginImage.jpg';
 
 import building1 from './building1.jpg';
 import building2 from './building2.jpg';
@@ -29,6 +30,7 @@ export {
     schoolname,
 
     bordersw,
+    loginImgae,
 
     building1,
     building2,
