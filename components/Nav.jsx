@@ -26,10 +26,14 @@ function Nav() {
   
   const handleLogout = () => {
     setUser(null);
+    setIsShow(false);
+    router.push("/");
   };
 
   const handleLogin = () => {
+    setIsShow(false);
     router.push("/login");
+
   };
 
   const handleToggleTime = () => {
