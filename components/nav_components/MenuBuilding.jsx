@@ -6,7 +6,7 @@ function MenuBuilding({ item, menuDropdown, setMenuDropdown, checkPath }) {
     <button
       className={`flex justify-between px-6 py-3.5 ${
         checkPath(item) ? "text-red-400" : "text-slate-gray"
-      } hover:bg-gray-100 w-full`}
+      } hover:bg-gray-100 w-full cursor-pointer `}
       onClick={() => setTimeout(() => {
         setMenuDropdown(!menuDropdown)
       }, 0)}

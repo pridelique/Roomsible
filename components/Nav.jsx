@@ -14,16 +14,16 @@ import Time from "./nav_components/Time";
 import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import MenuIcon from "@public/assets/icons/menu.svg";
-import { toast } from "@node_modules/react-toastify";
 import { notifySuccess } from "@utils/notify";
+import Profile from "./nav_components/Profile";
 
 const dateWidth = {
-  'วันจันทร์': 143,
-  'วันอังคาร': 148,
-  'วันพุธ': 120,
-  'วันพฤหัสบดี': 170,
-  'วันศุกร์': 130,
-}
+  วันจันทร์: 143,
+  วันอังคาร: 148,
+  วันพุธ: 120,
+  วันพฤหัสบดี: 170,
+  วันศุกร์: 130,
+};
 
 const timewidth = {
   1: 119,
@@ -35,7 +35,7 @@ const timewidth = {
   7: 121,
   8: 122,
   9: 121,
-}
+};
 
 function Nav() {
   const [isShow, setIsShow] = useState(false);
@@ -102,7 +102,10 @@ function Nav() {
                   <Image src={building} alt="building" width={20} height={20} />
                 </button>
               </li>
-              <li className="text-slate-gray relative mr-3" style={{marginRight: dateWidth[day]-timewidth[period]}}>
+              <li
+                className="text-slate-gray relative mr-3"
+                style={{ marginRight: dateWidth[day] - timewidth[period] }}
+              >
                 <Time
                   period={period}
                   setPeriod={setPeriod}
@@ -123,32 +126,40 @@ function Nav() {
 
         {/* วัน คาบ */}
         <ul className="hidden max-[850px]:flex gap-3 text-slate-gray">
-          <Date
-            day={day}
-            setDay={setDay}
-            dateDropdown={dateDropdown}
-            setDateDropdown={setDateDropdown}
-          />
-          <Time
-            period={period}
-            setPeriod={setPeriod}
-            timeDropdown={timeDropDown}
-            setTimeDropdown={setTimeDropdown}
-          />
+          <li className="text-slate-gray relative">
+            <Date
+              day={day}
+              setDay={setDay}
+              dateDropdown={dateDropdown}
+              setDateDropdown={setDateDropdown}
+            />
+          </li>
+          <li className="text-slate-gray relative">
+            <Time
+              period={period}
+              setPeriod={setPeriod}
+              timeDropdown={timeDropDown}
+              setTimeDropdown={setTimeDropdown}
+            />
+          </li>
         </ul>
 
         <div className="flex max-[850px]:hidden justify-center items-center gap-4">
           {/* ปุ่ม login logout */}
-          <NavButton
-            session={user}
-            handleLogin={handleLogin}
-            handleLogout={handleLogout}
-          />
+          {!user ? (
+            <NavButton
+              session={user}
+              handleLogin={handleLogin}
+              handleLogout={handleLogout}
+            />
+          ) : (
+            <Profile handleLogout={handleLogout} />
+          )}
         </div>
 
         {/* ปุ่มเมนู */}
         <button
-          className="rounded-xl hover:bg-gray-100 p-2 hidden max-[850px]:flex justify-center items-center"
+          className="rounded-xl hover:bg-gray-100 p-2 hidden max-[850px]:flex justify-center items-center cursor-pointer"
           onClick={() => setTimeout(() => setIsShow(!isShow), 0)}
         >
           <MenuIcon className="size-[28px]" />

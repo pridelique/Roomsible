@@ -19,8 +19,6 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      console.log(dropdownRef.current, event.target);
-
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDateDropdown(false);
       }

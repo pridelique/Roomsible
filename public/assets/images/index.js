@@ -1,5 +1,7 @@
 import logo from './logo.png';
 import schoolname from './schoolname.png';
+import guest_profile from './guest_profile.png';
+import Guest_Profile from './guest_profile.svg';
 
 import bordersw from './bordersw.jpg';
 import loginImgae from './loginImage.jpg';
@@ -28,6 +30,8 @@ const buildingImages = [
 export { 
     logo,
     schoolname,
+    guest_profile,
+    Guest_Profile,
 
     bordersw,
     loginImgae,
