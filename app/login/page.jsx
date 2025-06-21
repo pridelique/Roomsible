@@ -19,7 +19,8 @@ function login() {
   const router = useRouter();
   const { setUser } = useContext(SessionContext);
 
-  const handleLogin = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!email || !password) {
       setError("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
@@ -59,7 +60,7 @@ function login() {
             <div className="mt-1 text-[26px] font-semibold mb-4 text-gray-700">
               เข้าสู่ระบบ
             </div>
-            <form>
+            <form onSubmit={(e) => handleSubmit(e)}>
               <ul className="flex flex-col gap-4">
                 <li className="flex items-center border-b border-gray-400 pb-2 ">
                   <Mail className="w-5 h-5 text-gray-500 mr-3" />
@@ -97,26 +98,26 @@ function login() {
                   </div>
                 </li>
               </ul>
-            </form>
-            {error && (
-              <div className="flex gap-2 justify-start items-center mt-3">
-                <Warning className="w-5 h-5 text-red-500" />
-                <p className="text-red-500 text-[12px] text-start whitespace-pre-line">
-                  {error}
-                </p>
-              </div>
-            )}
-            <button
-              onClick={() => handleLogin()}
-              disabled={loading}
-              className="mt-5 w-full py-2 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:bg-gradient-to-br focus:outline-none shadow-red-500/50 font-medium text-[15px] text-center rounded-xl shadow-md cursor-pointer flex items-center justify-center transition-all duration-200 ease-in-out disabled:cursor-auto"
-            >
-              {loading ? (
-                <div className="border-2 border-t-2  border-transparent border-t-white animate-spin size-[22px] rounded-full"></div>
-              ) : (
-                <p>{buttonText}</p>
+              {error && (
+                <div className="flex gap-2 justify-start items-center mt-3">
+                  <Warning className="w-5 h-5 text-red-500" />
+                  <p className="text-red-500 text-[12px] text-start whitespace-pre-line">
+                    {error}
+                  </p>
+                </div>
               )}
-            </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="mt-5 w-full py-2 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:bg-gradient-to-br focus:outline-none shadow-red-500/50 font-medium text-[15px] text-center rounded-xl shadow-md cursor-pointer flex items-center justify-center transition-all duration-200 ease-in-out disabled:cursor-auto"
+              >
+                {loading ? (
+                  <div className="border-2 border-t-2  border-transparent border-t-white animate-spin size-[22px] rounded-full"></div>
+                ) : (
+                  <p>{buttonText}</p>
+                )}
+              </button>
+            </form>
           </div>
         </div>
       </div>
