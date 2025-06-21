@@ -140,8 +140,5 @@ body {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-strong, b {
-  /* font-family: 'Trirong-Medium', sans-serif;
-  font-weight: 700; */
+  overflow-x: hidden;
 }

@@ -8,6 +8,7 @@ import { hand_zoom, zoom_in, zoom_out } from "@public/assets/icons";
 import { status } from "@data";
 import Building from "@components/Building";
 import StatusLabel from "@components/StatusLabel";
+import StatusTable from "@components/StatusTable";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
@@ -138,9 +139,9 @@ function BuildingPage({ params }) {
                   )}
 
                   <TransformComponent>
-                    <div className="flex" style={containerStyle}>
+                    <div className="flex cursor-grab active:cursor-grabbing max-h-[500px] justify-center items-center" style={containerStyle}>
                       <div
-                        className="origin-left p-10"
+                        className="origin-left p-10 h-fit"
                         ref={innerRef}
                         style={{ transform: `scale(${scale})` }}
                       >
@@ -166,18 +167,7 @@ function BuildingPage({ params }) {
                   </button>
                 </div>
                 <div className="flex justify-center max-w-xl mx-auto mt-3">
-                  <div className="flex flex-col lg:flex-row max-w-xl w-fit gap-2 gap-x-6">
-                    <div className="flex gap-6 justify-center items-center">
-                      {status.slice(0, 3).map((item) => (
-                        <StatusLabel {...item} key={item.statusEng}/>
-                      ))}
-                    </div>
-                    <div className="flex gap-6 justify-center items-center">
-                      {status.slice(3, 5).map((item) => (
-                        <StatusLabel {...item} key={item.statusEng}/>
-                      ))}
-                    </div>
-                  </div>
+                  <StatusTable/>
                 </div>
               </>
             );
