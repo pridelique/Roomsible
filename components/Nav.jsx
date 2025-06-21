@@ -125,7 +125,7 @@ function Nav() {
         </ul>
 
         {/* วัน คาบ */}
-        <ul className="hidden max-[850px]:flex gap-3 text-slate-gray">
+        <ul className="hidden max-[850px]:flex gap-3 max-[380px]:gap-0 text-slate-gray">
           <li className="text-slate-gray relative">
             <Date
               day={day}
