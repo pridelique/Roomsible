@@ -10,7 +10,7 @@ function NavBuilding({ item, navDropdown, setNavDropdown, checkPath }) {
       <p className={` ${checkPath(item) ? "text-red-400" : "text-slate-gray"}`}>
         {item.label}
       </p>
-      <div className="flex items-center justify-center relative top-[1.5px]">
+      <div className="flex items-center justify-center relative top-[1.5px] w-[20px] h-[20px]">
         <Image
           src={checkPath(item) ? arrow_down_selected : arrow_down}
           alt="arrow_down"

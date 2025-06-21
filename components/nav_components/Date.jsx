@@ -5,7 +5,13 @@ import { arrow_down, date } from "@public/assets/icons";
 import { useEffect, useRef, useState } from "react";
 
 const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
-const dayShort = { 'วันจันทร์': 'จ.', 'วันอังคาร': 'อ.', 'วันพุธ': 'พ.', 'วันพฤหัสบดี': 'พฤ.', 'วันศุกร์': 'ศ.' };
+const dayShort = {
+  วันจันทร์: "จ.",
+  วันอังคาร: "อ.",
+  วันพุธ: "พ.",
+  วันพฤหัสบดี: "พฤ.",
+  วันศุกร์: "ศ.",
+};
 
 function Date({ day, setDay, dateDropdown, setDateDropdown }) {
   const dropdownRef = useRef(null);
@@ -14,11 +20,8 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       console.log(dropdownRef.current, event.target);
-      
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDateDropdown(false);
       }
     };
@@ -40,7 +43,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
   }, []);
 
   return (
-    <li className="text-slate-gray relative">
+    <>
       <div
         className="cursor-pointer hover:bg-gray-100 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg  max-[460px]:gap-3"
         onClick={() => setTimeout(() => setDateDropdown(!dateDropdown), 0)}
@@ -72,10 +75,12 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
               <li
                 key={day}
                 className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-center"
-                onClick={() => setTimeout(() => {
-                  setDay(day);
-                  setDateDropdown(false);
-                }, 0)}
+                onClick={() =>
+                  setTimeout(() => {
+                    setDay(day);
+                    setDateDropdown(false);
+                  }, 0)
+                }
               >
                 <p>{screenWidth > 460 ? day : dayShort[day]}</p>
               </li>
@@ -83,7 +88,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
           </ul>
         </div>
       )}
-    </li>
+    </>
   );
 }
 

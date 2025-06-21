@@ -4,8 +4,7 @@ import NavBuilding from "./NavBuilding";
 import NavList from "./NavList";
 import React, { useEffect, useRef, useState } from "react";
 import NavDropdown from "./NavDropdown";
-import Image from "@node_modules/next/image";
-import { clock } from "@public/assets/icons";
+import { Calendar } from "@public/assets/icons";
 
 function NavLink({ navLink, session, checkPath, handleToggleTime }) {
   const [navDropdown, setNavDropdown] = useState(false);
@@ -29,22 +28,22 @@ function NavLink({ navLink, session, checkPath, handleToggleTime }) {
   return (
     <>
       {navLink
-        .filter((item) => session || !item.session)
+        // .filter((item) => session || !item.session)
         .map((item) => {
           if (item.label !== "ตึก")
             return (
               <React.Fragment key={item.label}>
                 <NavList key={item.label} item={item} checkPath={checkPath} />
-                {item.label === "หน้าแรก" && !session && (
+                {/* {item.label === "หน้าแรก" && !session && (
                   <li className="mt-0.5 hover:bg-gray-100 p-1 rounded-full">
                     <button
                       className="w-fit h-fit flex justify-center items-center cursor-pointer opacity-80"
                       onClick={() => setTimeout(() => handleToggleTime(), 0)}
                     >
-                      <Image src={clock} alt="clock" width={26} height={26} />
+                      <Calendar className="w-7 h-7" />
                     </button>
                   </li>
-                )}
+                )} */}
               </React.Fragment>
             );
           return (
@@ -60,16 +59,16 @@ function NavLink({ navLink, session, checkPath, handleToggleTime }) {
                   <NavDropdown ref={navDropdownRef} checkPath={checkPath} setNavDropdown={setNavDropdown}/>
                 )}
               </li>
-              {session && (
+              {/* {session && ( */}
                 <li className="mt-0.5 hover:bg-gray-100 p-1 rounded-full">
                   <button
                     className="w-fit h-fit flex justify-center items-center cursor-pointer opacity-80"
                     onClick={() => setTimeout(() => handleToggleTime(), 0)}
                   >
-                    <Image src={clock} alt="clock" width={26} height={26} />
+                    <Calendar className="w-7 h-7" />
                   </button>
                 </li>
-              )}
+              {/* )} */}
             </React.Fragment>
           );
         })}

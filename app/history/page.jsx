@@ -1,5 +1,9 @@
 'use client'
-import { useState,useEffect,useRef } from 'react';
+import ErrorBox from '@components/ErrorBox';
+import { useRouter } from '@node_modules/next/navigation';
+import { SessionContext } from '@provider/SessionProvider';
+import { warning } from '@public/assets/icons';
+import { useState,useEffect,useRef, useContext } from 'react';
 function HistoryPage() {
   const [bookings,setBookings]=useState([
     {
@@ -44,6 +48,8 @@ function HistoryPage() {
   const [activeMenuId,setActiveMenuId]=useState(null);
   //id ที่เปิดรายละเอียดอยู่
   const [activeDetailId,setActiveDetailId]=useState(null);
+  const { user } = useContext(SessionContext);
+  const router = useRouter();
 
   const toggleMenu=(id)=>{
     setActiveMenuId(activeMenuId===id?null:id);
@@ -70,11 +76,16 @@ function HistoryPage() {
     }
   };
 
-  document.addEventListener('click',handleClickOutside);
+  document.addEventListener('click', handleClickOutside);
   return()=> {
-    document.removeEventListener('click',handleClickOutside);
+    document.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  if (!user) return (
+    <ErrorBox src={warning} alt='warning' header='ไม่สามารถใช้งานได้' message='กรุณาเข้าสู่ระบบเพื่อเข้าใช้งานฟังก์ชันประวัติ' buttonText='เข้าสู่ระบบ' handleOnclick={() => router.push('/login')} color='red'/>
+  ) 
+  
   return (
   <div className="relative max-container mx-auto">
     <img

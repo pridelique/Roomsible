@@ -118,26 +118,13 @@ function BuildingPage({ params }) {
                 <p className="text-center text-slate-gray mt-2 text-sm md:text-base">
                   เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
                 </p>
-                <div className="flex justify-center max-w-xl mx-auto mt-3">
-                  <div className="flex flex-col max-w-xl w-fit gap-2">
-                    <div className="flex gap-6 justify-center items-center">
-                      {status.slice(0, 3).map((item) => (
-                        <StatusLabel {...item} key={item.statusEng}/>
-                      ))}
-                    </div>
-                    <div className="flex gap-6 justify-center items-center">
-                      {status.slice(3, 5).map((item) => (
-                        <StatusLabel {...item} key={item.statusEng}/>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                
                 <div
                   className="rounded-xl max-w-xl mx-auto mt-3 mb-6 relative shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]"
                   ref={outerRef}
                 >
                   {!zooming && maxScale !== 1 && (
-                    <div className="absolute top-1/2 left-1/2 -translate-1/2 z-9 animate-pulse w-full text-center text-slate-gray text-lg sm:text-xl flex gap-2 justify-center items-center select-none">
+                    <div className="absolute top-1/2 left-1/2 -translate-1/2 z-9 animate-pulse w-full text-center text-slate-gray text-lg sm:text-xl flex gap-2 justify-center items-center select-none px-4">
                       <Image
                         src={hand_zoom}
                         alt="hand zoom"
@@ -177,6 +164,20 @@ function BuildingPage({ params }) {
                       className="select-none"
                     />
                   </button>
+                </div>
+                <div className="flex justify-center max-w-xl mx-auto mt-3">
+                  <div className="flex flex-col lg:flex-row max-w-xl w-fit gap-2 gap-x-6">
+                    <div className="flex gap-6 justify-center items-center">
+                      {status.slice(0, 3).map((item) => (
+                        <StatusLabel {...item} key={item.statusEng}/>
+                      ))}
+                    </div>
+                    <div className="flex gap-6 justify-center items-center">
+                      {status.slice(3, 5).map((item) => (
+                        <StatusLabel {...item} key={item.statusEng}/>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </>
             );

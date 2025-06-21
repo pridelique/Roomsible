@@ -4,7 +4,7 @@ import Image from "@node_modules/next/image";
 import { arrow_down, clock } from "@public/assets/icons";
 import { useEffect, useRef, useState } from "react";
 
-const periods = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const periods = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
   const timeDropdownRef = useRef(null)
@@ -32,11 +32,11 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
   }, []);
 
   return (
-    <li className="text-slate-gray relative">
+      <>
       <div
         className="cursor-pointer hover:bg-gray-100 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg max-[460px]:gap-3"
         onClick={() => setTimeout(() => setTimeDropdown(!timeDropdown), 0)}
-      >
+        >
         <div className="flex gap-2 justify-center items-center max-[460px]:gap-3">
           <Image
             src={clock}
@@ -44,7 +44,7 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
             width={20}
             height={20}
             className="mt-[1px]"
-          />
+            />
           <p>{screenWidth > 460 ? `คาบ ${period}` : period}</p>
         </div>
         <div className="flex justify-center items-center transition-transform duration-150" style={{transform : `rotate(${ timeDropdown ? 180 : 0}deg)`}}>
@@ -56,12 +56,12 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
           <ul>
             {periods.map((period) => (
               <li
-                key={period}
-                className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-center"
-                onClick={() => setTimeout(() => {
-                  setPeriod(period);
-                  setTimeDropdown(false);
-                }, 0)}
+              key={period}
+              className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-center"
+              onClick={() => setTimeout(() => {
+                setPeriod(period);
+                setTimeDropdown(false);
+              }, 0)}
               >
                 <p>คาบ {period}</p>
               </li>
@@ -69,7 +69,7 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
           </ul>
         </div>
       )}
-    </li>
+      </>
   );
 }
 

@@ -36,7 +36,7 @@ function Menu({
       {/* Link */}
       <ul className="w-full">
         {navLink
-          .filter((item) => session || !item.session)
+          // .filter((item) => session || !item.session)
           .map((item) => {
             if (item.label !== "ตึก")
               return (

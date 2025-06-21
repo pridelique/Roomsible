@@ -1,10 +1,14 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BrowserQRCodeReader } from "@zxing/browser";
 import QRCodeFrame from "@components/QRFrame";
 import QRCodeMask from "@components/QRMask";
 import QRCodeErrorMessage from "@components/QRErrorMessage";
 import QRSuccessMessage from "@components/QRSuccessMessage";
+import { SessionContext } from "@provider/SessionProvider";
+import ErrorBox from "@components/ErrorBox";
+import { warning } from "@public/assets/icons";
+import { useRouter } from "@node_modules/next/navigation";
 
 export default function FullScreenQRScanner() {
   const videoRef = useRef(null);
@@ -15,6 +19,10 @@ export default function FullScreenQRScanner() {
   const [loading, setLoading] = useState(false);
   const [isStop, setIsStop] = useState(true);
   const [innerHeight, setInnerHeight] = useState(0);
+  const { user } = useContext(SessionContext);
+  const router = useRouter(); 
+
+
   const startScaning = () => {
     setResult("");
     setError("");
@@ -84,6 +92,10 @@ export default function FullScreenQRScanner() {
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, []);
+
+  if (!user) return (
+    <ErrorBox src={warning} alt='warning' header='ไม่สามารถใช้งานได้' message='กรุณาเข้าสู่ระบบเพื่อเข้าใช้งานฟังก์ชันเช็คอิน' buttonText='เข้าสู่ระบบ' handleOnclick={() => router.push('/login')} color='red'/>
+  ) 
 
   return (
     <>

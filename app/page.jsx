@@ -35,12 +35,12 @@ export default function HomePage() {
   const [building5Size, setBuilding5Size] = useState({ width: 0, height: 0 });
   const [building6Size, setBuilding6Size] = useState({ width: 0, height: 0 });
 
-  const resetMessage = () => {
-    if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
-    window.timeOutZooming = setTimeout(() => {
-      setZooming(false);
-    }, 5000);
-  };
+  // const resetMessage = () => {
+  //   if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
+  //   window.timeOutZooming = setTimeout(() => {
+  //     setZooming(false);
+  //   }, 5000);
+  // };
 
   const handleOnClick = (id) => {
     router.push(`/building/${id}`);
