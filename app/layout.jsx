@@ -2,7 +2,7 @@ import "./globals.css";
 import Nav from "@components/Nav";
 import { DateTimeProvider } from "../provider/DateTimeProvider";
 import { SessionProvider } from "../provider/SessionProvider";
-
+import { ToastContainer } from "@node_modules/react-toastify";
 export const metadata = {
   title: "Roomsible",
   description:
@@ -21,7 +21,10 @@ export default function RootLayout({ children }) {
         <SessionProvider>
           <body className="antialiased vsc-initialized min-w-screen min-h-screen flex flex-col">
             <Nav />
-            <main className="relative flex-1 w-full h-full">{children}</main>
+            <main className="relative flex-1 w-full h-full">
+              {children}
+              <ToastContainer/>
+            </main>
           </body>
         </SessionProvider>
       </DateTimeProvider>

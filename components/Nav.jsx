@@ -2,8 +2,8 @@
 
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
-import { building, date, menu } from "@public/assets/icons";
-import { use, useContext, useEffect, useRef, useState } from "react";
+import { building } from "@public/assets/icons";
+import { useContext, useState } from "react";
 import NavButton from "./nav_components/NavButton";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
 import Logo from "./nav_components/Logo";
@@ -14,6 +14,8 @@ import Time from "./nav_components/Time";
 import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import MenuIcon from "@public/assets/icons/menu.svg";
+import { toast } from "@node_modules/react-toastify";
+import { notifySuccess } from "@utils/notify";
 
 const dateWidth = {
   'วันจันทร์': 143,
@@ -41,13 +43,13 @@ function Nav() {
   const { day, setDay, period, setPeriod } = useContext(DateTimeContext);
   const [dateDropdown, setDateDropdown] = useState(false);
   const [timeDropDown, setTimeDropdown] = useState(false);
-  const [timeMargin, setTimeMargin] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
   const { user, setUser } = useContext(SessionContext);
 
   const handleLogout = () => {
     setUser(null);
+    notifySuccess("คุณออกจากระบบเรียบร้อยแล้ว!");
     setIsShow(false);
     router.push("/");
   };
