@@ -11,6 +11,7 @@ import home_selected from './home_selected.png';
 
 import arrow_down from './arrow_down.png';
 import arrow_down_selected from './arrow_down_selected.png';
+import Arrow_down from './arrow_down.svg';
 
 import zoom_in from './zoom_in.png'
 import zoom_out from './zoom_out.png'
@@ -40,6 +41,7 @@ export {
 
   arrow_down,
   arrow_down_selected,
+  Arrow_down,
 
   zoom_in,
   zoom_out,

@@ -1,9 +1,11 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import "@app/globals.css";
-import { buildingNames, statusColors, timeSlots } from "@data";
+import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/StatusLabel";
+import { SessionContext } from "@provider/SessionProvider";
+import { notifySuccess, notifyWaring } from "@utils/notify";
 
 function Schedule() {
   const router = useRouter();
@@ -14,6 +16,7 @@ function Schedule() {
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
+  const { user } = useContext(SessionContext) 
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
   // const timeSlots = Array.from({ length: 9 }, (_, i) => {
@@ -33,6 +36,10 @@ function Schedule() {
   // });
 
   const handleOnClick = (day, period) => {
+    if (!user) {
+      notifyWaring("กรุณาเข้าสู่ระบบก่อนทำการจองห้องเรียน");
+      return;
+    }
     router.push(
       `/building/${buildingId}/schedule/form?roomNumber=${roomNumber}&day=${day}&period=${period.label}`
     );
@@ -78,7 +85,7 @@ function Schedule() {
         style={{ maxWidth: maxWidth + 2 }}
       >
         <div
-          className="w-fit border border-gray-300"
+          className="w-fit border border-gray-300 overflow-hidden"
           style={{
             display: "grid",
             gridTemplateColumns: `100px repeat(${timeSlots.length},120px)`,
@@ -129,7 +136,7 @@ function Schedule() {
       </div>
       <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
         <StatusLabel statusThai={'ว่าง'} color={statusColors.available} />
-        <StatusLabel statusThai={'จองแล้ว'} color={statusColors.booked} />
+        <StatusLabel statusThai={'ไม่ว่าง'} color={statusColors.booked} />
       </div>
     </section>
   );
