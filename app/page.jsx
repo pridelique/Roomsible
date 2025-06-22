@@ -1,13 +1,14 @@
 "use client";
-import Building from "@components/Building";
-import { buildings } from "@data";
+import Building from "@components/building_components/Building";
+import { buildings, status } from "@data";
 import { useRouter } from "@node_modules/next/navigation";
 import { useRef, useEffect, useState, useContext } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { addDays, format, getDay, set } from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
-import StatusTable from "@components/StatusTable";
+import StatusTable from "@components/building_components/StatusTable";
+import StatusLabel from "@components/building_components/StatusLabel";
 const mapDay = {
   วันจันทร์: 0,
   วันอังคาร: 1,
@@ -138,7 +139,7 @@ export default function HomePage() {
           <div
             className="w-full"
             ref={outerRef}
-            style={{ height: screenHeight - 270 }}
+            style={{ height: screenHeight - 250 }}
           >
             <div className="flex justify-center items-start rounded-lg overflow-hidden shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] w-fit h-fit mx-auto">
               <TransformComponent>
@@ -154,13 +155,13 @@ export default function HomePage() {
                     }}
                   >
                     <div
-                      className="flex justify-start w-fit h-fit p-24 pt-36 origin-top-left"
+                      className="flex justify-start w-fit h-fit p-24 pt-36 origin-top-left relative"
                       style={{ transform: `scale(${scale})` }}
                       ref={innerRef}
                     >
                       {/* ตึก 5 */}
                       <div
-                        className="hover:scale-105 duration-300 ease-in-out transition-all"
+                        className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all"
                         style={{
                           width: building5Size.width,
                           height: building5Size.height,
@@ -183,7 +184,7 @@ export default function HomePage() {
                       <div className="ml-16 flex flex-col justify-start items-end">
                         {/* ตึก 4 */}
                         <div
-                          className="relative top-0 text-center cursor-pointer mr-35 hover:scale-105 duration-300 ease-in-out transition-all flex flex-col justify-center items-center"
+                          className="relative top-0 text-center cursor-pointer mr-35 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all flex flex-col justify-center items-center"
                           onClick={() => handleOnClick(4)}
                         >
                           <Building id={4} showName={false} />
@@ -194,7 +195,7 @@ export default function HomePage() {
                         </div>
                         {/* ตึก 6 */}
                         <div
-                          className="hover:scale-105 duration-300 ease-in-out transition-all"
+                          className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all"
                           style={{
                             width: building6Size.width,
                             height: building6Size.height,
@@ -220,7 +221,7 @@ export default function HomePage() {
                         <div className="flex gap-20">
                           {/* ตึก 3 */}
                           <div
-                            className="relative text-center cursor-pointer hover:scale-105 duration-300 ease-in-out transition-all"
+                            className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all"
                             onClick={() => handleOnClick(3)}
                           >
                             <div className="px-4">
@@ -236,7 +237,7 @@ export default function HomePage() {
                           <div className="flex gap-1 items-end bottom-0 hover:mr-0 mr-4 transition-all duration-300">
                             {/* ตึก 2 */}
                             <div
-                              className="relative text-center cursor-pointer hover:scale-105 duration-300 ease-in-out transition-all hover:mr-4"
+                              className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all hover:mr-4"
                               onClick={() => handleOnClick(2)}
                             >
                               <Building id={2} showName={false} />
@@ -249,7 +250,7 @@ export default function HomePage() {
 
                             {/* ตึก 1 */}
                             <div
-                              className="relative text-center cursor-pointer hover:scale-105 duration-300 ease-in-out transition-all  hover:ml-4"
+                              className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all  hover:ml-4"
                               onClick={() => handleOnClick(1)}
                             >
                               <Building id={1} showName={false} />
@@ -279,7 +280,7 @@ export default function HomePage() {
                         </div>
                         {/* ตึก 7 */}
                         <div
-                          className="relative text-center cursor-pointer mt-60 hover:scale-105 duration-300 ease-in-out transition-all w-fit ml-10"
+                          className="relative text-center cursor-pointer mt-60 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all w-fit ml-10"
                           onClick={() => handleOnClick(7)}
                         >
                           <Building id={7} showName={false} />
@@ -289,29 +290,17 @@ export default function HomePage() {
                           <div className="absolute w-full h-full top-0 z-2"></div>
                         </div>
                       </div>
-                      {/* วัน คาบ */}
-                      {/* <div className="absolute p-20 top-200 left-272 flex items-center justify-center gap-20 text-gray-600">
-                      <div className="flex flex-col justify-end items-end font-semibold">
-                        <h2 className="text-8xl">{day}</h2>
-                        <h3 className="text-7xl mt-7">คาบที่ {period}</h3>
+
+                      {/* Status */}
+                      <div className="absolute bottom-35 left-30 flex flex-col items-start gap-4 mt-4 mb-2 scale-350 origin-bottom-left">
+                        {status.map((item) => (
+                          <StatusLabel {...item} key={item.statusEng} />
+                        ))}
                       </div>
-                      <span className="border-2 border-gray-500 h-56 mt-5"></span>
-                      <div className="flex flex-col justify-center items-start">
-                        <p className="text-6xl mt-1">
-                          {format(selectedDate, "dd-MM-yyyy")}
-                        </p>
-                        <p className="text-6xl mt-8">
-                          ({timeSlots[period].from} - {timeSlots[period].to} น.)
-                        </p>
-                      </div>
-                    </div> */}
                     </div>
                   </div>
                 </div>
               </TransformComponent>
-            </div>
-            <div className="flex justify-center items-center mt-5">
-              <StatusTable />
             </div>
           </div>
         </TransformWrapper>

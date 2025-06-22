@@ -16,6 +16,9 @@ import building6 from './building6.jpg';
 import building7_1 from './building7_1.jpg';
 import building7_2 from './building7_2.jpg';
 
+import hand from './hand.png';
+import right_arrow from './right_arrow.png';
+
 const buildingImages = [
     bordersw,
     building1,
@@ -46,4 +49,7 @@ export {
     building7_1,
     building7_2,
     buildingImages,
+
+    hand,
+    right_arrow,
 };

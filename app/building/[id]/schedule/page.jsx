@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import "@app/globals.css";
 import { statusColors, timeSlots } from "@data";
-import StatusLabel from "@components/StatusLabel";
+import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifySuccess, notifyWaring } from "@utils/notify";
 import { warning, Warning } from "@public/assets/icons";

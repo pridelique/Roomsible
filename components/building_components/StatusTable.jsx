@@ -1,6 +1,6 @@
 import { status } from "@data";
 import React from "react";
-import StatusLabel from "./building_components/StatusLabel";
+import StatusLabel from "./StatusLabel";
 
 function StatusTable() {
   return (
