@@ -12,7 +12,7 @@ function ErrorBox({
 }) {
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-8">
-      <div className="absolute top-1/2 left-1/2 -translate-1/2 px-3 border w-full">
+      <div className="absolute top-1/2 left-1/2 -translate-1/2 px-3 w-full">
         <div className="bg-white text-white px-8 pt-8 pb-6 rounded-xl z-3 shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center mx-auto">
           {src && (
             <div>
