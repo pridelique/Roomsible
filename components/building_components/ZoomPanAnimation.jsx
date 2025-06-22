@@ -4,11 +4,11 @@ import { hand, right_arrow } from "@public/assets/images";
 function ZoomPanAnimation({ animationState }) {
   return (
     <div
-      className={`absolute top-1/2 left-1/2 -translate-1/2 flex gap-2 justify-center z-4 items-center w-full whitespace-nowrap opacity-50`}
+      className={`absolute top-1/2 left-1/2 -translate-1/2 flex gap-2 justify-center z-4 items-center w-fit whitespace-nowrap opacity-50`}
     >
       {/* hand */}
       <div
-        className={`absolute top-1/2 left-1/2 -translate-1/2 transition-transform duration-900 ease-in-out w-fit opacity-0 ${
+        className={`absolute top-1/2 left-1/2 -translate-1/2 transition-transform duration-900 ease-in-out w-full opacity-0 ${
           animationState === "right" ? "translate-x-2" : ""
         } ${
           animationState === "right" || animationState === "left"
