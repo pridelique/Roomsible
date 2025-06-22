@@ -7,7 +7,7 @@ import QRCodeErrorMessage from "@components/QRErrorMessage";
 import QRSuccessMessage from "@components/QRSuccessMessage";
 import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
-import { warning } from "@public/assets/icons";
+import { Warning, warning } from "@public/assets/icons";
 import { useRouter } from "@node_modules/next/navigation";
 
 export default function FullScreenQRScanner() {
@@ -19,10 +19,9 @@ export default function FullScreenQRScanner() {
   const [loading, setLoading] = useState(false);
   const [isStop, setIsStop] = useState(true);
   const [innerHeight, setInnerHeight] = useState(0);
+  const controlRef = useRef(null);
   const { user } = useContext(SessionContext);
-  const router = useRouter(); 
-
-
+  const router = useRouter();
   const startScaning = () => {
     setResult("");
     setError("");
@@ -35,6 +34,8 @@ export default function FullScreenQRScanner() {
           null,
           videoRef.current,
           (decodedResult, err, control) => {
+            controlRef.current = control;
+
             if (decodedResult) {
               setResult(decodedResult.getText());
               setError(""); // Clear errors on successful scan
@@ -74,7 +75,7 @@ export default function FullScreenQRScanner() {
         )
         .catch((err) => {
           setError({
-              type: `Error accessing camera`
+            type: `Error accessing camera`,
           });
         });
     }
@@ -87,15 +88,28 @@ export default function FullScreenQRScanner() {
         setInnerHeight(innerRef.current.clientHeight);
       }
     };
-    resize();
+    setTimeout(() => {
+      resize();
+    }, 100);
     startScaning();
     window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
+    return () => {      
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
-  if (!user) return (
-    <ErrorBox src={warning} alt='warning' header='ไม่สามารถใช้งานได้' message='กรุณาเข้าสู่ระบบเพื่อเข้าใช้งานฟังก์ชันเช็คอิน' buttonText='เข้าสู่ระบบ' handleOnclick={() => router.push('/login')} color='red'/>
-  ) 
+  if (!user)
+    return (
+      <ErrorBox
+        Svg={Warning}
+        alt="warning"
+        header="ไม่สามารถใช้งานได้"
+        message="กรุณาเข้าสู่ระบบเพื่อเข้าใช้งานฟังก์ชันเช็คอิน"
+        buttonText="เข้าสู่ระบบ"
+        handleOnclick={() => router.push("/login")}
+        color="red"
+      />
+    );
 
   return (
     <>
@@ -111,7 +125,7 @@ export default function FullScreenQRScanner() {
             <p className="mt-11 text-2xl md:text-3xl lg:text-4xl font-semibold">
               สแกน QR Code เพื่อเช็คอิน
             </p>
-            <p className="mb-6 text-sm md:text-base lg:text-lg">
+            <p className="absolute top-1/2 -translate-y-1/2 mt-44 text-sm md:text-base lg:text-lg">
               วาง QR Code ให้อยู่ในกรอบเพื่อเริ่มเช็คอิน
             </p>
           </div>
@@ -121,9 +135,7 @@ export default function FullScreenQRScanner() {
       </div>
       {/* Loading... */}
       {loading && (
-        <div
-          className="absolute top-1/2 left-1/2 -translate-1/2 p-10 rounded-full border-6 border-t-6 border-transparent border-t-red-400 animate-spin z-4"
-        ></div>
+        <div className="absolute top-1/2 left-1/2 -translate-1/2 p-10 rounded-full border-6 border-t-6 border-transparent border-t-red-400 animate-spin z-4"></div>
       )}
       {/* Overlay สำหรับแสดงผลลัพธ์ */}
       {/* {result && (
@@ -134,15 +146,10 @@ export default function FullScreenQRScanner() {
       )} */}
       {/* แสดงข้อผิดพลาด */}
       {error && (
-        <QRCodeErrorMessage
-          error={error}
-          startScaning={startScaning}
-        />
+        <QRCodeErrorMessage error={error} startScaning={startScaning} />
       )}
       {/* ข้อความสำเร็จ */}
-      {success && (
-        <QRSuccessMessage success={success}/>
-      )}
+      {success && <QRSuccessMessage success={success} />}
     </>
   );
 }

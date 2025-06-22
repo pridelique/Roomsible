@@ -2,7 +2,7 @@
 import ErrorBox from '@components/ErrorBox';
 import { useRouter } from '@node_modules/next/navigation';
 import { SessionContext } from '@provider/SessionProvider';
-import { warning } from '@public/assets/icons';
+import { Warning, warning } from '@public/assets/icons';
 import { useState,useEffect,useRef, useContext } from 'react';
 function HistoryPage() {
   const [bookings,setBookings]=useState([
@@ -83,7 +83,7 @@ function HistoryPage() {
   }, []);
 
   if (!user) return (
-    <ErrorBox src={warning} alt='warning' header='ไม่สามารถใช้งานได้' message='กรุณาเข้าสู่ระบบเพื่อเข้าใช้งานฟังก์ชันประวัติ' buttonText='เข้าสู่ระบบ' handleOnclick={() => router.push('/login')} color='red'/>
+    <ErrorBox Svg={Warning} alt='warning' header='ไม่สามารถใช้งานได้' message='กรุณาเข้าสู่ระบบเพื่อเข้าใช้งานฟังก์ชันประวัติ' buttonText='เข้าสู่ระบบ' handleOnclick={() => router.push('/login')} color='red'/>
   ) 
   
   return (

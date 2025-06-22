@@ -25,6 +25,7 @@ import Calendar from './calendar.svg';
 import warning from './warning.png'
 import Warning from './warning.svg'
 import x_mark from './x_mark.png'
+import X_Mark from './x_mark.svg'
 import check_mark from './check_mark.png'
 
 export {
@@ -55,5 +56,6 @@ export {
   warning,
   Warning,
   x_mark,
+  X_Mark,
   check_mark,
 };

@@ -72,7 +72,7 @@ function Nav() {
   };
 
   return (
-    <header className="z-10 relative w-full text-[17px]">
+    <header className="z-10 relative w-full text-[17px] bg-white">
       <nav
         className={`flex justify-between items-center w-full padding-x py-3 ${
           isShow ? "shadow-sm" : "shadow-md"

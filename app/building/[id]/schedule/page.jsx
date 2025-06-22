@@ -6,6 +6,8 @@ import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifySuccess, notifyWaring } from "@utils/notify";
+import { warning, Warning } from "@public/assets/icons";
+import ErrorBox from "@components/ErrorBox";
 
 function Schedule() {
   const router = useRouter();
