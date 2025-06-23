@@ -17,6 +17,8 @@ import building7_1 from './building7_1.jpg';
 import building7_2 from './building7_2.jpg';
 
 import hand from './hand.png';
+import hand_move_right from './hand_move_right.png';
+import hand_move_left from './hand_move_left.png';
 import right_arrow from './right_arrow.png';
 
 const buildingImages = [
@@ -51,5 +53,7 @@ export {
     buildingImages,
 
     hand,
+    hand_move_right,
+    hand_move_left,
     right_arrow,
 };

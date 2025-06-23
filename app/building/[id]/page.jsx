@@ -138,7 +138,7 @@ function BuildingPage({ params }) {
                 </p>
 
                 <div
-                  className="rounded-xl max-w-xl mx-auto mt-3 mb-6 relative  shadow-[inset_0_3px_12px_0_rgba(0,0,0,0.13),inset_0_1.5px_6px_0_rgba(0,0,0,0.06)]  overflow-hidden"
+                  className="rounded-xl max-w-xl mx-auto mt-3 mb-6 relative  shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
                   ref={outerRef}
                 >
                   {!zooming && maxScale !== 1 && (

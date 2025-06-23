@@ -31,13 +31,13 @@ export const animateDemo = async (
     await sleep(600);
 
     const { positionX, positionY } = ref.state;
-
+    
     if (zoomingRef.current) {
       clearAnimation();
       return;
     }
-    ref.setTransform(positionX - 100, positionY, maxScale, 1000);
-    setAnimationState("right");
+    ref.setTransform(positionX + 100, positionY, maxScale, 1000);
+    setAnimationState("left");
     await sleep(1100);
 
     if (zoomingRef.current) {
@@ -45,8 +45,9 @@ export const animateDemo = async (
       return;
     }
     ref.setTransform(positionX, positionY, maxScale, 1000);
-    setAnimationState("left");
+    setAnimationState("right");
     await sleep(1100);
+
 
     if (zoomingRef.current) {
       clearAnimation();
