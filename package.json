@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@svgr/webpack": "^8.1.0",
     "@zxing/browser": "^0.1.5",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.514.0",
@@ -21,6 +20,7 @@
     "react-zoom-pan-pinch": "^3.7.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
