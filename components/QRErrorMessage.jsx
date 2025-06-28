@@ -1,60 +1,50 @@
 import Image from "@node_modules/next/image";
-import { warning, x_mark } from "@public/assets/icons";
+import { Warning, warning, X_Mark, x_mark } from "@public/assets/icons";
+import ErrorBox from "./ErrorBox";
+import { useRouter } from "@node_modules/next/navigation";
 
 function QRCodeErrorMessage({ error, startScaning }) {
+  const router = useRouter();
+
   if (error.type === "Error accessing camera")
     return (
-      <div className="absolute top-1/2 left-1/2 -translate-1/2 bg-white text-white px-8 pt-6 pb-4 rounded-xl z-3 shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center">
-        <div>
-          <Image src={warning} alt={"warning"} width={36} height={36} />
-        </div>
-
-        <h3 className="text-xl text-gray-700 mt-2">เกิดข้อผิดพลาด</h3>
-        <p className="leading-5 mt-1 text-slate-gray px-3">
-          ไม่สามารถเข้าถึงกล้องได้ <br/>
-          กรุณาอนุญาตการเข้าถึงกล้องในเบราว์เซอร์ของคุณ
-        </p>
-
-        <hr className="w-full border border-gray-300 my-6" />
-        <button
-          className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 font-medium text-center shadow-sm cursor-pointer py-2 w-4/5 rounded-2xl"
-          onClick={startScaning}
-        >
-          ตกลง
-        </button>
-      </div>
+      <ErrorBox
+        Svg={Warning}
+        alt="warning"
+        header="เกิดข้อผิดพลาด"
+        message={`ไม่สามารถเข้าถึงกล้องได้\nกรุณาอนุญาตการเข้าถึงกล้องในเบราว์เซอร์ของคุณ`}
+        buttonText="ตกลง"
+        handleOnclick={() => router.push("/")}
+        color="red"
+      />
     );
-  return (
-    <div className="absolute top-1/2 left-1/2 -translate-1/2 bg-white text-white px-8 pt-6 pb-4 rounded-xl z-3 shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center">
-      <div>
-        <Image
-          src={error?.type === "incorrect" ? warning : x_mark}
-          alt={error?.type === "incorrect" ? "warning" : "x_mark"}
-          width={36}
-          height={36}
-        />
-      </div>
 
-      <h3 className="text-xl text-gray-700 mt-2">ขออภัย</h3>
-      {error?.type === "incorrect" ? (
-        <p className="leading-5 mt-1 text-slate-gray px-3">
-          ข้อมูล QR Code ไม่ถูกต้องกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง
-        </p>
-      ) : (
-        <p className="leading-5 mt-1 text-slate-gray px-3">
-          คุณไม่ได้จองห้อง {error?.roomNumber} <br />
-          ในเวลา {error?.time} กรุณาตรวจสอบและทำรายการใหม่อีกครั้ง
-        </p>
-      )}
-      <hr className="w-full border border-gray-300 my-6" />
-      <button
-        className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 font-medium text-center shadow-sm cursor-pointer py-2 w-4/5 rounded-2xl"
-        onClick={startScaning}
-      >
-        ตกลง
-      </button>
-    </div>
-  );
+  if (error.type === "incorrect")
+    return (
+      <ErrorBox
+        Svg={Warning}
+        alt="warning"
+        header="ข้อมูลไม่ถูกต้อง"
+        message={`ข้อมูล QR Code ไม่ถูกต้อง\nกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง`}
+        buttonText="ตกลง"
+        handleOnclick={startScaning}
+        color="red"
+      />
+    );
+
+  if (error.type === "no-booking")
+    return (
+      <ErrorBox
+        Svg={X_Mark}
+        alt="x_mark"
+        header="ไม่มีการจองห้อง"
+        message={`คุณไม่ได้จองห้อง ${error.roomNumber}\nในเวลา ${error.time} \nกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง`}
+        buttonText="ตกลง"
+        handleOnclick={startScaning}
+        color="red"
+      />
+    );
+  return <div></div>;
 }
 
 export default QRCodeErrorMessage;

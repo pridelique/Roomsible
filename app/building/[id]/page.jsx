@@ -4,10 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useRouter } from "@node_modules/next/navigation";
 import Image from "@node_modules/next/image";
-import { hand_zoom, zoom_in, zoom_out } from "@public/assets/icons";
-import { status } from "@data";
-import Building from "@components/Building";
-import StatusLabel from "@components/StatusLabel";
+import { zoom_in, zoom_out } from "@public/assets/icons";
+import Building from "@components/building_components/Building";
+import StatusTable from "@components/building_components/StatusTable";
+import ZoomPanAnimation from "@components/building_components/ZoomPanAnimation";
+import { animateDemo } from "@utils/animateDemo";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
@@ -15,7 +16,11 @@ function BuildingPage({ params }) {
   const outerRef = useRef(null);
   const innerRef = useRef(null);
   const buttonRef = useRef(null);
+  const zoomPanRef = useRef(null);
+  const zoomingRef = useRef(null);
   const centerViewRef = useRef(null);
+  const isAnimatedRef = useRef(false);
+  const [animationState, setAnimationState] = useState(false);
   const [loading, setLoading] = useState(true);
   const [zooming, setZooming] = useState(false);
   const [fullscreen, setFullscreen] = useState(true);
@@ -34,6 +39,7 @@ function BuildingPage({ params }) {
     if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
     window.timeOutZooming = setTimeout(() => {
       setZooming(false);
+      animateDemo(isAnimatedRef, zoomPanRef, zoomingRef, maxScale, setAnimationState)
     }, 5000);
   };
 
@@ -42,7 +48,6 @@ function BuildingPage({ params }) {
     else centerView(maxScale);
     setZooming(true);
     resetMessage();
-
     setFullscreen(!fullscreen);
   };
 
@@ -51,9 +56,10 @@ function BuildingPage({ params }) {
       const outer = outerRef.current;
       const inner = innerRef.current;
       if (!outer || !inner) return;
-
+      const maxHeight = window.innerHeight - 270;
       const scaleX = outer.clientWidth / inner.offsetWidth;
-      const scaleY = outer.clientHeight / (inner.offsetHeight * scaleX);
+      const scaleY =
+        Math.min(outer.clientHeight, maxHeight) / (inner.offsetHeight * scaleX);
 
       setScale(Math.min(1, scaleX));
       setMaxScale(Math.max(1, scaleY));
@@ -61,11 +67,13 @@ function BuildingPage({ params }) {
         setcontainerStyle({
           width: outer.clientWidth,
           justifyContent: "center",
+          maxHeight: maxHeight,
         });
       else
         setcontainerStyle({
           width: inner.offsetWidth * scaleX,
           justifyContent: "start",
+          maxHeight: maxHeight,
         });
     };
     resize();
@@ -78,8 +86,15 @@ function BuildingPage({ params }) {
   }, [id]);
 
   useEffect(() => {
+    zoomingRef.current = zooming;
+  }, [zooming]);
+
+  useEffect(() => {
     if (!loading && centerViewRef.current) {
       centerViewRef.current(maxScale);
+      setTimeout(() => {
+        animateDemo(isAnimatedRef, zoomPanRef, zoomingRef, maxScale, setAnimationState);
+      }, 300);
     }
   }, [scale, maxScale]);
 
@@ -104,6 +119,9 @@ function BuildingPage({ params }) {
             if (ref.state.scale === maxScale) setFullscreen(true);
             if (ref.state.scale === 1) setFullscreen(false);
           }}
+          onInit={(ref) => {
+            zoomPanRef.current = ref;
+          }}
           onZoomStop={() => resetMessage()}
           onPanning={() => setZooming(true)}
           onPanningStop={() => resetMessage()}
@@ -118,42 +136,22 @@ function BuildingPage({ params }) {
                 <p className="text-center text-slate-gray mt-2 text-sm md:text-base">
                   เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
                 </p>
-                <div className="flex justify-center max-w-xl mx-auto mt-3">
-                  <div className="flex flex-col max-w-xl w-fit gap-2">
-                    <div className="flex gap-6 justify-center items-center">
-                      {status.slice(0, 3).map((item) => (
-                        <StatusLabel {...item} key={item.statusEng}/>
-                      ))}
-                    </div>
-                    <div className="flex gap-6 justify-center items-center">
-                      {status.slice(3, 5).map((item) => (
-                        <StatusLabel {...item} key={item.statusEng}/>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+
                 <div
-                  className="rounded-xl max-w-xl mx-auto mt-3 mb-6 relative shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]"
+                  className="rounded-xl max-w-xl mx-auto mt-3 mb-6 relative  shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
                   ref={outerRef}
                 >
                   {!zooming && maxScale !== 1 && (
-                    <div className="absolute top-1/2 left-1/2 -translate-1/2 z-9 animate-pulse w-full text-center text-slate-gray text-lg sm:text-xl flex gap-2 justify-center items-center select-none">
-                      <Image
-                        src={hand_zoom}
-                        alt="hand zoom"
-                        width={24}
-                        height={24}
-                        draggable={false}
-                        className="select-none"
-                      />
-                      <p>ลากหรือใช้ปุ่มซูมเพื่อดูแผนผังอาคาร</p>
-                    </div>
+                    <ZoomPanAnimation animationState={animationState}/>
                   )}
 
                   <TransformComponent>
-                    <div className="flex" style={containerStyle}>
+                    <div
+                      className="flex cursor-grab active:cursor-grabbing max-h-[500px] justify-center items-center"
+                      style={containerStyle}
+                    >
                       <div
-                        className="origin-left p-10"
+                        className="origin-left p-10 h-fit"
                         ref={innerRef}
                         style={{ transform: `scale(${scale})` }}
                       >
@@ -177,6 +175,9 @@ function BuildingPage({ params }) {
                       className="select-none"
                     />
                   </button>
+                </div>
+                <div className="flex justify-center max-w-xl mx-auto mt-3">
+                  <StatusTable />
                 </div>
               </>
             );

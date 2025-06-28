@@ -14,7 +14,7 @@ const status = [
   },
   {
     statusEng: "unavailable",
-    statusThai: "ไม่ว่าง",
+    statusThai: "ใช้ไม่ได้",
     color: statusColors['unavailable']
   },
   {

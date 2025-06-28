@@ -32,11 +32,11 @@ function Menu({
   })
 
   return (
-    <div className="flex md:hidden w-full bg-white shadow-md relative z-9 text-base flex-col rounded-b-xl" ref={menuRef}>
+    <div className="hidden max-[850px]:flex w-full bg-white shadow-md absolute z-9 text-base flex-col rounded-b-xl" ref={menuRef}>
       {/* Link */}
       <ul className="w-full">
         {navLink
-          .filter((item) => session || !item.session)
+          // .filter((item) => session || !item.session)
           .map((item) => {
             if (item.label !== "ตึก")
               return (

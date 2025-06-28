@@ -2,7 +2,7 @@
 
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
-import { building, menu } from "@public/assets/icons";
+import { building } from "@public/assets/icons";
 import { useContext, useState } from "react";
 import NavButton from "./nav_components/NavButton";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
@@ -14,21 +14,48 @@ import Time from "./nav_components/Time";
 import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import MenuIcon from "@public/assets/icons/menu.svg";
+import { notifySuccess } from "@utils/notify";
+import Profile from "./nav_components/Profile";
+
+const dateWidth = {
+  วันจันทร์: 143,
+  วันอังคาร: 148,
+  วันพุธ: 120,
+  วันพฤหัสบดี: 170,
+  วันศุกร์: 130,
+};
+
+const timewidth = {
+  1: 119,
+  2: 121,
+  3: 121,
+  4: 121,
+  5: 121,
+  6: 122,
+  7: 121,
+  8: 122,
+  9: 121,
+};
+
 function Nav() {
   const [isShow, setIsShow] = useState(false);
   const [isShowtime, setIsShowTime] = useState(false);
-  const { day, setDay, period, setPeriod } = useContext(DateTimeContext)
+  const { day, setDay, period, setPeriod } = useContext(DateTimeContext);
   const [dateDropdown, setDateDropdown] = useState(false);
   const [timeDropDown, setTimeDropdown] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { user, setUser } = useContext(SessionContext)
-  
+  const { user, setUser } = useContext(SessionContext);
+
   const handleLogout = () => {
     setUser(null);
+    notifySuccess("คุณออกจากระบบเรียบร้อยแล้ว!");
+    setIsShow(false);
+    router.push("/");
   };
 
   const handleLogin = () => {
+    setIsShow(false);
     router.push("/login");
   };
 
@@ -45,7 +72,7 @@ function Nav() {
   };
 
   return (
-    <header className="z-10 relative w-full text-[17px]">
+    <header className="z-10 relative w-full text-[17px] bg-white">
       <nav
         className={`flex justify-between items-center w-full padding-x py-3 ${
           isShow ? "shadow-sm" : "shadow-md"
@@ -55,10 +82,17 @@ function Nav() {
         <Logo />
 
         {/* Link */}
-        <ul className="hidden md:flex md:gap-1 lg:gap-2 text-slate-gray items-center">
+        <ul className="flex max-[850px]:hidden md:gap-1 lg:gap-2 text-slate-gray items-center absolute left-1/2 -translate-x-1/2">
           {isShowtime ? (
             <>
-              <Date day={day} setDay={setDay} dateDropdown={dateDropdown} setDateDropdown={setDateDropdown}/>
+              <li className="text-slate-gray relative">
+                <Date
+                  day={day}
+                  setDay={setDay}
+                  dateDropdown={dateDropdown}
+                  setDateDropdown={setDateDropdown}
+                />
+              </li>
               <li>
                 {/* ปุ่ม toggle time */}
                 <button
@@ -68,7 +102,17 @@ function Nav() {
                   <Image src={building} alt="building" width={20} height={20} />
                 </button>
               </li>
-              <Time period={period} setPeriod={setPeriod} timeDropdown={timeDropDown} setTimeDropdown={setTimeDropdown}/>
+              <li
+                className="text-slate-gray relative mr-3"
+                style={{ marginRight: dateWidth[day] - timewidth[period] }}
+              >
+                <Time
+                  period={period}
+                  setPeriod={setPeriod}
+                  timeDropdown={timeDropDown}
+                  setTimeDropdown={setTimeDropdown}
+                />
+              </li>
             </>
           ) : (
             <NavLink
@@ -81,26 +125,44 @@ function Nav() {
         </ul>
 
         {/* วัน คาบ */}
-        <ul className="flex md:hidden gap-3 text-slate-gray">
-          <Date day={day} setDay={setDay} dateDropdown={dateDropdown} setDateDropdown={setDateDropdown} />
-          <Time period={period} setPeriod={setPeriod} timeDropdown={timeDropDown} setTimeDropdown={setTimeDropdown} />
+        <ul className="hidden max-[850px]:flex gap-3 max-[380px]:gap-0 text-slate-gray">
+          <li className="text-slate-gray relative">
+            <Date
+              day={day}
+              setDay={setDay}
+              dateDropdown={dateDropdown}
+              setDateDropdown={setDateDropdown}
+            />
+          </li>
+          <li className="text-slate-gray relative">
+            <Time
+              period={period}
+              setPeriod={setPeriod}
+              timeDropdown={timeDropDown}
+              setTimeDropdown={setTimeDropdown}
+            />
+          </li>
         </ul>
 
-        <div className="hidden md:flex justify-center items-center gap-4">
+        <div className="flex max-[850px]:hidden justify-center items-center gap-4">
           {/* ปุ่ม login logout */}
-          <NavButton
-            session={user}
-            handleLogin={handleLogin}
-            handleLogout={handleLogout}
-          />
+          {!user ? (
+            <NavButton
+              session={user}
+              handleLogin={handleLogin}
+              handleLogout={handleLogout}
+            />
+          ) : (
+            <Profile handleLogout={handleLogout} />
+          )}
         </div>
 
         {/* ปุ่มเมนู */}
         <button
-          className="rounded-xl hover:bg-gray-100 p-2 flex md:hidden justify-center items-center"
-          onClick={() => setTimeout(() => setIsShow(!isShow),0)}
+          className="rounded-xl hover:bg-gray-100 p-2 hidden max-[850px]:flex justify-center items-center cursor-pointer"
+          onClick={() => setTimeout(() => setIsShow(!isShow), 0)}
         >
-          <MenuIcon className='size-[28px]'/>
+          <MenuIcon className="size-[28px]" />
         </button>
       </nav>
 
@@ -119,4 +181,3 @@ function Nav() {
 }
 
 export default Nav;
-
