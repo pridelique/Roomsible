@@ -60,7 +60,7 @@ function login() {
         </div>
 
         {/* Form */}
-        <div className="flex-[2_1_300px] px-7 pt-4 pb-8 w-full max-w-[325px] flex flex-col justify-center">
+        <div className="flex-[2_1_300px] px-7 pt-4 pb-8 w-full  flex flex-col justify-center">
           <div className="mt-1 text-[26px] font-semibold mb-4 text-gray-700 text-center sm:text-left">
             เข้าสู่ระบบ
           </div>
