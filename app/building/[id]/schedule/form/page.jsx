@@ -111,6 +111,17 @@ function BookingForm() {
     }
   }, [teacher, subject, studentRoom, activityDetail]);
 
+  /*export default function ThumbnailCard() {
+  return (
+    <div className="flex flex-col sm:flex-row flex-wrap w-full sm:w-[400px] bg-white shadow-md rounded overflow-hidden">
+      <div className="flex-[1_1_200px] bg-pink-500 h-[150px] sm:h-auto sm:w-[200px]" />
+      <div className="flex-[2_1_300px] p-4">
+        <p className="font-bold">Content</p>
+        <p className="text-sm text-gray-500">Follow @coding.stella</p>
+      </div>
+    </div>
+  );
+}*/
   return (
     <section className="padding-x max-container w-full pt-6 ">
       {isSubmiting ? (
@@ -136,37 +147,43 @@ function BookingForm() {
           )}
 
           {success && (
-            <div className="absolute top-1/2 left-1/2 -translate-1/2 flex items-center justify-center text-center w-full px-4">
-              <div className="bg-white rounded-3xl shadow-md w-full max-w-sm mx-auto border border-gray-300">
-                <Image
-                  src={buildingImages[id]}
-                  alt="Building"
-                  width={448}
-                  height={300}
-                  className="rounded-t-3xl mb-2"
-                />
-                <div className="p-4 pb-8">
-                  <div className="text-3xl font-semibold mb-4 text-green-600">
-                    การจองสำเร็จ
-                  </div>
-                  <p className="text-gray-600 mt-2">
-                    คุณได้จองห้อง {roomNumber} ใน{day} คาบที่ {period}{" "}
-                    เรียบร้อยแล้ว
-                    กรุณาตรวจสอบรายละเอียดการจองอีกครั้งในหน้าประวัติ
-                  </p>
-                  <p></p>
-                  <hr className="w-full border border-gray-300 my-6" />
-                  <Link
-                    href="/"
-                    className=" py-2 rounded-full shadow-sm mx-auto block
-                       bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white cursor-pointer"
-                  >
-                    กลับหน้าแรก
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 flex justify-center">
+    <div className="bg-white rounded-3xl shadow-md w-full max-w-sm sm:max-w-2xl border border-gray-300 flex flex-col sm:flex-row overflow-hidden">
+      
+      {/* Image Container */}
+      <div className="flex-[1_1_200px]">
+        <Image
+          src={buildingImages[id]}
+          alt="Building"
+          width={448}
+          height={300}
+          className="object-cover w-full h-full"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="flex-[2_1_300px] p-4 sm:p-6 flex flex-col justify-center">
+        <div className="text-3xl font-semibold mb-4 text-green-600 text-center sm:text-left">
+          การจองสำเร็จ
+        </div>
+        <p className="text-gray-600 mt-2 text-center sm:text-left">
+          คุณได้จองห้อง {roomNumber} ใน{day} คาบที่ {period} เรียบร้อยแล้ว
+          กรุณาตรวจสอบรายละเอียดการจองอีกครั้งในหน้าประวัติ
+        </p>
+
+        <hr className="w-full border border-gray-300 my-6" />
+
+        <Link
+          href="/"
+          className="py-2 rounded-full shadow-sm mx-auto sm:mx-0 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white text-center"
+        >
+          กลับหน้าแรก
+        </Link>
+      </div>
+    </div>
+  </div>
+)}
+
         </>
       ) : (
         <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 flex flex-col items-center">

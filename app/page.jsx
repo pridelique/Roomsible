@@ -7,7 +7,6 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { addDays, format, getDay, set } from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
-import StatusTable from "@components/building_components/StatusTable";
 import StatusLabel from "@components/building_components/StatusLabel";
 const mapDay = {
   วันจันทร์: 0,
