@@ -137,7 +137,7 @@ function BookingForm() {
 
           {success && (
   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 flex justify-center">
-    <div className="bg-white rounded-3xl shadow-md w-full max-w-sm sm:max-w-2xl border border-gray-300 flex flex-col sm:flex-row overflow-hidden">
+    <div className="bg-white rounded-3xl shadow-md w-full max-w-sm sm:max-w-2xl sm:h-[400px] border border-gray-300 flex flex-col sm:flex-row overflow-hidden">
       
       {/* Image Container */}
       <div className="flex-[1_1_200px]">
