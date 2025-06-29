@@ -111,17 +111,6 @@ function BookingForm() {
     }
   }, [teacher, subject, studentRoom, activityDetail]);
 
-  /*export default function ThumbnailCard() {
-  return (
-    <div className="flex flex-col sm:flex-row flex-wrap w-full sm:w-[400px] bg-white shadow-md rounded overflow-hidden">
-      <div className="flex-[1_1_200px] bg-pink-500 h-[150px] sm:h-auto sm:w-[200px]" />
-      <div className="flex-[2_1_300px] p-4">
-        <p className="font-bold">Content</p>
-        <p className="text-sm text-gray-500">Follow @coding.stella</p>
-      </div>
-    </div>
-  );
-}*/
   return (
     <section className="padding-x max-container w-full pt-6 ">
       {isSubmiting ? (
@@ -175,7 +164,7 @@ function BookingForm() {
 
         <Link
           href="/"
-          className="py-2 rounded-full shadow-sm mx-auto sm:mx-0 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white text-center"
+          className="py-2 rounded-full shadow-sm mx-0 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white text-center"
         >
           กลับหน้าแรก
         </Link>
