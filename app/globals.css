@@ -141,4 +141,5 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   overflow-x: hidden;
+  background: linear-gradient(to right, #e66465, #9198e5);
 }
