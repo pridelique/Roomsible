@@ -83,7 +83,7 @@ function Schedule() {
         </p>
       </div>
       <div
-        className="overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll mx-auto"
+        className="bg-white overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll mx-auto"
         style={{ maxWidth: maxWidth + 2 }}
       >
         <div

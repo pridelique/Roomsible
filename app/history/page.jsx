@@ -101,7 +101,7 @@ function HistoryPage() {
       
       <div className="p-10 max-w-4xl mx-auto flex flex-col">
         <div className="text-gray-700 space-y-1">
-          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md text-sm md:text-lg lg:text-2xl">
+          <div className="flex justify-center mb-5 mt-5 bg-white p-3 shadow-md text-sm md:text-lg lg:text-2xl rounded-md">
             <div className="text-center">
               <div>นางสาวชนัญธิดา ธนะสารสมบูรณ์</div>
               <div className="text-base text-gray-500">ม.6.8</div>
@@ -112,7 +112,7 @@ function HistoryPage() {
     <div className="flex flex-col items-center">
       <div className="overflow-x-auto w-full border border-gray-300 shadow-md rounded-md custom-scroll">
         <table className="w-full text-center">
-          <thead className="bg-gray-100 text-gray-700 text-base sm:text-lg">
+          <thead className="bg-gray-200 text-gray-700 text-base sm:text-lg">
             <tr>
               <th className="py-2 px-1">วันที่</th>
               <th className="py-2 px-1">คาบเรียน</th>
@@ -122,7 +122,7 @@ function HistoryPage() {
               <th className="py-2 px-1">{}</th>
             </tr>
           </thead>
-          <tbody className="text-gray-500 text-base sm:text-md md:text-lg">
+          <tbody className="bg-white text-gray-500 text-base sm:text-md md:text-lg">
               {bookings.map((booking)=>(
                 <tr key={booking.id} className="border-b relative">
                   <td className="py-2 px-1">{booking.date}</td>
