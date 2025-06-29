@@ -45,10 +45,10 @@ function login() {
   <section className="padding-x max-container w-full pt-6">
     {/* <ToastContainer/> */}
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full padding-x">
-      <div className="flex flex-col sm:flex-row bg-white rounded-3xl shadow-md w-full max-w-[400px] sm:max-w-2xl mx-auto border border-gray-300 overflow-hidden mb-7">
+      <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-md w-full max-w-[400px] md:max-w-4xl sm:min-h-[400px] mx-auto border border-gray-300 overflow-hidden mb-7">
 
         {/* Image */}
-        <div className="flex-[1_1_200px] sm:w-[200px] h-[150px] sm:h-auto bg-gray-100">
+        <div className="flex-[1_1_200px] md:w-[400px] h-[250px] md:h-auto bg-gray-100">
           <Image
             src={loginImgae}
             alt="Login Image"
@@ -60,8 +60,8 @@ function login() {
         </div>
 
         {/* Form */}
-        <div className="flex-[2_1_300px] px-7 pt-4 pb-8 w-full  flex flex-col justify-center">
-          <div className="mt-1 text-[26px] font-semibold mb-4 text-gray-700 text-center sm:text-left">
+        <div className="px-15 flex-[2_1_300px] pt-4 pb-8 w-full md:w-[200px] flex flex-col justify-center">
+          <div className="mt-1 text-[26px] font-semibold mb-4 text-gray-700 text-center md:text-left">
             เข้าสู่ระบบ
           </div>
           <form onSubmit={(e) => handleSubmit(e)}>
