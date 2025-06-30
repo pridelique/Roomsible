@@ -7,7 +7,6 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { addDays, format, getDay, set } from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
-import StatusTable from "@components/building_components/StatusTable";
 import StatusLabel from "@components/building_components/StatusLabel";
 const mapDay = {
   วันจันทร์: 0,
@@ -141,7 +140,7 @@ export default function HomePage() {
             ref={outerRef}
             style={{ height: screenHeight - 250 }}
           >
-            <div className="flex justify-center items-start rounded-lg overflow-hidden shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] w-fit h-fit mx-auto">
+            <div className="bg-white flex justify-center items-start rounded-lg overflow-hidden shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] w-fit h-fit mx-auto">
               <TransformComponent>
                 <div
                   className="cursor-grab active:cursor-grabbing w-fit h-fit mx-auto"

@@ -146,4 +146,8 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   overflow-x: hidden;
+  background-image: url('/assets/images/bg_line.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
