@@ -138,7 +138,7 @@ function HistoryPage() {
             totalBookings={totalBookings}
           />
           <div className="mt-3 mb-6 max-[500px]:mb-0 px-4 relative w-full">
-            <div className="overflow-y-hidden w-full border border-gray-300 custom-scroll p-0 h-[314px] rounded-lg shadow-lg relative">
+            <div className="overflow-y-hidden w-full border border-gray-300 custom-scroll p-0 h-[314px] rounded-lg shadow-lg relative bg-white">
               <table className="w-full text-center">
                 <thead className="bg-gray-200 text-gray-600 text-lg border-b border-gray-300">
                   <tr>
@@ -188,7 +188,7 @@ function HistoryPage() {
                     .map((booking, index) => (
                       <tr
                         key={booking.id}
-                        className="relative even:bg-gray-100"
+                        className="relative even:bg-gray-100 bg-white"
                       >
                         <td className="py-2.5 px-4 whitespace-nowrap">
                           {booking.date}
