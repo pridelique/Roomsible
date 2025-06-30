@@ -4,7 +4,7 @@ import Image from "@node_modules/next/image";
 import { arrow_down, clock } from "@public/assets/icons";
 import { useEffect, useRef, useState } from "react";
 
-const periods = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const periods = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
   const timeDropdownRef = useRef(null)

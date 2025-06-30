@@ -35,6 +35,7 @@ const timewidth = {
   7: 121,
   8: 122,
   9: 121,
+  10: 130,
 };
 
 function Nav() {

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 @theme inline {
   --color-slate-gray: #6D6D6D;
@@ -84,8 +85,10 @@
 .react-select__single-value {
   @apply text-gray-700;
 }
+
 .custom-scroll::-webkit-scrollbar {
-  height: 8px;
+  height: 6px;
+  width: 6px;
 }
 .custom-scroll::-webkit-scrollbar-track {
   background: transparent;
@@ -93,6 +96,8 @@
 .custom-scroll::-webkit-scrollbar-thumb {
   background-color: #d1d5db; 
   border-radius: 9999px;
+  border: none;
+  box-shadow: none
 }
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background-color: #9ca3af; 
@@ -134,8 +139,8 @@
 body {
   /* font-family: 'Trirong-Light', sans-serif;
   font-weight: 300; */
-  font-family: "Mali", cursive;
-  font-weight: 500;
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
   font-style: normal;
   user-select: none;
   -webkit-user-select: none;

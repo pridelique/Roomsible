@@ -1,5 +1,6 @@
 import Image from "@node_modules/next/image";
 import { Warning } from "@public/assets/icons";
+import { useEffect } from "react";
 function ErrorBox({
   src,
   Svg,
@@ -10,6 +11,12 @@ function ErrorBox({
   buttonText,
   color,
 }) {
+  useEffect(() => {
+    document.body.classList.add("overflow-hidden");
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-8">
       <div className="absolute top-1/2 left-1/2 -translate-1/2 px-3 w-full">
@@ -20,7 +27,7 @@ function ErrorBox({
             </div>
           )}
 
-          {Svg && <Svg className="w-12 h-12 text-red-400" />}
+          {Svg && <Svg className="w-16 h-16 text-red-400" />}
 
           <h3 className="text-xl text-gray-700 mt-3 font-semibold">{header}</h3>
           <p className="leading-6 mt-2 text-slate-gray px-3 whitespace-pre-line">
