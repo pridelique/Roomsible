@@ -6,7 +6,7 @@ import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifyWaring } from "@utils/notify";
-import { supabase } from "@/utils/supabase"; // ✅ ดึง supabase เข้ามาใช้
+import { supabase } from "@/utils/supabase";
 
 function Schedule() {
   const router = useRouter();
@@ -21,7 +21,6 @@ function Schedule() {
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
 
-  // ✅ แปลงชื่อวันไทย -> อังกฤษ (ตามที่ใช้ในฐานข้อมูล)
   const dayMap = {
     "วันจันทร์": "monday",
     "วันอังคาร": "tuesday",
@@ -30,7 +29,6 @@ function Schedule() {
     "วันศุกร์": "friday",
   };
 
-  // ✅ กรองเฉพาะคาบ 1–10
   const filteredTimeSlots = timeSlots.filter(
     (slot) => slot.label >= 1 && slot.label <= 10
   );
@@ -45,7 +43,6 @@ function Schedule() {
     );
   };
 
-  // ✅ ขนาดตาราง
   useEffect(() => {
     const handleResize = () => {
       const inner = innerRef.current;
@@ -56,7 +53,6 @@ function Schedule() {
     handleResize();
   }, []);
 
-  // ✅ ดึงข้อมูลจาก Supabase
   useEffect(() => {
     const fetchStatus = async () => {
       if (!room) return;
@@ -71,19 +67,17 @@ function Schedule() {
         return;
       }
 
-      // ✅ แปลงข้อมูลจาก Supabase เป็น map
       const bookedMap = {};
       data.forEach((item) => {
         bookedMap[`${item.day}-${item.period}`] = true;
       });
 
-      // ✅ สร้าง status จากตารางทั้งหมด
       const newStatus = {};
       days.forEach((dayThai) => {
         const dayEng = dayMap[dayThai];
         filteredTimeSlots.forEach((period) => {
           const key = `${dayEng}-${period.label}`;
-          newStatus[`${dayThai}-${period.label}`] = !bookedMap[key]; // ถ้าไม่มี ถือว่าว่าง
+          newStatus[`${dayThai}-${period.label}`] = !bookedMap[key]; 
         });
       });
 
