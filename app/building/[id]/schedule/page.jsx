@@ -14,7 +14,7 @@ function Schedule() {
   const param = useParams();
   const searchParams = useSearchParams();
   const buildingId = param.id;
-  const roomNumber = searchParams.get("roomNumber");
+  const room = searchParams.get("room");
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
@@ -43,7 +43,7 @@ function Schedule() {
       return;
     }
     router.push(
-      `/building/${buildingId}/schedule/form?roomNumber=${roomNumber}&day=${day}&period=${period.label}`
+      `/building/${buildingId}/schedule/form?room=${room}&day=${day}&period=${period.label}`
     );
   };
 
@@ -72,11 +72,11 @@ function Schedule() {
     <section className="padding-x max-container w-full pt-6">
       <div className="text-center mb-4">
         <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
-          ตารางการใช้งานห้อง {roomNumber}
+          ตารางการใช้งานห้อง {room}
         </h2>
         {/* <div className="text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl">
           <h3 className="mt-1">อาคาร {buildingId} {buildingNames[buildingId].name}</h3>
-          <h3 className="mt-0.5">ห้อง {roomNumber}</h3>
+          <h3 className="mt-0.5">ห้อง {room}</h3>
         </div> */}
         <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
           เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ

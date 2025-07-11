@@ -38,7 +38,7 @@ function QRCodeErrorMessage({ error, startScaning }) {
         Svg={X_Mark}
         alt="x_mark"
         header="ไม่มีการจองห้อง"
-        message={`คุณไม่ได้จองห้อง ${error.roomNumber}\nในเวลา ${error.time} \nกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง`}
+        message={`คุณไม่ได้จองห้อง ${error.room}\nในเวลา ${error.time} \nกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง`}
         buttonText="ตกลง"
         handleOnclick={startScaning}
         color="red"

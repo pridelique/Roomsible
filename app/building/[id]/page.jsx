@@ -1,6 +1,6 @@
 "use client";
 import buildings from "@data/buildings";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useRouter } from "@node_modules/next/navigation";
 import Image from "@node_modules/next/image";
@@ -9,10 +9,15 @@ import Building from "@components/building_components/Building";
 import StatusTable from "@components/building_components/StatusTable";
 import ZoomPanAnimation from "@components/building_components/ZoomPanAnimation";
 import { animateDemo } from "@utils/animateDemo";
+import Loading from "@components/Loading";
+import { DateTimeContext } from "@provider/DateTimeProvider";
+import { dayThaiToEn } from "@utils/translateDay";
+import { supabase } from "@utils/supabase";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
   const router = useRouter();
+  const { day, period } = useContext(DateTimeContext)
   const outerRef = useRef(null);
   const innerRef = useRef(null);
   const buttonRef = useRef(null);
@@ -31,8 +36,8 @@ function BuildingPage({ params }) {
     justifyContent: "center",
   });
 
-  const handleOnClick = (roomNumber) => {
-    router.push(`/building/${id}/schedule?roomNumber=${roomNumber}`);
+  const handleOnClick = (room) => {
+    router.push(`/building/${id}/schedule?room=${room}`);
   };
 
   const resetMessage = () => {
@@ -78,7 +83,6 @@ function BuildingPage({ params }) {
     };
     resize();
     setTimeout(() => resize(), 10);
-    setLoading(false);
     window.addEventListener("resize", resize);
     return () => {
       window.removeEventListener("resize", resize);
@@ -98,12 +102,39 @@ function BuildingPage({ params }) {
     }
   }, [scale, maxScale]);
 
+  // get building data
+  useEffect(() => {
+    console.log(day, period);
+    
+    const getBookings = async () => {
+      try {
+        const { data, error } = await 
+        supabase
+        .from('bookings')
+        .select('room, status')
+        .eq('building', id)
+        .eq('day', dayThaiToEn[day])
+        .eq('period', period)
+        if (error) {
+          console.error("Error fetching bookings:", error);
+          return;
+        }
+        console.log(data);
+        
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+        return;
+      }
+    }
+    setLoading(false);
+
+    getBookings();
+  }, [day, period, id])
+
   return (
     <section className="padding-x max-container w-full pt-6">
       {loading && (
-        <div className="fixed inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
-          <div className="border-3 border-gray-100 border-t-3 border-t-red-400 rounded-full p-6 animate-spin shadow-inner"></div>
-        </div>
+        <Loading/>
       )}
       <div className={`${loading ? "opacity-0" : "opacity-100"}`}>
         <TransformWrapper

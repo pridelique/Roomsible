@@ -4,7 +4,7 @@ import guest_profile from './guest_profile.png';
 import Guest_Profile from './guest_profile.svg';
 
 import bordersw from './bordersw.jpg';
-import loginImgae from './loginImage.jpg';
+import loginImage from './loginImage.jpg';
 
 import building1 from './building1.jpg';
 import building2 from './building2.jpg';
@@ -39,7 +39,7 @@ export {
     Guest_Profile,
 
     bordersw,
-    loginImgae,
+    loginImage,
 
     building1,
     building2,

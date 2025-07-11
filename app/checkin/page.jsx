@@ -9,6 +9,7 @@ import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
 import { Warning, warning } from "@public/assets/icons";
 import { useRouter } from "@node_modules/next/navigation";
+import Loading from "@components/Loading";
 
 export default function FullScreenQRScanner() {
   const videoRef = useRef(null);
@@ -54,19 +55,19 @@ export default function FullScreenQRScanner() {
                 } else if (random == 2) {
                   setError({
                     type: "no-booking",
-                    roomNumber: 1202,
+                    room: 1202,
                     time: "08.30 - 09.20 น.",
                   });
                 } else {
                   setSuccess({
                     buildingId: 1,
-                    roomNumber: 1202,
+                    room: 1202,
                     time: "08.30 - 09.20 น.",
                   });
                 }
                 // setError({
                 //     type : 'no-booking',
-                //     roomNumber : 1202,
+                //     room : 1202,
                 //     time : '08.30 - 09.20 น.'
                 //   })
               }, 2000);
@@ -97,6 +98,10 @@ export default function FullScreenQRScanner() {
       window.removeEventListener("resize", resize);
     };
   }, []);
+
+  if (user === "loading") return (
+    <Loading/>
+  )
 
   if (!user)
     return (

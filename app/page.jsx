@@ -8,6 +8,7 @@ import { addDays, format, getDay, set } from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
+import Loading from "@components/Loading";
 const mapDay = {
   วันจันทร์: 0,
   วันอังคาร: 1,
@@ -123,9 +124,7 @@ export default function HomePage() {
   return (
     <section className="padding-x max-container w-full pt-6">
       {loading && (
-        <div className="fixed inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
-          <div className="border-3 border-gray-100 border-t-3 border-t-red-400 rounded-full p-6 animate-spin shadow-inner"></div>
-        </div>
+        <Loading/>
       )}
       <h2 className="text-center text-xl md:text-2xl lg:text-3xl text-gray-700 font-semibold">
         แผนผังโรงเรียนสตรีวิทยา
