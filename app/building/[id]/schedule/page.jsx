@@ -5,7 +5,8 @@ import "@app/globals.css";
 import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
-import { notifySuccess, notifyWaring } from "@utils/notify";
+import { notifyWaring } from "@utils/notify";
+import { supabase } from "@/utils/supabase"; // ✅ ดึง supabase เข้ามาใช้
 
 function Schedule() {
   const router = useRouter();
@@ -20,6 +21,20 @@ function Schedule() {
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
 
+  // ✅ แปลงชื่อวันไทย -> อังกฤษ (ตามที่ใช้ในฐานข้อมูล)
+  const dayMap = {
+    "วันจันทร์": "monday",
+    "วันอังคาร": "tuesday",
+    "วันพุธ": "wednesday",
+    "วันพฤหัสบดี": "thursday",
+    "วันศุกร์": "friday",
+  };
+
+  // ✅ กรองเฉพาะคาบ 1–10
+  const filteredTimeSlots = timeSlots.filter(
+    (slot) => slot.label >= 1 && slot.label <= 10
+  );
+
   const handleOnClick = (day, period) => {
     if (!user) {
       notifyWaring("กรุณาเข้าสู่ระบบก่อนทำการจองห้องเรียน");
@@ -30,6 +45,7 @@ function Schedule() {
     );
   };
 
+  // ✅ ขนาดตาราง
   useEffect(() => {
     const handleResize = () => {
       const inner = innerRef.current;
@@ -40,22 +56,42 @@ function Schedule() {
     handleResize();
   }, []);
 
+  // ✅ ดึงข้อมูลจาก Supabase
   useEffect(() => {
-    // ตัวอย่างสุ่มสถานะ ให้แทนที่ด้วย query จริงในโปรเจกต์ของคุณ
-    days.forEach((day) => {
-      timeSlots.forEach((period) => {
-        setStatus((prev) => ({
-          ...prev,
-          [`${day}-${period.label}`]: Math.ceil(Math.random() * 2) % 2,
-        }));
-      });
-    });
-  }, []);
+    const fetchStatus = async () => {
+      if (!room) return;
 
-  // กรองเฉพาะคาบ 1-10 (ตัดคาบ homeroom ออก)
-  const filteredTimeSlots = timeSlots.filter(
-    (slot) => slot.label >= 1 && slot.label <= 10
-  );
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("day, period")
+        .eq("room", room);
+
+      if (error) {
+        console.error("Error fetching booking:", error.message);
+        return;
+      }
+
+      // ✅ แปลงข้อมูลจาก Supabase เป็น map
+      const bookedMap = {};
+      data.forEach((item) => {
+        bookedMap[`${item.day}-${item.period}`] = true;
+      });
+
+      // ✅ สร้าง status จากตารางทั้งหมด
+      const newStatus = {};
+      days.forEach((dayThai) => {
+        const dayEng = dayMap[dayThai];
+        filteredTimeSlots.forEach((period) => {
+          const key = `${dayEng}-${period.label}`;
+          newStatus[`${dayThai}-${period.label}`] = !bookedMap[key]; // ถ้าไม่มี ถือว่าว่าง
+        });
+      });
+
+      setStatus(newStatus);
+    };
+
+    fetchStatus();
+  }, [room]);
 
   return (
     <section className="padding-x max-container w-full pt-6">
@@ -67,6 +103,7 @@ function Schedule() {
           เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
         </p>
       </div>
+
       <div
         className="bg-white overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll mx-auto"
         style={{ maxWidth: maxWidth + 2 }}
@@ -102,25 +139,25 @@ function Schedule() {
               <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">
                 {day}
               </div>
-              {filteredTimeSlots.map((period) => (
-                <div
-                  key={`${day}-${period.label}`}
-                  className={`border border-gray-200 ${
-                    status[`${day}-${period.label}`]
-                      ? "bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]"
-                      : "bg-[#FCA5A5]"
-                  }`}
-                  onClick={
-                    status[`${day}-${period.label}`]
-                      ? () => handleOnClick(day, period)
-                      : undefined
-                  }
-                />
-              ))}
+              {filteredTimeSlots.map((period) => {
+                const key = `${day}-${period.label}`;
+                return (
+                  <div
+                    key={key}
+                    className={`border border-gray-200 ${
+                      status[key]
+                        ? "bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]"
+                        : "bg-[#FCA5A5]"
+                    }`}
+                    onClick={status[key] ? () => handleOnClick(day, period) : undefined}
+                  />
+                );
+              })}
             </React.Fragment>
           ))}
         </div>
       </div>
+
       <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
         <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
         <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
