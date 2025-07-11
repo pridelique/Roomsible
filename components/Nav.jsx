@@ -16,6 +16,7 @@ import { SessionContext } from "@provider/SessionProvider";
 import MenuIcon from "@public/assets/icons/menu.svg";
 import { notifySuccess } from "@utils/notify";
 import Profile from "./nav_components/Profile";
+import { supabase } from "@utils/supabase";
 
 const dateWidth = {
   วันจันทร์: 143,
@@ -48,8 +49,13 @@ function Nav() {
   const router = useRouter();
   const { user, setUser } = useContext(SessionContext);
 
-  const handleLogout = () => {
-    setUser(null);
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout error:", error.message);
+      notifySuccess("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
+      return;
+    }
     notifySuccess("คุณออกจากระบบเรียบร้อยแล้ว!");
     setIsShow(false);
     router.push("/");

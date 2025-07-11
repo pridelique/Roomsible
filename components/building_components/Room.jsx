@@ -1,6 +1,6 @@
 import { statusColors } from "@data"
 
-function Room({ roomNumber, name, status, col_span, handleOnClick, showName }) {
+function Room({ room, name, status, col_span, handleOnClick, showName }) {
   
   
   return (
@@ -12,7 +12,7 @@ function Room({ roomNumber, name, status, col_span, handleOnClick, showName }) {
         ${status === "none" ? 'hidden' : ''}
         ${status !== "none" && status !== "unavailable" ? 'cursor-pointer hover:scale-105 active:scale-105 active:shadow-md' : ''}`}
           style={{ backgroundColor : statusColors[status]}}
-          onClick={status !== "none" && status !== "unavailable" ? () => handleOnClick(roomNumber) : () => {}}
+          onClick={status !== "none" && status !== "unavailable" ? () => handleOnClick(room) : () => {}}
         >
           {showName && name}
         </div>

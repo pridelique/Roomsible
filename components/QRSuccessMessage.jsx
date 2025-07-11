@@ -24,7 +24,7 @@ function QRSuccessMessage({ success }) {
       <div className="px-8 flex flex-col justify-center items-center w-full mt-1">
         <h3 className="text-2xl text-green-500 mt-3 font-semibold">ยืนยันสำเร็จ</h3>
         <p className="leading-5 mt-2 text-slate-gray px-3">
-          คุณได้ทำการเช็คอินห้อง {success?.roomNumber} <br />
+          คุณได้ทำการเช็คอินห้อง {success?.room} <br />
           ในเวลา {success?.time} เรียบร้อยแล้ว
         </p>
         <hr className="w-full border border-gray-300 my-6" />

@@ -5,7 +5,7 @@ import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { SessionContext } from "@provider/SessionProvider";
 import Image from "@node_modules/next/image";
-import { loginImgae } from "@public/assets/images";
+import { loginImage } from "@public/assets/images";
 import { Warning } from "@public/assets/icons";
 import { notifySuccess } from "@utils/notify";
 
@@ -17,29 +17,41 @@ function login() {
   const [loading, setLoading] = useState(false);
   const [buttonText, setButtonText] = useState("เข้าสู่ระบบ");
   const router = useRouter();
-  const { setUser } = useContext(SessionContext);
+  const { getUser } = useContext(SessionContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       setError("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
     setError("");
-    // Here you would typically make an API call to log in the user
-    // Simulate a login request
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (Math.random() < 0.5) {
-        setError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
-        return;
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+      
+      const data = await res.json();
+      if (!res.ok) {        
+        setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+      } else {
+        setButtonText("เข้าสู่ระบบสำเร็จ");
+        notifySuccess("เข้าสู่ระบบสำเร็จ!");
+        getUser();
+        router.push('/');
       }
-      setButtonText("เข้าสู่ระบบสำเร็จ!");
-      setUser(email);
-      notifySuccess("คุณเข้าสู่ระบบเรียบร้อยแล้ว!");
-      router.push("/");
-    }, 2000);
+    } catch (error) {
+      console.error(error);
+      setError("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");
+    }
+
+    setLoading(false);
   };
   return (
   <section className="padding-x max-container w-full pt-6">
@@ -50,7 +62,7 @@ function login() {
         {/* Image */}
         <div className="flex-[1_1_200px] md:w-[400px] h-[250px] md:h-auto bg-gray-100">
           <Image
-            src={loginImgae}
+            src={loginImage}
             alt="Login Image"
             width={448}
             height={300}

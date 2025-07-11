@@ -1,12 +1,13 @@
 import { Arrow_down } from "@public/assets/icons";
 
-function ModeSelection({ mode, setMode }) {
+function ModeSelection({ mode, setMode, role }) {
   return (
     <>
         {/* computer */}
       <div className="flex justify-evenly mb-4 gap-6  max-[450px]:hidden relative">
-        <span
-          className={`cursor-pointer px-3 pb-1 ${
+        <button
+          disabled={role === "student"}
+          className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50  ${
             mode === "class"
               ? "text-[#466AB0] font-semibold"
               : "text-gray-500"
@@ -14,8 +15,8 @@ function ModeSelection({ mode, setMode }) {
           onClick={() => setMode("class")}
         >
           การเรียนการสอน
-        </span>
-        <span
+        </button>
+        <button
           className={`cursor-pointer px-3 pb-1 ${
             mode === "activity"
               ? "text-[#466AB0] font-semibold"
@@ -24,7 +25,7 @@ function ModeSelection({ mode, setMode }) {
           onClick={() => setMode("activity")}
         >
           กิจกรรม
-        </span>
+        </button>
 
         {/* underline */}
          <span className={`absolute border left-0 -bottom-0.5 border-[#466AB0] rounded-full transition-all duration-300 ${mode === 'activity' ? 'w-[88px] translate-x-[181px]' : 'w-[158px]'}`}></span>
@@ -33,7 +34,9 @@ function ModeSelection({ mode, setMode }) {
         {/* mobile */}
       <div
         className="w-50 relative pb-1.5 text-[#466AB0] font-semibold cursor-pointer hidden overflow-hidden max-[450px]:flex group mb-4"
-        onClick={() => setMode(`${mode === "activity" ? "class" : "activity"}`)}
+        onClick={() => {
+          if (role != 'student') setMode(`${mode === "activity" ? "class" : "activity"}`)
+        }}
       >
         <div
           className={`flex h-full ${
@@ -50,7 +53,8 @@ function ModeSelection({ mode, setMode }) {
             
             {/* ArrowLeft */}
           <button
-            className={`absolute right-0 cursor-pointer transition-all duration-100 p-0.5 ${
+            disabled={role === "student"}
+            className={`absolute right-0 cursor-pointer transition-all duration-100 p-0.5 disabled:hidden ${
               mode === "activity"
                 ? "opacity-0"
                 : "opacity-30 hover:opacity-50 active:opacity-50 group-hover:opacity-50 group-active:opacity-50"
@@ -62,7 +66,8 @@ function ModeSelection({ mode, setMode }) {
 
             {/* ArrowRight */}
           <button
-            className={`absolute right-36 cursor-pointer transition-all duration-100 p-0.5 ${
+            disabled={role === "student"}
+            className={`absolute right-36 cursor-pointer transition-all duration-100 p-0.5 disabled:hidden ${
               mode === "activity"
                 ? "opacity-30 hover:opacity-50 active:opacity-50 group-hover:opacity-50 group-active:opacity-50"
                 : "opacity-0"

@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useRef, useState } from "react";
+import { use, useContext, useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import {
   useParams,
@@ -16,6 +16,11 @@ import Link from "@node_modules/next/link";
 import ErrorBox from "@components/ErrorBox";
 import OptionInput from "@components/form_components/OptionInput";
 import ModeSelection from "@components/form_components/ModeSelection";
+import Loading from "@components/Loading";
+import { SessionContext } from "@provider/SessionProvider";
+import { supabase } from "@utils/supabase";
+import { bookingError } from "@data/bookingError";
+import { dayThaiToEn } from "@utils/translateDay";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -46,29 +51,31 @@ const customStyles = {
 };
 
 function BookingForm() {
-  const [mode, setMode] = useState("class");
+  const [mode, setMode] = useState("activity");
   const [teacher, setTeacher] = useState("");
   const [subject, setSubject] = useState("");
-  const [studentRoom, setStudentRoom] = useState("");
+  const [studentClass, setStudentRoom] = useState("");
   const [activityDetail, setActivityDetail] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [role, setRole] = useState("student");
+  const { user, setUser } = useContext(SessionContext);
 
   const { id } = useParams();
   const searchParams = useSearchParams();
-  const roomNumber = searchParams.get("roomNumber") || "0";
+  const room = searchParams.get("room") || "0";
   const period = searchParams.get("period") || "1";
   const day = searchParams.get("day") || "วันจันทร์";
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (mode === "class") {
-      if (!teacher || !subject || !studentRoom) {
+      if (!teacher || !subject || !studentClass) {
         setErrorMessage("กรุณากรอกข้อมูลให้ครบถ้วน");
         return;
       }
@@ -81,27 +88,54 @@ function BookingForm() {
 
     setLoading(true);
     setIsSubmiting(true);
-    setTimeout(() => {
-      if (Math.random() > 0.5) {
+    try {
+      const res = await fetch('/api/bookings', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ room, building: id, period, day: dayThaiToEn[day], type: mode, teacher,  studentClass, subject, detail: activityDetail, })
+      })
+      const data = await res.json();
+      console.log(data);
+      
+      if (res.ok) {
         setSuccess("จองห้องเรียนสำเร็จ");
         setError(null);
+      } else if (data.message === "Already booked") {
+        setError(bookingError.booked);
+        setSuccess(null);
       } else {
-        setError("เกิดข้อผิดพลาดในการจองห้องเรียน");
+        setError(bookingError.default);      
         setSuccess(null);
       }
-      setLoading(false);
-    }, 1000);
+    } catch (error) {
+      console.error("Error during booking:", error);
+      setError(bookingError.default);      
+      setSuccess(null);
+    }
+    
+    // setTimeout(() => {
+    //   if (Math.random() > 0.5) {
+    //     setSuccess("จองห้องเรียนสำเร็จ");
+    //     setError(null);
+    //   } else {
+    //     setError("เกิดข้อผิดพลาดในการจองห้องเรียน");
+    //     setSuccess(null);
+    //   }
+    // }, 1000);
+    setLoading(false);
   };
 
   // เปลี่ยนโหมดแล้วล้าง errorMessage
   useEffect(() => {
     setErrorMessage("");
-  },[mode])
+  }, [mode]);
 
   // ถ้ากรอกข้อมูลครบถ้วนแล้ว ให้ล้าง errorMessage
   useEffect(() => {
     if (mode === "class") {
-      if (teacher && subject && studentRoom) {
+      if (teacher && subject && studentClass) {
         setErrorMessage("");
       }
     } else {
@@ -109,75 +143,95 @@ function BookingForm() {
         setErrorMessage("");
       }
     }
-  }, [teacher, subject, studentRoom, activityDetail]);
+  }, [teacher, subject, studentClass, activityDetail]);
+
+  useEffect(() => {
+    const getUserRole = async () => {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (error || !user) {
+        console.error("Error fetching user role:", error);
+        return;
+      }
+      const {
+        data: { role },
+        error: roleError,
+      } = await supabase
+        .from("users")
+        .select("role")
+        .eq("user_id", user.id)
+        .single();
+      if (roleError) {
+        console.error("Error fetching user role:", roleError);
+        return;
+      }
+      setRole(role || "student");
+      setUser({ ...user, role: role || "student" });
+    };
+    if (user?.role) setRole(user.role);
+    else getUserRole();
+  }, []);
 
   return (
     <section className="padding-x max-container w-full pt-6 ">
       {isSubmiting ? (
         <>
-          {loading && (
-            <div className="fixed inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
-              <div className="border-3 border-gray-100 border-t-3 border-t-red-400 rounded-full p-6 animate-spin shadow-inner"></div>
-            </div>
-          )}
+          {loading && <Loading />}
 
           {error && (
             <ErrorBox
               src={warning}
-              alt="warning"
-              header="ขออภัย"
-              message="เกิดข้อผิดพลาดในการจองห้องเรียน กรุณาลองใหม่อีกครั้ง"
               handleOnclick={() =>
-                router.push(`/building/${id}/schedule?roomNumber=${roomNumber}`)
+                router.push(`/building/${id}/schedule?room=${room}`)
               }
-              buttonText="ย้อนกลับ"
-              color="red"
+              {...error}
             />
           )}
 
           {success && (
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 flex justify-center">
-    <div className="bg-white rounded-3xl shadow-md w-full max-w-sm sm:max-w-2xl sm:h-[400px] border border-gray-300 flex flex-col sm:flex-row overflow-hidden">
-      
-      {/* Image Container */}
-      <div className="flex-[1_1_200px]">
-        <Image
-          src={buildingImages[id]}
-          alt="Building"
-          width={448}
-          height={300}
-          className="object-cover w-full h-full"
-        />
-      </div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 flex justify-center">
+              <div className="bg-white rounded-3xl shadow-md w-full max-w-sm sm:max-w-2xl sm:h-[400px] border border-gray-300 flex flex-col sm:flex-row overflow-hidden">
+                {/* Image Container */}
+                <div className="flex-[1_1_200px]">
+                  <Image
+                    src={buildingImages[id]}
+                    alt="Building"
+                    width={448}
+                    height={300}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
 
-      {/* Content */}
-      <div className="flex-[2_1_300px] p-4 sm:p-6 flex flex-col justify-center">
-        <div className="text-3xl font-semibold mb-4 text-green-600 text-center sm:text-left">
-          การจองสำเร็จ
-        </div>
-        <p className="text-gray-600 mt-2 text-center sm:text-left">
-          คุณได้จองห้อง {roomNumber} ใน{day} คาบที่ {period} เรียบร้อยแล้ว
-          กรุณาตรวจสอบรายละเอียดการจองอีกครั้งในหน้าประวัติ
-        </p>
+                {/* Content */}
+                <div className="flex-[2_1_300px] p-4 sm:p-6 flex flex-col justify-center">
+                  <div className="text-3xl font-semibold mb-4 text-green-600 text-center sm:text-left">
+                    การจองสำเร็จ
+                  </div>
+                  <p className="text-gray-600 mt-2 text-center sm:text-left">
+                    คุณได้จองห้อง {room} ใน{day} คาบที่ {period}{" "}
+                    เรียบร้อยแล้ว
+                    กรุณาตรวจสอบรายละเอียดการจองอีกครั้งในหน้าประวัติ
+                  </p>
 
-        <hr className="w-full border border-gray-300 my-6" />
+                  <hr className="w-full border border-gray-300 my-6" />
 
-        <Link
-          href="/"
-          className="py-2 rounded-full shadow-sm mx-0 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white text-center"
-        >
-          กลับหน้าแรก
-        </Link>
-      </div>
-    </div>
-  </div>
-)}
-
+                  <Link
+                    href="/"
+                    className="py-2 rounded-full shadow-sm mx-0 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white text-center"
+                  >
+                    กลับหน้าแรก
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       ) : (
         <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 flex flex-col items-center">
           <h2 className="text-3xl font-semibold text-center mb-2 text-gray-700">
-            ห้อง {roomNumber}
+            ห้อง {room}
           </h2>
           <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
             <p>
@@ -188,7 +242,7 @@ function BookingForm() {
             </p>
           </div>
 
-          <ModeSelection mode={mode} setMode={setMode} />
+          <ModeSelection mode={mode} setMode={setMode} role={role}/>
 
           <form onSubmit={(e) => handleSubmit(e)} className="w-full">
             {mode === "class" ? (
@@ -216,7 +270,7 @@ function BookingForm() {
                     options={roomOptions}
                     customStyles={customStyles}
                     setValue={setStudentRoom}
-                    value={studentRoom}
+                    value={studentClass}
                   />
                 </div>
               </div>
