@@ -6,8 +6,6 @@ import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifySuccess, notifyWaring } from "@utils/notify";
-import { warning, Warning } from "@public/assets/icons";
-import ErrorBox from "@components/ErrorBox";
 
 function Schedule() {
   const router = useRouter();
@@ -18,24 +16,9 @@ function Schedule() {
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
-  const { user } = useContext(SessionContext) 
+  const { user } = useContext(SessionContext);
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
-  // const timeSlots = Array.from({ length: 9 }, (_, i) => {
-  //   const startMinutes = 8 * 60 + 30 + i * 50;
-  //   const endMinutes = startMinutes + 50;
-
-  //   const formatTime = (mins) => {
-  //     const h = Math.floor(mins / 60);
-  //     const m = mins % 60;
-  //     return `${h}.${m.toString().padStart(2, "0")}`;
-  //   };
-
-  //   return {
-  //     label: i + 1,
-  //     time: `(${formatTime(startMinutes)} - ${formatTime(endMinutes)})`,
-  //   };
-  // });
 
   const handleOnClick = (day, period) => {
     if (!user) {
@@ -58,6 +41,7 @@ function Schedule() {
   }, []);
 
   useEffect(() => {
+    // ตัวอย่างสุ่มสถานะ ให้แทนที่ด้วย query จริงในโปรเจกต์ของคุณ
     days.forEach((day) => {
       timeSlots.forEach((period) => {
         setStatus((prev) => ({
@@ -68,16 +52,17 @@ function Schedule() {
     });
   }, []);
 
+  // กรองเฉพาะคาบ 1-10 (ตัดคาบ homeroom ออก)
+  const filteredTimeSlots = timeSlots.filter(
+    (slot) => slot.label >= 1 && slot.label <= 10
+  );
+
   return (
     <section className="padding-x max-container w-full pt-6">
       <div className="text-center mb-4">
         <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
           ตารางการใช้งานห้อง {room}
         </h2>
-        {/* <div className="text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl">
-          <h3 className="mt-1">อาคาร {buildingId} {buildingNames[buildingId].name}</h3>
-          <h3 className="mt-0.5">ห้อง {room}</h3>
-        </div> */}
         <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
           เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
         </p>
@@ -90,7 +75,7 @@ function Schedule() {
           className="w-fit border border-gray-300 overflow-hidden"
           style={{
             display: "grid",
-            gridTemplateColumns: `100px repeat(${timeSlots.length},120px)`,
+            gridTemplateColumns: `100px repeat(${filteredTimeSlots.length},120px)`,
             gridTemplateRows: `60px repeat(${days.length},60px)`,
           }}
           ref={innerRef}
@@ -99,7 +84,7 @@ function Schedule() {
           <div className="border border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">
             วัน/เวลา
           </div>
-          {timeSlots.map((period, index) => (
+          {filteredTimeSlots.map((period, index) => (
             <div
               key={`header-${index}`}
               className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center"
@@ -117,7 +102,7 @@ function Schedule() {
               <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">
                 {day}
               </div>
-              {timeSlots.map((period) => (
+              {filteredTimeSlots.map((period) => (
                 <div
                   key={`${day}-${period.label}`}
                   className={`border border-gray-200 ${
@@ -137,8 +122,8 @@ function Schedule() {
         </div>
       </div>
       <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
-        <StatusLabel statusThai={'ว่าง'} color={statusColors.available} />
-        <StatusLabel statusThai={'ไม่ว่าง'} color={statusColors.booked} />
+        <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
+        <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
       </div>
     </section>
   );
