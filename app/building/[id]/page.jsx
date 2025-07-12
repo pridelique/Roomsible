@@ -103,9 +103,7 @@ function BuildingPage({ params }) {
   }, [scale, maxScale]);
 
   // get building data
-  useEffect(() => {
-    console.log(day, period);
-    
+  useEffect(() => {    
     const getBookings = async () => {
       try {
         const { data, error } = await 

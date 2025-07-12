@@ -7,9 +7,12 @@ import QRCodeErrorMessage from "@components/QRErrorMessage";
 import QRSuccessMessage from "@components/QRSuccessMessage";
 import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
-import { Warning, warning } from "@public/assets/icons";
+import { Warning } from "@public/assets/icons";
 import { useRouter } from "@node_modules/next/navigation";
 import Loading from "@components/Loading";
+import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
+
+const dayList = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
 export default function FullScreenQRScanner() {
   const videoRef = useRef(null);
@@ -23,6 +26,42 @@ export default function FullScreenQRScanner() {
   const controlRef = useRef(null);
   const { user } = useContext(SessionContext);
   const router = useRouter();
+
+  const handleCheckin = async (token) => {
+    setLoading(true);
+    const currentDay = getCurrentDay();
+    const currentPeriod = getCurrentPeriod();
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+          day: dayList[currentDay],
+          period: currentPeriod,
+        }),
+      });
+      const data = await res.json();
+      console.log(data);
+      
+      if (res.ok) {
+        setSuccess({
+            buildingId: 1,
+            room: 1202,
+            time: "08.30 - 09.20 น.",
+          });
+      }
+    } catch (error) {
+      console.error("Error during check-in:", error);
+      setError({
+        type: "unexpected",
+      });
+    }
+    setLoading(false);
+  };
+
   const startScaning = () => {
     setResult("");
     setError("");
@@ -42,35 +81,35 @@ export default function FullScreenQRScanner() {
               setError(""); // Clear errors on successful scan
               control.stop();
               setIsStop(true);
-              setLoading(true);
-              setTimeout(() => {
-                setLoading(false);
-                var random = Math.ceil(Math.random() * 3);
-                console.log(random);
+              handleCheckin(decodedResult.getText());
+              // setTimeout(() => {
+              //   setLoading(false);
+              //   var random = Math.ceil(Math.random() * 3);
+              //   console.log(random);
 
-                if (random == 1) {
-                  setError({
-                    type: "incorrect",
-                  });
-                } else if (random == 2) {
-                  setError({
-                    type: "no-booking",
-                    room: 1202,
-                    time: "08.30 - 09.20 น.",
-                  });
-                } else {
-                  setSuccess({
-                    buildingId: 1,
-                    room: 1202,
-                    time: "08.30 - 09.20 น.",
-                  });
-                }
-                // setError({
-                //     type : 'no-booking',
-                //     room : 1202,
-                //     time : '08.30 - 09.20 น.'
-                //   })
-              }, 2000);
+              //   if (random == 1) {
+              //     setError({
+              //       type: "incorrect",
+              //     });
+              //   } else if (random == 2) {
+              //     setError({
+              //       type: "no-booking",
+              //       room: 1202,
+              //       time: "08.30 - 09.20 น.",
+              //     });
+              //   } else {
+              //     setSuccess({
+              //       buildingId: 1,
+              //       room: 1202,
+              //       time: "08.30 - 09.20 น.",
+              //     });
+              //   }
+              //   // setError({
+              //   //     type : 'no-booking',
+              //   //     room : 1202,
+              //   //     time : '08.30 - 09.20 น.'
+              //   //   })
+              // }, 2000);
             }
           }
         )
@@ -82,26 +121,24 @@ export default function FullScreenQRScanner() {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {    
     const resize = () => {
       const video = videoRef.current;
       if (innerRef.current) {
         setInnerHeight(innerRef.current.clientHeight);
       }
     };
+    startScaning();
     setTimeout(() => {
       resize();
     }, 100);
-    startScaning();
     window.addEventListener("resize", resize);
-    return () => {      
+    return () => {
       window.removeEventListener("resize", resize);
     };
   }, []);
 
-  if (user === "loading") return (
-    <Loading/>
-  )
+  if (user === "loading") return <Loading />;
 
   if (!user)
     return (
