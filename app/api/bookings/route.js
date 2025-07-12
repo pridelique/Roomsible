@@ -121,26 +121,30 @@ export const DELETE = async (req) => {
 };
 
 export const PATCH = async (req) => {
-  let { token, day, period } = await req.json();
-  day = "monday";
-  period = 1;
+  const { token, day, period } = await req.json();
+  // day = "monday";
+  // period = 1;
   //   console.log("Token:", token, "Day:", day, "Period:", period);
   const cookieStore = await cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
-  if (
-    period === "before-school" ||
-    period === "after-school" ||
-    day === "saturday" ||
-    day === "sunday"
-  ) {
-    console.error("No booking found for the given room, day, and period");
-    return NextResponse.json({ message: "No booking found" }, { status: 404 });
-  }
-
   try {
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const { room } = data;
+
+    if (
+      period === "before-school" ||
+      period === "after-school" ||
+      day === "saturday" ||
+      day === "sunday"
+    ) {
+      console.error("No booking found for the given room, day, and period");
+      return NextResponse.json(
+        { message: "No booking found", room },
+        { status: 404 }
+      );
+    }
+
     const {
       data: { user },
       error: userError,
@@ -156,7 +160,7 @@ export const PATCH = async (req) => {
 
     const { data: booking, error: bookingError } = await supabase
       .from("bookings")
-      .select("status, booking_id")
+      .select("status, booking_id, building")
       .eq("room", room)
       .eq("day", day)
       .eq("period", period)
@@ -174,17 +178,17 @@ export const PATCH = async (req) => {
     if (booking.length === 0) {
       console.error("No booking found for the given room, day, and period");
       return NextResponse.json(
-        { message: "No booking found" },
+        { message: "No booking found", room },
         { status: 404 }
       );
     }
 
-    const { booking_id, status } = booking[0];
+    const { booking_id, status, building } = booking[0];
 
     if (status === "confirmed") {
       console.error("Booking already confirmed");
       return NextResponse.json(
-        { message: "Booking already confirmed" },
+        { message: "Booking already confirmed", room, building },
         { status: 400 }
       );
     }
@@ -205,7 +209,7 @@ export const PATCH = async (req) => {
     }
 
     return NextResponse.json(
-      { message: "Booking confirmed successfully" },
+      { message: "Booking confirmed successfully", room, building },
       { status: 200 }
     );
   } catch (error) {

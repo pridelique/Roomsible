@@ -6,9 +6,6 @@ import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifySuccess, notifyWaring } from "@utils/notify";
-import { warning, Warning } from "@public/assets/icons";
-import ErrorBox from "@components/ErrorBox";
-
 function Schedule() {
   const router = useRouter();
   const param = useParams();
@@ -18,7 +15,7 @@ function Schedule() {
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
-  const { user } = useContext(SessionContext) 
+  const { user } = useContext(SessionContext);
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
   // const timeSlots = Array.from({ length: 9 }, (_, i) => {
@@ -90,7 +87,7 @@ function Schedule() {
           className="w-fit border border-gray-300 overflow-hidden"
           style={{
             display: "grid",
-            gridTemplateColumns: `100px repeat(${timeSlots.length},120px)`,
+            gridTemplateColumns: `100px repeat(${timeSlots.length-1},120px)`,
             gridTemplateRows: `60px repeat(${days.length},60px)`,
           }}
           ref={innerRef}
@@ -99,17 +96,20 @@ function Schedule() {
           <div className="border border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">
             วัน/เวลา
           </div>
-          {timeSlots.map((period, index) => (
-            <div
-              key={`header-${index}`}
-              className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center"
-            >
-              <div className="text-gray-700">คาบที่ {period.label}</div>
-              <div className="text-xs text-gray-500 mt-0.5">
-                {period.from} - {period.to}
+          {timeSlots.map((period, index) => {
+            if (period.label === "Homeroom") return null; // Skip Homeroom
+            return (
+              <div
+                key={`header-${index}`}
+                className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center"
+              >
+                <div className="text-gray-700">คาบที่ {period.label}</div>
+                <div className="text-xs text-gray-500 mt-0.5">
+                  {period.from} - {period.to}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* แถวแต่ละวัน */}
           {days.map((day) => (
@@ -117,28 +117,31 @@ function Schedule() {
               <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">
                 {day}
               </div>
-              {timeSlots.map((period) => (
-                <div
-                  key={`${day}-${period.label}`}
-                  className={`border border-gray-200 ${
-                    status[`${day}-${period.label}`]
-                      ? "bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]"
-                      : "bg-[#FCA5A5]"
-                  }`}
-                  onClick={
-                    status[`${day}-${period.label}`]
-                      ? () => handleOnClick(day, period)
-                      : undefined
-                  }
-                />
-              ))}
+              {timeSlots.map((period) => {
+                if (period.label === "Homeroom") return;
+                return (
+                  <div
+                    key={`${day}-${period.label}`}
+                    className={`border border-gray-200 ${
+                      status[`${day}-${period.label}`]
+                        ? "bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]"
+                        : "bg-[#FCA5A5]"
+                    }`}
+                    onClick={
+                      status[`${day}-${period.label}`]
+                        ? () => handleOnClick(day, period)
+                        : undefined
+                    }
+                  />
+                );
+              })}
             </React.Fragment>
           ))}
         </div>
       </div>
       <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
-        <StatusLabel statusThai={'ว่าง'} color={statusColors.available} />
-        <StatusLabel statusThai={'ไม่ว่าง'} color={statusColors.booked} />
+        <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
+        <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
       </div>
     </section>
   );
