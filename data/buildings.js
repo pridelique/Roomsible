@@ -15,7 +15,7 @@ const buildings = {
         { room: 1305, name: "1305", status: "available", col_span: 1 },
         { room: 1304, name: "1304", status: "pending", col_span: 1 },
         { room: 1303, name: "1303", status: "available", col_span: 1 },
-        { room: 1302, name: "1302", status: "booking", col_span: 1 },
+        { room: 1302, name: "1302", status: "mybooking", col_span: 1 },
         {
           room: 1301,
           name: "ดนตรีไทย",
@@ -73,7 +73,7 @@ const buildings = {
     rooms: [
       [
         { room: 2301, name: "2301", status: "pending", col_span: 1 },
-        { room: 2302, name: "2302", status: "booking", col_span: 1 },
+        { room: 2302, name: "2302", status: "mybooking", col_span: 1 },
         { room: 2303, name: "2303", status: "available", col_span: 1 },
       ],
       [

@@ -1,9 +1,16 @@
-'use client';
+"use client";
 import buildings from "@data/buildings";
 import Room from "./Room";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { DateTimeContext } from "@provider/DateTimeProvider";
+import { SessionContext } from "@provider/SessionProvider";
+import { schedule } from "@data";
 
-function Building({ id, handleOnClick, showName = true }) {
+function Building({ id, handleOnClick, showName = true, bookings }) {
+  const { day, period, currentDay, currentPeriod } = useContext(DateTimeContext);
+  const { user } = useContext(SessionContext);
+  // console.log(user);
+  
   return (
     <div
       className="gap-1.5 grid"
@@ -14,14 +21,18 @@ function Building({ id, handleOnClick, showName = true }) {
     >
       {buildings[id]?.rooms.map((row, rowIndex) => (
         <React.Fragment key={rowIndex}>
-          {row.map((room, colIndex) => (
-            <Room
-              key={`${rowIndex}-${colIndex}`}
-              {...room}
-              handleOnClick={handleOnClick}
-              showName={showName}
-            />
-          ))}
+          {row.map((room, colIndex) => {
+            // เชค status ของห้อง
+
+            return (
+              <Room
+                key={`${rowIndex}-${colIndex}`}
+                {...room}
+                handleOnClick={handleOnClick}
+                showName={showName}
+              />
+            )
+          })}
         </React.Fragment>
       ))}
     </div>

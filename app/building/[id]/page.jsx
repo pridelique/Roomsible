@@ -36,6 +36,8 @@ function BuildingPage({ params }) {
     justifyContent: "center",
   });
 
+  const [bookings, setBookings] = useState([]);
+
   const handleOnClick = (room) => {
     router.push(`/building/${id}/schedule?room=${room}`);
   };
@@ -109,7 +111,7 @@ function BuildingPage({ params }) {
         const { data, error } = await 
         supabase
         .from('bookings')
-        .select('room, status')
+        .select('room, status, user_id')
         .eq('building', id)
         .eq('day', dayThaiToEn[day])
         .eq('period', period)
@@ -118,7 +120,7 @@ function BuildingPage({ params }) {
           return;
         }
         console.log(data);
-        
+        setBookings(data);
       } catch (error) {
         console.error("Error fetching bookings:", error);
         return;
@@ -184,7 +186,7 @@ function BuildingPage({ params }) {
                         ref={innerRef}
                         style={{ transform: `scale(${scale})` }}
                       >
-                        <Building id={id} handleOnClick={handleOnClick} />
+                        <Building id={id} handleOnClick={handleOnClick} bookings={bookings} />
                       </div>
                     </div>
                   </TransformComponent>

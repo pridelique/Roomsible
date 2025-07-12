@@ -1,8 +1,6 @@
 import { statusColors } from "@data"
 
-function Room({ room, name, status, col_span, handleOnClick, showName }) {
-  
-  
+function Room({ room, status, name, col_span, handleOnClick, showName}) {
   return (
     <div 
         style={{ gridColumn: `span ${col_span} / span ${col_span}`,}}
