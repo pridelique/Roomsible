@@ -2,7 +2,7 @@ const statusColors = {
   available: "#86EFAC", // green - soft lime pastel
   unavailable: "#D1D5DB", // gray - soft modern
   booked: "#FCA5A5", // red - light pinkish red
-  booking: "#93C5FD", // blue - pastel blue
+  mybooking: "#93C5FD", // blue - pastel blue
   pending: "#FEF08A", // yellow - warm pastel yellow
 };
 
@@ -23,9 +23,9 @@ const status = [
     color: statusColors['booked']
   },
   {
-    statusEng: "booking",
+    statusEng: "mybooking",
     statusThai: "คุณจอง",
-    color: statusColors['booking']
+    color: statusColors['mybooking']
   },
   {
     statusEng: "pending",

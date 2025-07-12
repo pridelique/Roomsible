@@ -1,33 +1,98 @@
 "use client";
 import { useContext, useEffect, useRef, useState } from "react";
 import { BrowserQRCodeReader } from "@zxing/browser";
-import QRCodeFrame from "@components/QRFrame";
-import QRCodeMask from "@components/QRMask";
-import QRCodeErrorMessage from "@components/QRErrorMessage";
-import QRSuccessMessage from "@components/QRSuccessMessage";
+import QRCodeFrame from "@components/qrCode_components/QRFrame";
+import QRCodeErrorMessage from "@components/qrCode_components/QRErrorMessage";
+import QRSuccessMessage from "@components/qrCode_components/QRSuccessMessage";
 import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
-import { Warning, warning } from "@public/assets/icons";
+import { Warning } from "@public/assets/icons";
 import { useRouter } from "@node_modules/next/navigation";
 import Loading from "@components/Loading";
+import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
+
+const dayList = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
 
 export default function FullScreenQRScanner() {
   const videoRef = useRef(null);
   const innerRef = useRef(null);
+  const isScanning = useRef(false);
+  const [innerHeight, setInnerHeight] = useState(0);
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [isStop, setIsStop] = useState(true);
-  const [innerHeight, setInnerHeight] = useState(0);
   const controlRef = useRef(null);
   const { user } = useContext(SessionContext);
   const router = useRouter();
-  const startScaning = () => {
+
+  const handleCheckin = async (token) => {
+    setLoading(true);
+    const currentDay = getCurrentDay();
+    const currentPeriod = getCurrentPeriod();
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+          day: dayList[currentDay],
+          period: currentPeriod,
+        }),
+      });
+      const data = await res.json();
+      // console.log(data);
+      if (res.ok || data.message === "Booking already confirmed") {
+        setSuccess({
+          buildingId: data?.building,
+          room: data?.room,
+          day: currentDay,
+          period: currentPeriod,
+        });
+      } else if (data.message === "Invalid token") {
+        setError({ type: "incorrect" });
+      } else if (data.message === "No booking found") {
+        setError({
+          type: "no-booking",
+          room: data?.room,
+          day: currentDay,
+          period: currentPeriod,
+        });
+      } else {
+        setError({
+          type: "unexpected",
+        });
+      }
+    } catch (error) {
+      console.error("Error during check-in:", error);
+      setError({
+        type: "unexpected",
+      });
+    }
+    setLoading(false);
+  };
+
+  const startScaning = async () => {
+    if (isScanning.current) return;
+    isScanning.current = true; // Set scanning state to true
+    if (controlRef.current) {
+      controlRef.current.stop(); // 🛑 หยุดกล้องเก่าก่อน
+    }
+    setIsStop(false);
     setResult("");
     setError("");
     setSuccess("");
-    setIsStop(false);
     const codeReader = new BrowserQRCodeReader();
     if (videoRef.current) {
       codeReader
@@ -41,36 +106,9 @@ export default function FullScreenQRScanner() {
               setResult(decodedResult.getText());
               setError(""); // Clear errors on successful scan
               control.stop();
+              isScanning.current = false; // Reset scanning state
               setIsStop(true);
-              setLoading(true);
-              setTimeout(() => {
-                setLoading(false);
-                var random = Math.ceil(Math.random() * 3);
-                console.log(random);
-
-                if (random == 1) {
-                  setError({
-                    type: "incorrect",
-                  });
-                } else if (random == 2) {
-                  setError({
-                    type: "no-booking",
-                    room: 1202,
-                    time: "08.30 - 09.20 น.",
-                  });
-                } else {
-                  setSuccess({
-                    buildingId: 1,
-                    room: 1202,
-                    time: "08.30 - 09.20 น.",
-                  });
-                }
-                // setError({
-                //     type : 'no-booking',
-                //     room : 1202,
-                //     time : '08.30 - 09.20 น.'
-                //   })
-              }, 2000);
+              handleCheckin(decodedResult.getText());
             }
           }
         )
@@ -83,25 +121,42 @@ export default function FullScreenQRScanner() {
   };
 
   useEffect(() => {
-    const resize = () => {
-      const video = videoRef.current;
-      if (innerRef.current) {
-        setInnerHeight(innerRef.current.clientHeight);
-      }
-    };
     setTimeout(() => {
-      resize();
-    }, 100);
-    startScaning();
-    window.addEventListener("resize", resize);
-    return () => {      
-      window.removeEventListener("resize", resize);
-    };
+      if (isScanning.current) return; // Prevent multiple scans
+      startScaning();
+      console.log("Starting QR code scanning...");
+    }, 200);
+    return () => {
+      if (controlRef.current) {
+        controlRef.current?.stop(); // Stop the camera when component unmounts
+      }
+      isScanning.current = false; // Reset scanning state
+    }
+
+    // setSuccess({
+    //   buildingId: 2 ,
+    //   room: 1212,
+    //   day: 3,
+    //   period: 5,
+    // });
+    // setError({
+    //   type: "no-booking",
+    //   room: 1233,
+    //   day: 1,
+    //   period: 3,
+    // })
   }, []);
 
-  if (user === "loading") return (
-    <Loading/>
-  )
+  useEffect(() => {
+    const resize = () => {
+      setInnerHeight(window.innerHeight);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, [])
+
+  if (user === "loading") return <Loading />;
 
   if (!user)
     return (
@@ -118,24 +173,31 @@ export default function FullScreenQRScanner() {
 
   return (
     <>
-      <div className="w-full h-full absolute p-0 m-0 z-1" ref={innerRef}>
+      <div
+        className="w-full h-full relative p-0 m-0 z-1"
+        ref={innerRef}
+        style={{ height: innerHeight - 74.4 }}
+      >
         {/* กล้องเต็มหน้าจอ */}
         <video
           ref={videoRef}
           className="w-full h-full object-cover flex items-start justify-center"
+          muted
+          autoPlay
+          playsInline
         />
         {/* QR Code Element */}
         <div className={`${isStop && "hidden"}`}>
           <div className="absolute inset-0 flex flex-col items-center opacity-70 text-white h-full justify-between z-3">
-            <p className="mt-11 text-2xl md:text-3xl lg:text-4xl font-semibold">
+            <p className="absolute top-11 text-2xl md:text-3xl lg:text-4xl font-semibold">
               สแกน QR Code เพื่อเช็คอิน
             </p>
-            <p className="absolute top-1/2 -translate-y-1/2 mt-44 text-sm md:text-base lg:text-lg">
+            <p className="absolute bottom-5 text-sm md:text-base lg:text-lg">
               วาง QR Code ให้อยู่ในกรอบเพื่อเริ่มเช็คอิน
             </p>
           </div>
+
           <QRCodeFrame />
-          <QRCodeMask innerHeight={innerHeight} />
         </div>
       </div>
       {/* Loading... */}

@@ -48,7 +48,7 @@ function HistoryPage() {
   };
 
   const dateFilterFuction = (booking) => {
-    const todayIndex = new Date().getDay() - 1;
+    let todayIndex = new Date().getDay() - 1;
     if (todayIndex > 4) todayIndex = 0;
     if (dateFilter === "all") return true;
     else if (dateFilter === "today")

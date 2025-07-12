@@ -4,7 +4,7 @@ import buildings from "./buildings";
 import { statusColors ,status } from "./status";
 import timeSlots from "./timeSlots";
 import { teacherList, teacherOptions, subjectList, subjectOptions, roomList, roomOptions} from "./form";
-
+import { schedule } from "./schedule";
 export { 
     navLink,
     buildingNames,
@@ -18,4 +18,5 @@ export {
     subjectOptions,
     roomList,
     roomOptions,
+    schedule,
 }

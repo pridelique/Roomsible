@@ -25,7 +25,7 @@ function SessionProvider({ children }) {
       } else {
         setUser(null)
       }
-      console.log("Auth state changed:", _event, session);
+      // console.log("Auth state changed:", _event, session);
       
     })
 

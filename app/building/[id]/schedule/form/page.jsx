@@ -145,7 +145,7 @@ function BookingForm() {
     }
   }, [teacher, subject, studentClass, activityDetail]);
 
-  useEffect(() => {
+  useEffect(() => {    
     const getUserRole = async () => {
       const {
         data: { user },
@@ -167,12 +167,17 @@ function BookingForm() {
         console.error("Error fetching user role:", roleError);
         return;
       }
+      console.log(role);
+      
       setRole(role || "student");
       setUser({ ...user, role: role || "student" });
     };
-    if (user?.role) setRole(user.role);
+    if (user?.role && user.role !== "authenticated") {
+      setRole(user.role); 
+      // console.log("already have user role", user.role)
+    }
     else getUserRole();
-  }, []);
+  }, [user]);
 
   return (
     <section className="padding-x max-container w-full pt-6 ">

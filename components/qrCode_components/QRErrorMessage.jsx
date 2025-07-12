@@ -1,7 +1,8 @@
-import Image from "@node_modules/next/image";
 import { Warning, warning, X_Mark, x_mark } from "@public/assets/icons";
-import ErrorBox from "./ErrorBox";
+import ErrorBox from "../ErrorBox";
 import { useRouter } from "@node_modules/next/navigation";
+import { indexToDay } from "@utils/translateDay";
+
 
 function QRCodeErrorMessage({ error, startScaning }) {
   const router = useRouter();
@@ -24,8 +25,8 @@ function QRCodeErrorMessage({ error, startScaning }) {
       <ErrorBox
         Svg={Warning}
         alt="warning"
-        header="ข้อมูลไม่ถูกต้อง"
-        message={`ข้อมูล QR Code ไม่ถูกต้อง\nกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง`}
+        header="QR Code ไม่ถูกต้อง"
+        message={`ข้อมูล QR Code ไม่ถูกต้อง\nกรุณาลองใหม่อีกครั้ง`}
         buttonText="ตกลง"
         handleOnclick={startScaning}
         color="red"
@@ -38,7 +39,20 @@ function QRCodeErrorMessage({ error, startScaning }) {
         Svg={X_Mark}
         alt="x_mark"
         header="ไม่มีการจองห้อง"
-        message={`คุณไม่ได้จองห้อง ${error.room}\nในเวลา ${error.time} \nกรุณาตรวจสอบและทำรายการใหม่อีกครั้ง`}
+        message={`คุณไม่ได้จองห้อง ${error.room} ${(error.period === 'before-school' || error.period === 'after-school') ? 'ในขณะนี้': `${indexToDay[error.day]} คาบ ${error.period}`} กรุณาลองใหม่อีกครั้ง`}
+        buttonText="ตกลง"
+        handleOnclick={startScaning}
+        color="red"
+      />
+    );
+
+  if (error.type === "unexpected")
+    return (
+      <ErrorBox
+        Svg={Warning}
+        alt="warning"
+        header="เกิดข้อผิดพลาด"
+        message={`เกิดข้อผิดพลาดที่ไม่คาดคิด\nกรุณาลองใหม่อีกครั้ง`}
         buttonText="ตกลง"
         handleOnclick={startScaning}
         color="red"
