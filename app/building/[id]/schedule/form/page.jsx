@@ -1,6 +1,5 @@
 "use client";
-import { use, useContext, useEffect, useRef, useState } from "react";
-import Select from "react-select";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   useParams,
   useRouter,
@@ -20,7 +19,7 @@ import Loading from "@components/Loading";
 import { SessionContext } from "@provider/SessionProvider";
 import { supabase } from "@utils/supabase";
 import { bookingError } from "@data/bookingError";
-import { dayThaiToEn } from "@utils/translateDay";
+import { dayEnToThai, dayThaiToEn } from "@utils/translateDay";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -68,7 +67,7 @@ function BookingForm() {
   const searchParams = useSearchParams();
   const room = searchParams.get("room") || "0";
   const period = searchParams.get("period") || "1";
-  const day = searchParams.get("day") || "วันจันทร์";
+  const day = searchParams.get("day") || "monday";
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -139,6 +138,7 @@ function BookingForm() {
     }
   }, [teacher, subject, studentClass, activityDetail]);
 
+  // ตรวจสอบสิทธิ์ของผู้ใช้
   useEffect(() => {    
     const getUserRole = async () => {
       const {
@@ -215,7 +215,7 @@ function BookingForm() {
           </h2>
           <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
             <p>
-              {day} คาบที่ {period}
+              {dayEnToThai[day]} คาบ {period}
             </p>
             <p>
               ({timeSlots[period].from} - {timeSlots[period].to} น.)

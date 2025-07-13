@@ -1,6 +1,8 @@
+import { bookableRoom } from "@data";
 import { createRouteHandlerClient } from "@node_modules/@supabase/auth-helpers-nextjs/dist";
 import { cookies } from "@node_modules/next/headers";
 import { NextResponse } from "@node_modules/next/server";
+import { isPast } from "@utils/isPast";
 import jwt from "jsonwebtoken";
 
 export const POST = async (req) => {
@@ -20,6 +22,20 @@ export const POST = async (req) => {
 
   if (!room || !building || !period || !day || !type) {
     return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+  }
+
+  if (!bookableRoom.includes(room)) {
+    return NextResponse.json(
+      { message: "Invalid room" },
+      { status: 400 }
+    );
+  }
+
+  if (isPast(day, period)) {
+    return NextResponse.json(
+      { message: "Cannot book a room in the past" },
+      { status: 400 }
+    );
   }
 
   try {

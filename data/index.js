@@ -5,6 +5,7 @@ import { statusColors ,status } from "./status";
 import timeSlots from "./timeSlots";
 import { teacherList, teacherOptions, subjectList, subjectOptions, roomList, roomOptions} from "./form";
 import { schedule } from "./schedule";
+import { bookableRoom } from "./bookableRoom";
 export { 
     navLink,
     buildingNames,
@@ -19,4 +20,5 @@ export {
     roomList,
     roomOptions,
     schedule,
+    bookableRoom,
 }
