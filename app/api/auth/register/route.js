@@ -1,51 +1,79 @@
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
 export const POST = async (req) => {
-    const { email, password } = await req.json();
-    const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+  const { email, password, role } = await req.json();
 
-    // Validate input
-    if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
-        return NextResponse.json({ message: 'Invalid input' }, { status: 400 });
+  // Validate input
+  if (
+    !email ||
+    !password ||
+    !role ||
+    typeof email !== "string" ||
+    typeof password !== "string" ||
+    typeof role !== "string" ||
+    (role != "student" &&
+      role != "leader" &&
+      role != "teacher" &&
+      role != "admin")
+  ) {
+    return NextResponse.json({ message: "Invalid input" }, { status: 400 });
+  }
+
+  try {
+    // sign up the user
+    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true, // Automatically confirm the email
+      app_metadata: {
+        role, // Store the role in user metadata
+      },
+    });
+
+    // Check for error
+    if (error || !data) {
+      return NextResponse.json(
+        { message: error?.message || "Registration failed" },
+        { status: 400 }
+      );
     }
 
-    try {
-        // sign up the user
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
+    // Create user profile in the 'users' table
+    const { data: userData, error: userError } = await supabaseAdmin
+      .from("users")
+      .insert({
+        user_id: data.user.id,
+        email: data.user.email,
+        firstname: "สมปอง",
+        lastname: "สุขสมบูรณ์",
+        classroom: "ม.1.1",
+        no: 1,
+        role,
+      });
 
-        // Check for error
-        if (error || !data) {
-            return NextResponse.json({ message: error?.message || 'Registration failed' }, { status: 400 });
-        }
-        // console.log(data);
-
-        // Create user profile in the 'users' table
-        const { data: userData, error: userError } = await
-        supabase.from('users').insert({
-            user_id: data.user.id,
-            email: data.user.email,
-            firstname: 'สมปอง',
-            lastname: 'สุขสมบูรณ์',
-            classroom: 'ม.1.1',
-            no: 1,
-        })
-
-        // Check for user profile creation error
-        if (userError) {
-            return NextResponse.json({ message: userError.message || 'Failed to create user profile' }, { status: 400 });
-        }
-        
-        // Set the session cookie
-        // await supabase.auth.setSession(data.session);
-        return NextResponse.json({ message: 'Registration successful' }, { status: 200 });
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ message: 'Unexpected error occurred' }, { status: 500 });
+    // Check for user profile creation error
+    if (userError) {
+      return NextResponse.json(
+        { message: userError.message || "Failed to create user profile" },
+        { status: 400 }
+      );
     }
-}
+
+    return NextResponse.json(
+      { message: "Registration successful" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Unexpected error occurred" },
+      { status: 500 }
+    );
+  }
+};

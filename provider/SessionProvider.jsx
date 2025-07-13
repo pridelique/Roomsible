@@ -9,6 +9,8 @@ function SessionProvider({ children }) {
 
   const getUser = async () => {
     const { data: { user } } = await supabase.auth.getUser()
+    console.log(user);
+    
     if (user) {
       setUser(user)
     } else {

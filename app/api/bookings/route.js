@@ -35,24 +35,13 @@ export const POST = async (req) => {
         { status: 500 }
       );
     }
+        
     const user_id = user.id;
-    
-    const { data: { role }, error: roleError } = await supabase
-      .from("users")
-      .select("role")
-      .eq("user_id", user_id)
-      .single();
-    if (roleError) {
-      console.error("Error fetching user role:", roleError);
-      return NextResponse.json(
-        { message: "Failed to fetch user role" },
-        { status: 500 }
-      );
-    }    
+    const { role } = user.app_metadata || {};
 
     // check permissions
     if ((role === 'student' || role === 'leader') && type === 'activity') {
-      console.log('Checking user bookings for activity type');
+      // console.log('Checking user bookings for activity type');
       
       const { data: myBookings, error: myBookingsError } = await supabase
         .from("bookings")
