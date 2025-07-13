@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { isPast } from "@utils/isPast";
 import jwt from "jsonwebtoken";
+import { getStartTime } from "@utils/getStartTime";
 
 export const POST = async (req) => {
   const {
@@ -21,14 +22,14 @@ export const POST = async (req) => {
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
   if (!room || !building || !period || !day || !type) {
-    return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+    return NextResponse.json(
+      { message: "Missing required fields" },
+      { status: 400 }
+    );
   }
 
   if (!bookableRoom.includes(room)) {
-    return NextResponse.json(
-      { message: "Invalid room" },
-      { status: 400 }
-    );
+    return NextResponse.json({ message: "Invalid room" }, { status: 400 });
   }
 
   if (isPast(day, period)) {
@@ -51,20 +52,20 @@ export const POST = async (req) => {
         { status: 500 }
       );
     }
-        
+
     const user_id = user.id;
     const { role } = user.app_metadata || {};
 
     // check permissions
-    if ((role === 'student' || role === 'leader') && type === 'activity') {
+    if ((role === "student" || role === "leader") && type === "activity") {
       // console.log('Checking user bookings for activity type');
-      
+
       const { data: myBookings, error: myBookingsError } = await supabase
         .from("bookings")
         .select("booking_id")
         .eq("user_id", user_id)
-        .eq("type", 'activity')
-      
+        .eq("type", "activity");
+
       if (myBookingsError) {
         console.error("Error fetching user bookings:", myBookingsError);
         return NextResponse.json(
@@ -72,14 +73,22 @@ export const POST = async (req) => {
           { status: 500 }
         );
       }
-  
+
       if (myBookings.length >= 1) {
-        return NextResponse.json(
-          { message: "No Permission" },
-          { status: 403 }
-        );
+        return NextResponse.json({ message: "No Permission" }, { status: 403 });
       }
     }
+
+    // get expired time
+    const now = new Date();
+    const nowPlus10 = new Date(now.getTime() + 10 * 60 * 1000);
+
+    // สมมติ bookingStart คือเวลาเริ่มคาบ
+    const bookingStart = getStartTime(day, period);
+    bookingStart.setMinutes(bookingStart.getMinutes() + 10);
+
+    const maxTime = Math.max(bookingStart.getTime(), nowPlus10.getTime());
+    const expired_at = new Date(maxTime);
 
     const { error: bookingError } = await supabase.from("bookings").insert({
       room,
@@ -92,10 +101,15 @@ export const POST = async (req) => {
       subject,
       detail,
       user_id,
+      expired_at: expired_at.toISOString(),
     });
     if (bookingError) {
-      if (bookingError.code === '23505') { // Unique violation error code
-        return NextResponse.json({ message: "Already booked" }, { status: 409 });
+      if (bookingError.code === "23505") {
+        // Unique violation error code
+        return NextResponse.json(
+          { message: "Already booked" },
+          { status: 409 }
+        );
       }
       console.error("Error during booking:", bookingError);
       return NextResponse.json(
