@@ -105,6 +105,10 @@ function BookingForm() {
       } else if (data.message === "Already booked") {
         setError(bookingError.booked);
         setSuccess(null);
+      } else if (data.message === "No Permission") {
+        setError(bookingError.noPermission);
+        setSuccess(null);
+
       } else {
         setError(bookingError.default);      
         setSuccess(null);
@@ -114,16 +118,6 @@ function BookingForm() {
       setError(bookingError.default);      
       setSuccess(null);
     }
-    
-    // setTimeout(() => {
-    //   if (Math.random() > 0.5) {
-    //     setSuccess("จองห้องเรียนสำเร็จ");
-    //     setError(null);
-    //   } else {
-    //     setError("เกิดข้อผิดพลาดในการจองห้องเรียน");
-    //     setSuccess(null);
-    //   }
-    // }, 1000);
     setLoading(false);
   };
 
