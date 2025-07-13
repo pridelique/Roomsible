@@ -93,7 +93,7 @@ function BookingForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ room, building: id, period, day: dayThaiToEn[day], type: mode, teacher,  studentClass, subject, detail: activityDetail, })
+        body: JSON.stringify({ room, building: id, period, day, type: mode, teacher,  studentClass, subject, detail: activityDetail, })
       })
       const data = await res.json();
       console.log(data);

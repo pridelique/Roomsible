@@ -1,7 +1,7 @@
-import { bookableRoom } from "@data";
-import { createRouteHandlerClient } from "@node_modules/@supabase/auth-helpers-nextjs/dist";
-import { cookies } from "@node_modules/next/headers";
-import { NextResponse } from "@node_modules/next/server";
+import { bookableRoom } from "@data/bookableRoom";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs/dist";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import { isPast } from "@utils/isPast";
 import jwt from "jsonwebtoken";
 
