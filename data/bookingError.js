@@ -12,5 +12,12 @@ export const bookingError = {
         message:"ห้องเรียนที่คุณเลือกถูกจองแล้ว กรุณาเลือกห้องเรียนอื่น",
         buttonText: "ย้อนกลับ",
         color:"red",
+    },
+    'noPermission' : {
+        alt:"warning",
+        header:"ไม่มีสิทธิ์จองห้องเรียน",
+        message:"คุณใช้สิทธิ์การจองห้องเรียนในสัปดาห์นี้ไปแล้ว กรุณาลองใหม่ในสัปดาห์ถัดไป",
+        buttonText: "ย้อนกลับ",
+        color:"red",
     }
 }

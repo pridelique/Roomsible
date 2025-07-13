@@ -17,6 +17,11 @@ export const POST = async (req) => {
   } = await req.json();
   const cookieStore = await cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+
+  if (!room || !building || !period || !day || !type) {
+    return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+  }
+
   try {
     // get user
     const {
@@ -30,19 +35,34 @@ export const POST = async (req) => {
         { status: 500 }
       );
     }
+        
     const user_id = user.id;
+    const { role } = user.app_metadata || {};
 
-    // check if the room is already booked
-    const { data: existingBooking, error: bookingCheckError } = await supabase
-      .from("bookings")
-      .select("status")
-      .single()
-      .eq("room", room)
-      .eq("day", day)
-      .eq("period", period);
-
-    if (existingBooking) {
-      return NextResponse.json({ message: "Already booked" }, { status: 400 });
+    // check permissions
+    if ((role === 'student' || role === 'leader') && type === 'activity') {
+      // console.log('Checking user bookings for activity type');
+      
+      const { data: myBookings, error: myBookingsError } = await supabase
+        .from("bookings")
+        .select("booking_id")
+        .eq("user_id", user_id)
+        .eq("type", 'activity')
+      
+      if (myBookingsError) {
+        console.error("Error fetching user bookings:", myBookingsError);
+        return NextResponse.json(
+          { message: "Failed to fetch user bookings" },
+          { status: 500 }
+        );
+      }
+  
+      if (myBookings.length >= 1) {
+        return NextResponse.json(
+          { message: "No Permission" },
+          { status: 403 }
+        );
+      }
     }
 
     const { error: bookingError } = await supabase.from("bookings").insert({
@@ -58,12 +78,16 @@ export const POST = async (req) => {
       user_id,
     });
     if (bookingError) {
+      if (bookingError.code === '23505') { // Unique violation error code
+        return NextResponse.json({ message: "Already booked" }, { status: 409 });
+      }
       console.error("Error during booking:", bookingError);
       return NextResponse.json(
         { message: "Failed to book room" },
         { status: 500 }
       );
     }
+
     return NextResponse.json(
       { message: "Booking successful" },
       { status: 200 }

@@ -1,5 +1,5 @@
 "use client";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, UserCheck } from "lucide-react";
 import { Warning } from "@public/assets/icons";
 import { loginImage } from "@public/assets/images";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import { SessionContext } from "@provider/SessionProvider";
 function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [buttonText, setButtonText] = useState("ลงทะเบียน");
@@ -37,12 +38,18 @@ function RegisterPage() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, role }),
         })
         const data = await res.json();
         if (!res.ok) {
-            console.log(data);
+          console.log(data);
+          if (data.message === "Invalid input") {
+            setError("กรุณากรอกข้อมูลให้ถูกต้อง");
+          } else if (data.message === "A user with this email address has already been registered") {
+            setError("อีเมลนี้ถูกใช้งานแล้ว");
+          } else {
             setError(data.error || "เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง");
+          }
         } else {
             setButtonText("ลงทะเบียนสำเร็จ");
             getUser();
@@ -79,7 +86,7 @@ function RegisterPage() {
             <form onSubmit={(e) => handleSubmit(e)}>
               <ul className="flex flex-col gap-4">
                 <li className="flex items-center border-b border-gray-400 pb-2 ">
-                  <Mail className="w-5 h-5 text-gray-500 mr-3" />
+                  <Mail className="w-5 h-5 text-gray-500 mr-3  ml-3" />
                   <input
                     type="email"
                     placeholder="Email"
@@ -90,7 +97,7 @@ function RegisterPage() {
                   />
                 </li>
                 <li className="flex items-center border-b border-gray-400 pb-2 w-full">
-                  <Lock className="w-5 h-5 text-gray-500 mr-3" />
+                  <Lock className="w-5 h-5 text-gray-500 mr-3  ml-3" />
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
@@ -112,6 +119,17 @@ function RegisterPage() {
                       />
                     )}
                   </div>
+                </li>
+                <li className="flex items-center border-b border-gray-400 pb-2 ">
+                  <UserCheck className="w-5 h-5 text-gray-500 mr-3 ml-3" />
+                  <input
+                    type="text"
+                    placeholder="Role (student, leader, teacher, admin)"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full outline-none placeholder-gray-500 text-gray-700"
+                    required
+                  />
                 </li>
               </ul>
               {error && (

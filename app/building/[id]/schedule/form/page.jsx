@@ -62,7 +62,7 @@ function BookingForm() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [role, setRole] = useState("student");
-  const { user, setUser } = useContext(SessionContext);
+  const { user } = useContext(SessionContext);
 
   const { id } = useParams();
   const searchParams = useSearchParams();
@@ -105,6 +105,10 @@ function BookingForm() {
       } else if (data.message === "Already booked") {
         setError(bookingError.booked);
         setSuccess(null);
+      } else if (data.message === "No Permission") {
+        setError(bookingError.noPermission);
+        setSuccess(null);
+
       } else {
         setError(bookingError.default);      
         setSuccess(null);
@@ -114,16 +118,6 @@ function BookingForm() {
       setError(bookingError.default);      
       setSuccess(null);
     }
-    
-    // setTimeout(() => {
-    //   if (Math.random() > 0.5) {
-    //     setSuccess("จองห้องเรียนสำเร็จ");
-    //     setError(null);
-    //   } else {
-    //     setError("เกิดข้อผิดพลาดในการจองห้องเรียน");
-    //     setSuccess(null);
-    //   }
-    // }, 1000);
     setLoading(false);
   };
 
@@ -155,28 +149,9 @@ function BookingForm() {
         console.error("Error fetching user role:", error);
         return;
       }
-      const {
-        data: { role },
-        error: roleError,
-      } = await supabase
-        .from("users")
-        .select("role")
-        .eq("user_id", user.id)
-        .single();
-      if (roleError) {
-        console.error("Error fetching user role:", roleError);
-        return;
-      }
-      console.log(role);
-      
-      setRole(role || "student");
-      setUser({ ...user, role: role || "student" });
-    };
-    if (user?.role && user.role !== "authenticated") {
-      setRole(user.role); 
-      // console.log("already have user role", user.role)
+      setRole(user?.app_metadata?.role || "student");
     }
-    else getUserRole();
+    getUserRole();
   }, [user]);
 
   return (

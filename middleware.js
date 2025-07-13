@@ -2,28 +2,37 @@ import { createMiddlewareClient } from "@node_modules/@supabase/auth-helpers-nex
 import { NextResponse } from "@node_modules/next/server";
 
 export const middleware = async (req) => {
-    const { pathname } = req.nextUrl;
-    const res = NextResponse.next();
-    const supabase = createMiddlewareClient({ req, res });
+  const { pathname } = req.nextUrl;
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req, res });
 
-    const { data: { session } } = await supabase.auth.getSession();
-    const user_id = session?.user.id;
-    
-    if (pathname.startsWith('/login') && session) {
-        // If user is already logged in, redirect to home page
-        return NextResponse.redirect(new URL('/',req.url))
-    } else if (pathname.startsWith('/admin')) {
-        if (session) {
-            const { data: { role } } = await supabase.from('users').select('role').eq('user_id', user_id).single(); 
-            console.log(role);
-            if (role === 'admin') return res;
-        }
-        return NextResponse.redirect(new URL('/',req.url))
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user_id = session?.user.id;
+
+// login page   
+  if (pathname.startsWith("/login") && session) {
+    // If user is already logged in, redirect to home page
+    return NextResponse.redirect(new URL("/", req.url));
+  } 
+// admin page
+  else if (pathname.startsWith("/admin")) {
+    if (session) {
+      const role = session?.user?.app_metadata?.role;
+      // console.log(`User role: ${role}`);
+      if (role === "admin") return res;
     }
-     
-    return res;
-}
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+  // building schedule form page   
+  else if (pathname.startsWith("/building/") && pathname.includes("/schedule/form") && !session) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  return res;
+};
 
 export const config = {
-    matcher: ['/admin/:path*', '/login' ]
-}
+  matcher: ["/admin/:path*", "/login", "/building/:id/schedule/form"],
+};
