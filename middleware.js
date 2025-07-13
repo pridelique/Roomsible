@@ -1,5 +1,9 @@
+import { bookableRoom } from "@data";
 import { createMiddlewareClient } from "@node_modules/@supabase/auth-helpers-nextjs/dist";
 import { NextResponse } from "@node_modules/next/server";
+import { isPast } from "@utils/isPast";
+
+const checkDay = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 export const middleware = async (req) => {
   const { pathname } = req.nextUrl;
@@ -16,6 +20,7 @@ export const middleware = async (req) => {
     // If user is already logged in, redirect to home page
     return NextResponse.redirect(new URL("/", req.url));
   } 
+
 // admin page
   else if (pathname.startsWith("/admin")) {
     if (session) {
@@ -25,14 +30,37 @@ export const middleware = async (req) => {
     }
     return NextResponse.redirect(new URL("/", req.url));
   }
-  // building schedule form page   
-  else if (pathname.startsWith("/building/") && pathname.includes("/schedule/form") && !session) {
-    return NextResponse.redirect(new URL("/", req.url));
+
+  // building schedule page
+  else if (pathname.startsWith("/building") && pathname.includes("/schedule?room")) {
+    const { searchParams } = req.nextUrl;
+    // เหลือเชคห้อง
+    const room = searchParams.get("room");
+    console.log(room);
+    
+    if (!room || !bookableRoom.includes(room)) {
+      return NextResponse.redirect(new URL("/", req.url));   
+    }
+  }
+
+// building schedule form page   
+  else if (pathname.startsWith("/building/") && pathname.includes("/schedule/form")) {
+    if (!session) return NextResponse.redirect(new URL("/", req.url));
+    const { searchParams } = req.nextUrl;
+    // เหลือเชคห้อง
+    const room = searchParams.get("room");
+    const day = searchParams.get("day");
+    const period = searchParams.get("period");
+    // console.log(room);
+    
+    if (!room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || isPast(day, period)) {
+      return NextResponse.redirect(new URL("/", req.url));   
+    }
   }
 
   return res;
 };
 
 export const config = {
-  matcher: ["/admin/:path*", "/login", "/building/:id/schedule/form"],
+  matcher: ["/admin/:path*", "/login", "/building/:id/schedule/form", "/building/:id/schedule"],
 };

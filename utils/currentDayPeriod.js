@@ -1,4 +1,5 @@
-import { timeSlots } from "@data";
+import timeSlots from "@data/timeSlots";
+
 
 export const getCurrentDay = () => {
   const today = new Date();

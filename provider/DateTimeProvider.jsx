@@ -1,7 +1,7 @@
 "use client";
 
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 
 const mapDay = {
   0: "วันจันทร์",
@@ -47,6 +47,26 @@ function DateTimeProvider({ children }) {
       }
     }
   }, []);
+
+  // const intervalRef = useRef(null);
+
+  // useEffect(() => {
+  //   if (intervalRef.current) {
+  //     return;
+  //   }
+    
+  //   intervalRef.current = setInterval(async () => {
+  //     console.log('hello');
+  //     const res = await fetch("/api/jobs/check-expired-bookings",{
+  //       method: "GET",
+  //     });
+  //     const data = await res.json();
+  //     console.log(data);
+      
+  //   }, 1000); // Update every minute
+
+  //   return () => clearInterval(intervalRef.current);
+  // })
 
   return (
     <DateTimeContext.Provider value={{ day, setDay, period, setPeriod, currentDay, currentPeriod }}>

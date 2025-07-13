@@ -6,6 +6,8 @@ import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifySuccess, notifyWaring } from "@utils/notify";
+import { dayEnToThai, dayThaiToEn } from "@utils/translateDay";
+import { isPast } from "@utils/isPast";
 function Schedule() {
   const router = useRouter();
   const param = useParams();
@@ -18,30 +20,13 @@ function Schedule() {
   const { user } = useContext(SessionContext);
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
-  // const timeSlots = Array.from({ length: 9 }, (_, i) => {
-  //   const startMinutes = 8 * 60 + 30 + i * 50;
-  //   const endMinutes = startMinutes + 50;
-
-  //   const formatTime = (mins) => {
-  //     const h = Math.floor(mins / 60);
-  //     const m = mins % 60;
-  //     return `${h}.${m.toString().padStart(2, "0")}`;
-  //   };
-
-  //   return {
-  //     label: i + 1,
-  //     time: `(${formatTime(startMinutes)} - ${formatTime(endMinutes)})`,
-  //   };
-  // });
 
   const handleOnClick = (day, period) => {
     if (!user) {
       notifyWaring("กรุณาเข้าสู่ระบบก่อนทำการจองห้องเรียน");
-      return;
+    } else {
+      router.push(`/building/${buildingId}/schedule/form?room=${room}&day=${day}&period=${period.label}`)
     }
-    router.push(
-      `/building/${buildingId}/schedule/form?room=${room}&day=${day}&period=${period.label}`
-    );
   };
 
   useEffect(() => {
@@ -71,10 +56,6 @@ function Schedule() {
         <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
           ตารางการใช้งานห้อง {room}
         </h2>
-        {/* <div className="text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl">
-          <h3 className="mt-1">อาคาร {buildingId} {buildingNames[buildingId].name}</h3>
-          <h3 className="mt-0.5">ห้อง {room}</h3>
-        </div> */}
         <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
           เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
         </p>
@@ -120,19 +101,21 @@ function Schedule() {
               {timeSlots.map((period) => {
                 if (period.label === "Homeroom") return;
                 return (
-                  <div
+                  <button
                     key={`${day}-${period.label}`}
-                    className={`border border-gray-200 ${
+                    disabled={isPast(dayThaiToEn[day], period.label)}
+                    className={`border border-gray-200 disabled:cursor-not-allowed ${
                       status[`${day}-${period.label}`]
-                        ? "bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]"
-                        : "bg-[#FCA5A5]"
+                        ? "bg-[#86EFAC] not-disabled:hover:bg-[#4ADE80] cursor-pointer disabled:bg-[#74d296]"
+                        : "bg-[#FCA5A5] disabled:bg-[#d08484]"
                     }`}
                     onClick={
                       status[`${day}-${period.label}`]
-                        ? () => handleOnClick(day, period)
+                        ? () => handleOnClick(dayThaiToEn[day], period)
                         : undefined
                     }
                   />
+                  
                 );
               })}
             </React.Fragment>
