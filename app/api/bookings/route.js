@@ -49,9 +49,47 @@ export const POST = async (req) => {
         { status: 500 }
       );
     }
-    
     const user_id = user.id;
     const { role } = user.app_metadata || {};
+
+    // check banned
+    const { data: { banned_until }, error: userDataError } = await supabase
+      .from("users")
+      .select("banned_until")
+      .eq("user_id", user_id)
+      .single();
+    
+    // console.log("banned_until:", banned_until);
+    
+    if (userDataError) {
+      console.error("Error fetching user data:", userDataError);
+      return NextResponse.json(
+        { message: "Failed to fetch user data" },
+        { status: 500 }
+      );
+    }
+
+    if (banned_until) {
+      if (banned_until > new Date().toISOString()) {
+        return NextResponse.json(
+          { message: "Banned" },
+          { status: 403 }
+        );
+      } else {
+        // Reset banned_until if the user is no longer banned
+        const { error: resetBanError } = await supabase
+          .from("users")
+          .update({ banned_until: null })
+          .eq("user_id", user_id);
+        if (resetBanError) {
+          console.error("Error resetting ban:", resetBanError);
+          return NextResponse.json(
+            { message: "Failed to reset ban" },
+            { status: 500 }
+          );
+        }
+      }
+    }
     
     // Check if the room is bookable for the given day and period
     if (!isBookable(day, period, role, type)) {
@@ -120,6 +158,7 @@ export const POST = async (req) => {
         );
     }
 
+
     // Insert the booking into the database
     const { error: bookingError } = await supabase.from("bookings").insert({
       room,
@@ -132,6 +171,7 @@ export const POST = async (req) => {
       subject,
       detail,
       user_id,
+      status: type === "class" ? "confirmed" : "pending",
       expired_at: expired_at.toISOString(),
     });
     if (bookingError) {

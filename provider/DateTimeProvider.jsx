@@ -60,10 +60,10 @@ function DateTimeProvider({ children }) {
   //       method: "GET",
   //     });
   //     const data = await res.json();
-  //     // console.log(data);
+  //     console.log(data);
   //   }
-  //   // jobs();
-  //   intervalRef.current = setInterval(() => jobs(), 1000 * 60); // Update every minute
+  //   jobs();
+    // intervalRef.current = setInterval(() => jobs(), 1000 * 60); // Update every minute
 
   //   return () => clearInterval(intervalRef.current);
   // }, [])
