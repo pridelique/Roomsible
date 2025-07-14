@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { isPast } from "@utils/isPast";
 import jwt from "jsonwebtoken";
 import { getStartTime } from "@utils/getStartTime";
+import { isBookable } from "@utils/isBookable";
 
 export const POST = async (req) => {
   const {
@@ -28,17 +29,13 @@ export const POST = async (req) => {
     );
   }
 
+  // Validate room, building, period, and day
+
   if (!bookableRoom.includes(room)) {
     return NextResponse.json({ message: "Invalid room" }, { status: 400 });
   }
 
-  if (isPast(day, period)) {
-    return NextResponse.json(
-      { message: "Cannot book a room in the past" },
-      { status: 400 }
-    );
-  }
-
+  
   try {
     // get user
     const {
@@ -52,14 +49,20 @@ export const POST = async (req) => {
         { status: 500 }
       );
     }
-
+    
     const user_id = user.id;
     const { role } = user.app_metadata || {};
+    
+    // Check if the room is bookable for the given day and period
+    if (!isBookable(day, period, role, type)) {
+      return NextResponse.json(
+        { message: "This room is not bookable at this time" },
+        { status: 400 }
+      );
+    }
 
-    // check permissions
+    // check permissions book 1 activity per week
     if ((role === "student" || role === "leader") && type === "activity") {
-      // console.log('Checking user bookings for activity type');
-
       const { data: myBookings, error: myBookingsError } = await supabase
         .from("bookings")
         .select("booking_id")
@@ -90,6 +93,8 @@ export const POST = async (req) => {
     const maxTime = Math.max(bookingStart.getTime(), nowPlus10.getTime());
     const expired_at = new Date(maxTime);
 
+
+    // Check if the room is already booked for the given day and period
     const { data: existingBookings, error: existingBookingsError } = await    supabase
       .from("bookings")
       .select("booking_id")
@@ -114,6 +119,8 @@ export const POST = async (req) => {
           { status: 409 }
         );
     }
+
+    // Insert the booking into the database
     const { error: bookingError } = await supabase.from("bookings").insert({
       room,
       building,

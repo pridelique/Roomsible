@@ -20,6 +20,7 @@ import { SessionContext } from "@provider/SessionProvider";
 import { supabase } from "@utils/supabase";
 import { bookingError } from "@data/bookingError";
 import { dayEnToThai, dayThaiToEn } from "@utils/translateDay";
+import { isBookable } from "@utils/isBookable";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -50,7 +51,7 @@ const customStyles = {
 };
 
 function BookingForm() {
-  const [mode, setMode] = useState("activity");
+  const [mode, setMode] = useState("");
   const [teacher, setTeacher] = useState("");
   const [subject, setSubject] = useState("");
   const [studentClass, setStudentRoom] = useState("");
@@ -152,7 +153,14 @@ function BookingForm() {
       setRole(user?.app_metadata?.role || "student");
     }
     getUserRole();
+    
   }, [user]);
+
+  useEffect(() => {
+    if (isBookable(day, period, role, "class") && !isBookable(day, period, role, "activity")) {
+      setMode('class')
+    } else setMode('activity');
+  },[day, period, role])
 
   return (
     <section className="padding-x max-container w-full pt-6 ">
@@ -222,7 +230,8 @@ function BookingForm() {
             </p>
           </div>
 
-          <ModeSelection mode={mode} setMode={setMode} role={role}/>
+          <ModeSelection mode={mode} setMode={setMode} role={role} disabledActivity={!isBookable(day, period, role, 'activity')}
+          disabledClass={!isBookable(day, period, role, 'class')} />
 
           <form onSubmit={(e) => handleSubmit(e)} className="w-full">
             {mode === "class" ? (

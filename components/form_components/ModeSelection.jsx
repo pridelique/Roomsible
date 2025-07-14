@@ -1,12 +1,13 @@
 import { Arrow_down } from "@public/assets/icons";
+import { isBookable } from "@utils/isBookable";
 
-function ModeSelection({ mode, setMode, role }) {
+function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity }) {
   return (
     <>
         {/* computer */}
       <div className="flex justify-evenly mb-4 gap-6  max-[450px]:hidden relative">
         <button
-          disabled={role === "student"}
+          disabled={disabledClass}
           className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50  ${
             mode === "class"
               ? "text-[#466AB0] font-semibold"
@@ -17,7 +18,8 @@ function ModeSelection({ mode, setMode, role }) {
           การเรียนการสอน
         </button>
         <button
-          className={`cursor-pointer px-3 pb-1 ${
+          disabled={disabledActivity}
+          className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50 ${
             mode === "activity"
               ? "text-[#466AB0] font-semibold"
               : "text-gray-500"
@@ -35,7 +37,8 @@ function ModeSelection({ mode, setMode, role }) {
       <div
         className="w-50 relative pb-1.5 text-[#466AB0] font-semibold cursor-pointer hidden overflow-hidden max-[450px]:flex group mb-4"
         onClick={() => {
-          if (role != 'student') setMode(`${mode === "activity" ? "class" : "activity"}`)
+          if (disabledActivity || disabledClass) return;
+          setMode(`${mode === "activity" ? "class" : "activity"}`)
         }}
       >
         <div
@@ -53,7 +56,7 @@ function ModeSelection({ mode, setMode, role }) {
             
             {/* ArrowLeft */}
           <button
-            disabled={role === "student"}
+            disabled={disabledActivity || disabledClass}
             className={`absolute right-0 cursor-pointer transition-all duration-100 p-0.5 disabled:hidden ${
               mode === "activity"
                 ? "opacity-0"
@@ -66,7 +69,7 @@ function ModeSelection({ mode, setMode, role }) {
 
             {/* ArrowRight */}
           <button
-            disabled={role === "student"}
+            disabled={disabledActivity || disabledClass}
             className={`absolute right-36 cursor-pointer transition-all duration-100 p-0.5 disabled:hidden ${
               mode === "activity"
                 ? "opacity-30 hover:opacity-50 active:opacity-50 group-hover:opacity-50 group-active:opacity-50"
