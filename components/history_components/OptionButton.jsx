@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ConfirmCancelBox from "./ConfirmCancelBox";
+import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
+import { isPast } from "@utils/isPast";
 
 function OptionButton({ booking, cancelBooking }) {
   const optionRef = useRef(null);
@@ -22,7 +24,18 @@ function OptionButton({ booking, cancelBooking }) {
     };
   }, []);
 
-
+  const isCancelable = () => {
+    if (booking.type === 'class' && isPast(booking.day, booking.period)) {
+      return false;
+    } else if (booking.status === 'pending') {
+      if (booking.day == getCurrentDay('eng') && booking.period == getCurrentPeriod()) {        
+        return false
+      }
+    }
+    return true;
+    
+  };
+  // isCancelable()
 
   return (
     <div className="relative">
@@ -34,7 +47,7 @@ function OptionButton({ booking, cancelBooking }) {
       </button>
       {isOpenOption && (
         <ul
-          className={`absolute right-full w-36 bg-white border border-gray-300 rounded shadow-md text-sm z-3 ${booking.status === 'booked' ? '-top-[45px]' : '-top-[6px]'}`}
+          className={`absolute right-full w-36 bg-white border border-gray-300 rounded shadow-md text-sm z-3 ${isCancelable() ? '-top-[45px]' : '-top-[6px]'}`}
           ref={optionRef}
         >
           <li
@@ -43,7 +56,7 @@ function OptionButton({ booking, cancelBooking }) {
           >
             รายละเอียด
           </li>
-          {booking.status === 'booked' && (
+          {isCancelable() && (
             <li
               onClick={() => {
                 setIsOpenWarning(true);
@@ -63,7 +76,7 @@ function OptionButton({ booking, cancelBooking }) {
           ref={detailRef}
         >
           {/* <div className="font-medium mb-2">รายละเอียดการจอง</div> */}
-          <div>{booking.detail}</div>
+          <div>{booking.type === 'class' ? `${booking.teacher} วิชา${booking.subject} ${booking.student_class}`: `${booking.detail}`}</div>
           <div className="flex justify-end">
             <button
               onClick={() => setTimeout(() => setIsOpenDetail(false), 0)}

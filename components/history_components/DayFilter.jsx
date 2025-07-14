@@ -1,31 +1,31 @@
 import { Arrow_down } from "@public/assets/icons";
 import { useEffect, useRef, useState } from "react";
 
-const dateFilterList = [
+const DayFilterList = [
   { value: "all", label: "ทั้งหมด" },
   { value: "today", label: "วันนี้" },
   { value: "fromToday", label: "ตั้งแต่วันนี้" },
   { value: "options", label: "เลือก" },
 ];
 
-function DateFilter({
-  dateFilter,
-  setDateFilter,
+function DayFilter({
+  dayFilter,
+  setdayFilter,
   selectedDate,
   setSelectedDate,
   bookings,
-  dateList,
+  dayList,
 }) {
   const [boxStyle, setBoxStyle] = useState({});
   const [isShowOptions, setIsShowOptions] = useState(false);
-  const previousDateFilterRef = useRef(null);
+  const previousdayFilterRef = useRef(null);
   const dropdownRef = useRef(null);
   const optionRefs = useRef([]);
-  const dateFilterRef = useRef(null);
+  const dayFilterRef = useRef(null);
 
   const resizeBox = () => {
-    const idx = dateFilterList.findIndex(
-      (opt) => opt.value === dateFilterRef.current
+    const idx = DayFilterList.findIndex(
+      (opt) => opt.value === dayFilterRef.current
     );
     if (idx === -1) return;
     if (optionRefs.current[idx]) {
@@ -39,20 +39,20 @@ function DateFilter({
   };
 
   const handleCloseDropdown = () => {
-      console.log(selectedDate, previousDateFilterRef.current, dateFilter);
+      console.log(selectedDate, previousdayFilterRef.current, dayFilter);
       
-      if (previousDateFilterRef.current !== "options") {        
-        setDateFilter(previousDateFilterRef.current);
+      if (previousdayFilterRef.current !== "options") {        
+        setdayFilter(previousdayFilterRef.current);
       }
       setIsShowOptions(false);    
   };
 
   useEffect(() => {
     setTimeout(() => {
-      dateFilterRef.current = dateFilter;
+      dayFilterRef.current = dayFilter;
       resizeBox();
     }, 0);
-  }, [dateFilter, bookings, selectedDate]);
+  }, [dayFilter, bookings, selectedDate]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -61,8 +61,8 @@ function DateFilter({
       }      
     };
 
-    dateFilterRef.current = "today";
-    previousDateFilterRef.current = dateFilter;
+    dayFilterRef.current = "today";
+    previousdayFilterRef.current = dayFilter;
     resizeBox();
     window.addEventListener("resize", resizeBox);
     document.addEventListener("click", handleClickOutside);
@@ -73,16 +73,16 @@ function DateFilter({
   }, []);
   return (
     <div className="flex justify-center items-center bg-gray-200 rounded-lg p-1 shadow-md relative cursor-pointer max-sm:text-sm">
-      {dateFilterList.map((option) => {
+      {DayFilterList.map((option) => {
         if (option.value === "options")
           return (
             <div
               key={option.value}
               ref={(el) =>
-                (optionRefs.current[dateFilterList.indexOf(option)] = el)
+                (optionRefs.current[DayFilterList.indexOf(option)] = el)
               }
               className={`transition-all duration-300 relative min-w-[100px] max-sm:min-w-[85px] ${
-                dateFilter === option.value ? "text-gray-600" : "text-gray-500"
+                dayFilter === option.value ? "text-gray-600" : "text-gray-500"
               }`}
             >
               <button
@@ -91,8 +91,8 @@ function DateFilter({
                   setTimeout(() => {
                     if (!isShowOptions) {
                       setIsShowOptions(true);
-                      previousDateFilterRef.current = dateFilter;
-                      setDateFilter(option.value);
+                      previousdayFilterRef.current = dayFilter;
+                      setdayFilter(option.value);
                     }
                   }, 0)
                 }
@@ -102,7 +102,7 @@ function DateFilter({
                 </p>
                 <Arrow_down
                   className={`w-4 h-4 text-gray-500 relative z-2 ${
-                    dateFilter === option.value
+                    dayFilter === option.value
                       ? "text-gray-600"
                       : "text-gray-500"
                   }`}
@@ -113,22 +113,22 @@ function DateFilter({
                   className="z-3 border border-gray-300 absolute top-9 right-0 bg-white rounded-lg shadow-md w-full overflow-hidden"
                   ref={dropdownRef}
                 >
-                  {dateList.map((date) => (
+                  {day.map((day) => (
                     <li
-                      key={date}
+                      key={day}
                       className="hover:bg-gray-100 active:bg-gray-100 cursor-pointer"
                     >
                       <button
                         className="cursor-pointer w-full px-3 py-1 text-center"
                         onClick={() =>
                           setTimeout(() => {
-                            setSelectedDate(date);
+                            setSelectedDate(day);
                             setIsShowOptions(false);
                             resizeBox();
                           }, 0)
                         }
                       >
-                        {date}
+                        {day}
                       </button>
                     </li>
                   ))}
@@ -140,12 +140,12 @@ function DateFilter({
           <button
             key={option.value}
             ref={(el) =>
-              (optionRefs.current[dateFilterList.indexOf(option)] = el)
+              (optionRefs.current[DayFilterList.indexOf(option)] = el)
             }
             className={`px-4 py-1 transition-all duration-300 ${
-              dateFilter === option.value ? "text-gray-600" : "text-gray-500"
+              dayFilter === option.value ? "text-gray-600" : "text-gray-500"
             }`}
-            onClick={() => setTimeout(() => setDateFilter(option.value), 0)}
+            onClick={() => setTimeout(() => setdayFilter(option.value), 0)}
           >
             <p className="relative z-2 cursor-pointer whitespace-nowrap">
               {option.label}
@@ -161,4 +161,4 @@ function DateFilter({
   );
 }
 
-export default DateFilter;
+export default DayFilter;

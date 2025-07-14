@@ -8,6 +8,8 @@ import { SessionContext } from "@provider/SessionProvider";
 import { notifySuccess, notifyWaring } from "@utils/notify";
 import { dayEnToThai, dayThaiToEn } from "@utils/translateDay";
 import { isPast } from "@utils/isPast";
+import { isInTorrorrow } from "@utils/isInTomorrow";
+import { isBookable } from "@utils/isBookable";
 function Schedule() {
   const router = useRouter();
   const param = useParams();
@@ -17,9 +19,10 @@ function Schedule() {
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
-  const { user } = useContext(SessionContext);
+  const [loading, setLoading] = useState(true);
+  const { user } = useContext(SessionContext);  
 
-  const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
+  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
   const handleOnClick = (day, period) => {
     if (!user) {
@@ -48,8 +51,10 @@ function Schedule() {
         }));
       });
     });
+    setLoading(false);
+    
   }, []);
-
+  
   return (
     <section className="padding-x max-container w-full pt-6">
       <div className="text-center mb-4">
@@ -96,14 +101,14 @@ function Schedule() {
           {days.map((day) => (
             <React.Fragment key={day}>
               <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">
-                {day}
+                {dayEnToThai[day]}
               </div>
               {timeSlots.map((period) => {
                 if (period.label === "Homeroom") return;
                 return (
                   <button
                     key={`${day}-${period.label}`}
-                    disabled={isPast(dayThaiToEn[day], period.label)}
+                    disabled={!isBookable(day, period.label, user?.app_metadata?.role)}
                     className={`border border-gray-200 disabled:cursor-not-allowed ${
                       status[`${day}-${period.label}`]
                         ? "bg-[#86EFAC] not-disabled:hover:bg-[#4ADE80] cursor-pointer disabled:bg-[#74d296]"
@@ -111,7 +116,7 @@ function Schedule() {
                     }`}
                     onClick={
                       status[`${day}-${period.label}`]
-                        ? () => handleOnClick(dayThaiToEn[day], period)
+                        ? () => handleOnClick(day, period)
                         : undefined
                     }
                   />

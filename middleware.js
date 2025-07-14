@@ -1,6 +1,8 @@
 import { bookableRoom } from "@data";
 import { createMiddlewareClient } from "@node_modules/@supabase/auth-helpers-nextjs/dist";
 import { NextResponse } from "@node_modules/next/server";
+import { isBookable } from "@utils/isBookable";
+import { isInTorrorrow } from "@utils/isInTomorrow";
 import { isPast } from "@utils/isPast";
 
 const checkDay = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
@@ -14,6 +16,7 @@ export const middleware = async (req) => {
     data: { session },
   } = await supabase.auth.getSession();
   const user_id = session?.user.id;
+  const role = session?.user?.app_metadata?.role;
 
 // login page   
   if (pathname.startsWith("/login") && session) {
@@ -24,13 +27,12 @@ export const middleware = async (req) => {
 // admin page
   else if (pathname.startsWith("/admin")) {
     if (session) {
-      const role = session?.user?.app_metadata?.role;
       // console.log(`User role: ${role}`);
       if (role === "admin") return res;
     }
     return NextResponse.redirect(new URL("/", req.url));
   }
-
+  
   // building schedule page
   else if (pathname.startsWith("/building") && pathname.includes("/schedule?room")) {
     const { searchParams } = req.nextUrl;
@@ -53,8 +55,17 @@ export const middleware = async (req) => {
     const period = searchParams.get("period");
     // console.log(room);
     
-    if (!room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || isPast(day, period)) {
+    if (!room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || !isBookable(day, period, role)) {
       return NextResponse.redirect(new URL("/", req.url));   
+    }
+  }
+
+  if (pathname.startsWith("/building")) {
+    const id = Number(pathname.split("/")[2]);
+    // console.log(id);
+    
+    if (!id || id < 1 || id > 7) {
+      return NextResponse.redirect(new URL("/", req.url));
     }
   }
 
@@ -62,5 +73,5 @@ export const middleware = async (req) => {
 };
 
 export const config = {
-  matcher: ["/admin/:path*", "/login", "/building/:id/schedule/form", "/building/:id/schedule"],
+  matcher: ["/admin/:path*", "/login", "/building/:path*"],
 };

@@ -33,7 +33,7 @@ function ConfirmCancelBox({ booking, setIsOpenWarning, cancelBooking}) {
             <button
               className='text-white bg-gradient-to-r hover:bg-gradient-to-br focus:outline-none font-medium text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mt-6 from-red-400 via-red-500 to-red-600 shadow-red-500/50'
               onClick={() => {
-                cancelBooking(booking.id)
+                cancelBooking(booking.booking_id)
                 setIsOpenWarning(false);
             }}
             >
