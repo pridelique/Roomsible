@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function StatusTabs({ statusFilter, setStatusFilter, thStatus, statusList, bookings, dateFilterFuction, dateFilter }) {
+function StatusTabs({ statusFilter, setStatusFilter, thStatus, statusList, bookings, dayFilterFuction, dayFilter }) {
   const tabsRefs = useRef([])
   const statusFilterRef = useRef(null);
   const [underlineStyle, setUnderlineStyle] = useState({});
@@ -23,7 +23,7 @@ function StatusTabs({ statusFilter, setStatusFilter, thStatus, statusList, booki
       statusFilterRef.current = statusFilter;
       resizeUnderline();
     }, 0);
-  }, [statusFilter, dateFilter, bookings])
+  }, [statusFilter, dayFilter, bookings])
 
   useEffect(() => {
     resizeUnderline();
@@ -58,9 +58,8 @@ function StatusTabs({ statusFilter, setStatusFilter, thStatus, statusList, booki
             >
               {
                 bookings
+                // .filter( (booking) => dayFilterFuction(booking))
                 .filter(
-                  (booking) => dateFilterFuction(booking)
-                ).filter(
                   (booking) => status === "all" || booking.status === status
                 ).length
               }

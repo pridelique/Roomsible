@@ -63,7 +63,7 @@ function OptionButton({ booking, cancelBooking }) {
           ref={detailRef}
         >
           {/* <div className="font-medium mb-2">รายละเอียดการจอง</div> */}
-          <div>{booking.detail}</div>
+          <div>{booking.type === 'class' ? `${booking.teacher} วิชา${booking.subject} ${booking.student_class}`: `${booking.detail}`}</div>
           <div className="flex justify-end">
             <button
               onClick={() => setTimeout(() => setIsOpenDetail(false), 0)}
