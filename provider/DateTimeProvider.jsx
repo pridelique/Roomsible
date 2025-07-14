@@ -54,19 +54,19 @@ function DateTimeProvider({ children }) {
   //   if (intervalRef.current) {
   //     return;
   //   }
-    
-  //   intervalRef.current = setInterval(async () => {
-  //     console.log('hello');
+
+  //   const jobs = async () => {
   //     const res = await fetch("/api/jobs/check-expired-bookings",{
   //       method: "GET",
   //     });
   //     const data = await res.json();
-  //     console.log(data);
-      
-  //   }, 1000); // Update every minute
+  //     // console.log(data);
+  //   }
+  //   // jobs();
+  //   intervalRef.current = setInterval(() => jobs(), 1000 * 60); // Update every minute
 
   //   return () => clearInterval(intervalRef.current);
-  // })
+  // }, [])
 
   return (
     <DateTimeContext.Provider value={{ day, setDay, period, setPeriod, currentDay, currentPeriod }}>

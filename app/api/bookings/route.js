@@ -90,6 +90,30 @@ export const POST = async (req) => {
     const maxTime = Math.max(bookingStart.getTime(), nowPlus10.getTime());
     const expired_at = new Date(maxTime);
 
+    const { data: existingBookings, error: existingBookingsError } = await    supabase
+      .from("bookings")
+      .select("booking_id")
+      .eq("room", room)
+      .eq("day", day)
+      .eq("period", period)
+      .neq("status", "cancelled")
+      .limit(1);
+    
+    if (existingBookingsError) {
+      console.error("Error checking existing bookings:", existingBookingsError);
+      return NextResponse.json(
+        { message: "Failed to check existing bookings" },
+        { status: 500 }
+      );
+    }
+
+    if (existingBookings.length > 0) {
+        // Unique violation error code
+        return NextResponse.json(
+          { message: "Already booked" },
+          { status: 409 }
+        );
+    }
     const { error: bookingError } = await supabase.from("bookings").insert({
       room,
       building,
@@ -104,13 +128,6 @@ export const POST = async (req) => {
       expired_at: expired_at.toISOString(),
     });
     if (bookingError) {
-      if (bookingError.code === "23505") {
-        // Unique violation error code
-        return NextResponse.json(
-          { message: "Already booked" },
-          { status: 409 }
-        );
-      }
       console.error("Error during booking:", bookingError);
       return NextResponse.json(
         { message: "Failed to book room" },
