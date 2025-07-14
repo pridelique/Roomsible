@@ -1,10 +1,15 @@
 import timeSlots from "@data/timeSlots";
 
+const dayEn = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
-export const getCurrentDay = () => {
+const dayTh = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+
+export const getCurrentDay = (type = 'index') => {
   const today = new Date();
   const day = today.getDay();
-  return day;
+  if (type === 'index') return day;
+  else if (type === 'eng') return dayEn[day];
+  return dayTh[day];
 };
 
 export const getCurrentPeriod = () => {

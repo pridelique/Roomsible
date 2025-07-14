@@ -200,24 +200,23 @@ export const DELETE = async (req) => {
   const cookieStore = await cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
   try {
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-    if (userError || !user) {
-      console.error("Error fetching user:", userError);
-      return NextResponse.json(
-        { message: "Failed to fetch user" },
-        { status: 500 }
-      );
-    }
-    const user_id = user.id;
+    // const {
+    //   data: { user },
+    //   error: userError,
+    // } = await supabase.auth.getUser();
+    // if (userError || !user) {
+    //   console.error("Error fetching user:", userError);
+    //   return NextResponse.json(
+    //     { message: "Failed to fetch user" },
+    //     { status: 500 }
+    //   );
+    // }
+    // const user_id = user.id;
 
     const { error } = await supabase
       .from("bookings")
       .delete()
       .eq("booking_id", booking_id)
-      .eq("user_id", user_id);
     if (error) {
       console.error("Error during booking deletion:", error);
       return NextResponse.json(

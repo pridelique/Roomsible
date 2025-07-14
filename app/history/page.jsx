@@ -33,8 +33,8 @@ const statusList = [
 ];
 
 function HistoryPage() {
+  const [allBookings, setAllBookings] = useState([]);
   const [bookings, setBookings] = useState([]);
-  const [countCanceledBookings, setCountCanceledBookings] = useState([]);
   const [bookingQuota, setBookingQuota] = useState(1);
   const [statusFilter, setStatusFilter] = useState("all");
   // const [dayFilter, setdayFilter] = useState("all");
@@ -47,12 +47,31 @@ function HistoryPage() {
   const fetched = useRef(false);
   const router = useRouter();
 
-  const cancelBooking = (id) => {
-    setBookings((prev) =>
-      prev.map((booking) =>
-        booking.id === id ? { ...booking, status: "cancelled" } : booking
-      )
-    );
+  const cancelBooking = async (booking_id) => {
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ booking_id }),
+      });
+      const data = await res.json();
+      // console.log(data);
+
+      if (res.ok) {
+        // console.log("Booking cancelled successfully");
+
+        setBookings((prev) =>
+          prev.filter((booking) => booking.booking_id !== booking_id)
+        );
+        setAllBookings((prev) =>
+          prev.filter((booking) => booking.booking_id !== booking_id)
+        );
+      }
+    } catch (error) {
+      console.error("Error cancelling booking:", error);
+    }
   };
 
   // const dayFilterFuction = (booking) => {
@@ -79,6 +98,26 @@ function HistoryPage() {
     // if (dayFilter !== "options") setSelectedDate("");
     // console.log("Bookings updated:", dayFilter);
   }, [statusFilter, selectedDate, bookings]);
+
+  useEffect(() => {    
+    if (!user) return;
+    const role = user?.app_metadata?.role;
+    if (role === "student" || role === "leader") {
+      setBookingQuota(
+        Math.max(
+          0,
+          1 - bookings.filter((item) => item.type === "activity").length
+        )
+      );
+    } else {
+      setBookingQuota(
+        Math.max(
+          0,
+          999 - bookings.filter((item) => item.type === "activity").length
+        )
+      );
+    }
+  }, [allBookings]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -120,33 +159,14 @@ function HistoryPage() {
         .select(
           "booking_id, day, period, room, type, status, teacher, subject, student_class, detail"
         )
-        .eq("user_id", user?.id)
-        .order("day", { ascending: true });
+        .eq("user_id", user?.id);
       if (error && error.code !== "PGRST116") {
         console.log("Error fetching bookings:", error);
         return;
       }
       console.log(bookings);
       setBookings(bookings.filter((item) => item.status != "cancelled"));
-      setCountCanceledBookings(
-        bookings.filter((item) => item.status === "cancelled").length
-      );
-      const role = user?.app_metadata?.role;
-      if (role === "student" || role === "leader") {
-        setBookingQuota(
-          Math.max(
-            0,
-            1 - bookings.filter((item) => item.type === "activity").length
-          )
-        );
-      } else {
-        setBookingQuota(
-          Math.max(
-            0,
-            999 - bookings.filter((item) => item.type === "activity").length
-          )
-        );
-      }
+      setAllBookings(bookings);
     };
     getUserDetails();
     getBookings();
@@ -178,7 +198,10 @@ function HistoryPage() {
                 <p className="sm:text-base text-sm text-gray-500">
                   {userDetails?.classroom} เลขที่ {userDetails?.no}
                   {userDetails?.banned_until ? (
-                    <span className="ml-10 text-[13px] text-red-500">คุณถูกระงับสิทธิ์จนถึงวันที่ {format(userDetails?.banned_until, 'dd/MM/yyyy')}</span>
+                    <span className="ml-10 text-[13px] text-red-500">
+                      คุณถูกระงับสิทธิ์จนถึงวันที่{" "}
+                      {format(userDetails?.banned_until, "dd/MM/yyyy")}
+                    </span>
                   ) : (
                     <>
                       {bookingQuota > 0 ? (
@@ -266,12 +289,12 @@ function HistoryPage() {
                             statusFilter === "all" ||
                             booking.status === statusFilter
                         )
-                        // .sort((a, b) => {
-                        //   const dayA = dateList.indexOf(a.date);
-                        //   const dayB = dateList.indexOf(b.date);
-                        //   if (dayA == dayB) return a.period - b.period;
-                        //   return dayA - dayB;
-                        // })
+                        .sort((a, b) => {
+                          const dayA = dayList.indexOf(a.day);
+                          const dayB = dayList.indexOf(b.day);
+                          if (dayA == dayB) return a.period - b.period;
+                          return dayA - dayB;
+                        })
                         .slice(
                           selectedPage * 5 - 5,
                           Math.min(selectedPage * 5, totalBookings)
