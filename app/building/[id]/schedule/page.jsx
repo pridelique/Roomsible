@@ -5,6 +5,7 @@ import "@app/globals.css";
 import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
+import { DateTimeContext } from "@provider/DateTimeProvider";
 import { notifyWaring } from "@utils/notify";
 import { supabase } from "@/utils/supabase";
 
@@ -14,10 +15,13 @@ function Schedule() {
   const searchParams = useSearchParams();
   const buildingId = param.id;
   const room = searchParams.get("room");
+
+  const { currentDay, currentPeriod } = useContext(DateTimeContext);
+  const { user } = useContext(SessionContext);
+
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
-  const { user } = useContext(SessionContext);
 
   const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
 
@@ -59,7 +63,7 @@ function Schedule() {
 
       const { data, error } = await supabase
         .from("bookings")
-        .select("day, period")
+        .select("day, period, status")
         .eq("room", room);
 
       if (error) {
@@ -69,7 +73,7 @@ function Schedule() {
 
       const bookedMap = {};
       data.forEach((item) => {
-        bookedMap[`${item.day}-${item.period}`] = true;
+        bookedMap[`${item.day}-${item.period}`] = item.status;
       });
 
       const newStatus = {};
@@ -77,7 +81,19 @@ function Schedule() {
         const dayEng = dayMap[dayThai];
         filteredTimeSlots.forEach((period) => {
           const key = `${dayEng}-${period.label}`;
-          newStatus[`${dayThai}-${period.label}`] = !bookedMap[key]; 
+          const bookingStatus = bookedMap[key];
+
+          if (!bookingStatus) {
+            newStatus[`${dayThai}-${period.label}`] = "available";
+          } else if (
+            bookingStatus === "pending" &&
+            dayEng === currentDay &&
+            period.label === currentPeriod
+          ) {
+            newStatus[`${dayThai}-${period.label}`] = "pending-now";
+          } else {
+            newStatus[`${dayThai}-${period.label}`] = "booked";
+          }
         });
       });
 
@@ -85,7 +101,7 @@ function Schedule() {
     };
 
     fetchStatus();
-  }, [room]);
+  }, [room, currentDay, currentPeriod]);
 
   return (
     <section className="padding-x max-container w-full pt-6">
@@ -135,15 +151,26 @@ function Schedule() {
               </div>
               {filteredTimeSlots.map((period) => {
                 const key = `${day}-${period.label}`;
+                const cellStatus = status[key];
+
+                let bgColor = "bg-white";
+                if (cellStatus === "available") {
+                  bgColor = "bg-[#86EFAC] hover:bg-[#4ADE80] cursor-pointer";
+                } else if (cellStatus === "pending-now") {
+                  bgColor = "bg-[#FACC15]"; // เหลือง
+                } else if (cellStatus === "booked") {
+                  bgColor = "bg-[#FCA5A5]"; // แดง
+                }
+
                 return (
                   <div
                     key={key}
-                    className={`border border-gray-200 ${
-                      status[key]
-                        ? "bg-[#86EFAC] cursor-pointer hover:bg-[#4ADE80]"
-                        : "bg-[#FCA5A5]"
-                    }`}
-                    onClick={status[key] ? () => handleOnClick(day, period) : undefined}
+                    className={`border border-gray-200 ${bgColor}`}
+                    onClick={
+                      cellStatus === "available"
+                        ? () => handleOnClick(day, period)
+                        : undefined
+                    }
                   />
                 );
               })}
@@ -155,6 +182,7 @@ function Schedule() {
       <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
         <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
         <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
+        <StatusLabel statusThai={"รออนุมัติ"} color={"#FACC15"} />
       </div>
     </section>
   );
