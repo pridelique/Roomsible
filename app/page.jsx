@@ -9,6 +9,7 @@ import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import Loading from "@components/Loading";
+import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 const mapDay = {
   วันจันทร์: 0,
   วันอังคาร: 1,
@@ -18,6 +19,9 @@ const mapDay = {
 };
 
 export default function HomePage() {
+  const { currentDay, currentPeriod } = useContext(DateTimeContext);
+  const setDay = getCurrentDay();
+  const setPeriod = getCurrentPeriod();
   const router = useRouter();
   const outerRef = useRef(null);
   const innerRef = useRef(null);

@@ -1,13 +1,13 @@
 "use client";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import "@app/globals.css";
 import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
-import { DateTimeContext } from "@provider/DateTimeProvider";
 import { notifyWaring } from "@utils/notify";
 import { supabase } from "@/utils/supabase";
+import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 
 function Schedule() {
   const router = useRouter();
@@ -16,7 +16,6 @@ function Schedule() {
   const buildingId = param.id;
   const room = searchParams.get("room");
 
-  const { currentDay, currentPeriod } = useContext(DateTimeContext);
   const { user } = useContext(SessionContext);
 
   const innerRef = useRef(null);
@@ -61,6 +60,9 @@ function Schedule() {
     const fetchStatus = async () => {
       if (!room) return;
 
+      const currentDay = getCurrentDay("eng");
+      const currentPeriod = getCurrentPeriod();
+
       const { data, error } = await supabase
         .from("bookings")
         .select("day, period, status")
@@ -101,7 +103,7 @@ function Schedule() {
     };
 
     fetchStatus();
-  }, [room, currentDay, currentPeriod]);
+  }, [room]);
 
   return (
     <section className="padding-x max-container w-full pt-6">
