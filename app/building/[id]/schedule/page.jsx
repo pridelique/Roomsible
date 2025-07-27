@@ -8,6 +8,8 @@ import { SessionContext } from "@provider/SessionProvider";
 import { notifyWaring } from "@utils/notify";
 import { supabase } from "@/utils/supabase";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
+import { dayThaiToEn } from "@utils/translateDay";
+import { isBookable } from "@utils/isBookable";
 
 function Schedule() {
   const router = useRouter();
@@ -35,6 +37,9 @@ function Schedule() {
   const filteredTimeSlots = timeSlots.filter(
     (slot) => slot.label >= 1 && slot.label <= 10
   );
+
+  console.log(user);
+  
 
   const handleOnClick = (day, period) => {
     if (!user) {
@@ -165,12 +170,13 @@ function Schedule() {
                 }
 
                 return (
-                  <div
+                  <button
                     key={key}
-                    className={`border border-gray-200 ${bgColor}`}
+                    disabled={!isBookable(dayThaiToEn[day], period.label, user?.app_metadata?.role)}
+                    className={`border border-gray-200 ${bgColor} disabled:bg-black`}
                     onClick={
                       cellStatus === "available"
-                        ? () => handleOnClick(day, period)
+                        ? () => handleOnClick(dayThaiToEn[day], period)
                         : undefined
                     }
                   />
