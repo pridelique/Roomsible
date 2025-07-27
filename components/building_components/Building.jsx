@@ -41,9 +41,9 @@ function Building({ id, handleOnClick, showName = true, bookings }) {
     const booking = bookings.find(b => b.room === roomName);
     // console.log(booking)
 
-    if (!booking) return "available"
+    if (!booking || booking.status === "cancelled") return "available"
 
-    if (user.id === booking.user_id) {
+    if (user?.id === booking.user_id) { 
       return "mybooking"
     }
     // Pending room
