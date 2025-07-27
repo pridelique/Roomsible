@@ -53,7 +53,7 @@ export const middleware = async (req) => {
     const room = searchParams.get("room");
     const day = searchParams.get("day");
     const period = searchParams.get("period");
-    // console.log(room);
+    console.log(room);
     
     if (!room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || !isBookable(day, period, role)) {
       return NextResponse.redirect(new URL("/", req.url));   
