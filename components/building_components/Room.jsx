@@ -1,6 +1,8 @@
 import { statusColors } from "@data"
 
 function Room({ room, status, name, col_span, handleOnClick, showName}) {
+  // console.log(room, status);
+  
   return (
     <div 
         style={{ gridColumn: `span ${col_span} / span ${col_span}`,}}
