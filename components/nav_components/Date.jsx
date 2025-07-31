@@ -15,7 +15,7 @@ const dayShort = {
 
 function Date({ day, setDay, dateDropdown, setDateDropdown }) {
   const dropdownRef = useRef(null);
-  const [screenWidth, setScreenWidth] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(undefined);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -54,7 +54,12 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
             height={20}
             className="mt-[1px]"
           />
-          <p>{screenWidth > 460 ? day : dayShort[day]}</p>
+          {day ? (
+            <p>{screenWidth > 460 ? day : dayShort[day]}</p>
+          ) : (
+            <div className={`w-10 h-3 rounded-full animate-pulse bg-gray-300`}></div>
+          )}
+          
         </div>
         <div
           className="flex justify-center items-center transition-transform duration-150"

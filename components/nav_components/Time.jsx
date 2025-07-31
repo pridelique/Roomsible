@@ -45,7 +45,11 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
             height={20}
             className="mt-[1px]"
             />
-          <p>{screenWidth > 460 ? `คาบ ${period}` : period}</p>
+          {period ? (
+            <p>{screenWidth > 460 ? `คาบ ${period}` : period}</p>
+          ) : (
+            <div className={`w-10 h-3 rounded-full animate-pulse bg-gray-300`}></div>
+          )}
         </div>
         <div className="flex justify-center items-center transition-transform duration-150" style={{transform : `rotate(${ timeDropdown ? 180 : 0}deg)`}}>
           <Image src={arrow_down} alt="arrow_down" width={16} height={16} />

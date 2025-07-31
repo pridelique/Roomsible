@@ -37,7 +37,7 @@ export default function HomePage() {
     width: "100%",
     justifyContent: "center",
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [building5Size, setBuilding5Size] = useState({ width: 0, height: 0 });
   const [building6Size, setBuilding6Size] = useState({ width: 0, height: 0 });
 
@@ -77,6 +77,7 @@ export default function HomePage() {
 
   useEffect(
     (date = new Date()) => {
+      if (!day || !period) return;
       const dayCount = getDay(date);
       if (dayCount === 0) {
         setMonday(addDays(date, 1));
@@ -127,9 +128,7 @@ export default function HomePage() {
 
   return (
     <section className="padding-x max-container w-full pt-6">
-      {loading && (
-        <Loading/>
-      )}
+      {loading && <Loading />}
       <h2 className="text-center text-xl md:text-2xl lg:text-3xl text-gray-700 font-semibold">
         แผนผังโรงเรียนสตรีวิทยา
       </h2>
@@ -266,18 +265,42 @@ export default function HomePage() {
                         {/* วัน & คาบ */}
                         <div className="mt-40 flex items-center justify-center gap-20 text-gray-600">
                           <div className="flex flex-col justify-end items-end font-semibold">
-                            <h2 className="text-[93px]">{day}</h2>
-                            <h3 className="text-7xl mt-7">คาบที่ {period}</h3>
+                            {day ? (
+                              <h2 className="text-[93px]">{day}</h2>
+                            ) : (
+                              <div
+                                className={`w-100 h-24 rounded-full animate-pulse bg-gray-300 mt-3`}
+                              ></div>
+                            )}
+                            {period ? (
+                              <h3 className="text-7xl mt-7">คาบที่ {period}</h3>
+                            ) : (
+                              <div
+                                className={`w-50 h-18 rounded-full animate-pulse bg-gray-300 mt-7`}
+                              ></div>
+                            )}
                           </div>
                           <span className="border-2 border-gray-500 h-56 mt-5"></span>
                           <div className="flex flex-col justify-center items-start">
-                            <p className="text-6xl mt-1">
-                              {format(selectedDate, "dd-MM-yyyy")}
-                            </p>
-                            <p className="text-6xl mt-8">
+                            {day ? (
+                              <p className="text-6xl mt-1">
+                                {format(selectedDate, "dd-MM-yyyy")}
+                              </p>
+                            ) : (
+                              <div
+                                className={`w-90 h-15 rounded-full animate-pulse bg-gray-300`}
+                              ></div>
+                            )}
+                            {period ? (
+                              <p className="text-6xl mt-8">
                               ({timeSlots[period].from} - {timeSlots[period].to}{" "}
                               น.)
                             </p>
+                            ) : (
+                              <div
+                                className={`w-110 h-15 rounded-full animate-pulse bg-gray-300 mt-8`}
+                              ></div>
+                            )}
                           </div>
                         </div>
                         {/* ตึก 7 */}

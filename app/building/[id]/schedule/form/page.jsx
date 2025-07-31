@@ -56,13 +56,14 @@ function BookingForm() {
   const [subject, setSubject] = useState("");
   const [studentClass, setStudentRoom] = useState("");
   const [activityDetail, setActivityDetail] = useState("");
+  const [pageLoading, setPageLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [role, setRole] = useState("student");
   const { user } = useContext(SessionContext);
+  const [role, setRole] = useState(user?.app_metadata?.role || "student");
 
   const { id } = useParams();
   const searchParams = useSearchParams();
@@ -152,18 +153,9 @@ function BookingForm() {
 
   // ตรวจสอบสิทธิ์ของผู้ใช้
   useEffect(() => {
-    const getUserRole = async () => {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-      if (error || !user) {
-        console.error("Error fetching user role:", error);
-        return;
-      }
-      setRole(user?.app_metadata?.role || "student");
-    };
-    getUserRole();
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 200);
   }, [user]);
 
   useEffect(() => {
@@ -242,76 +234,107 @@ function BookingForm() {
               ({timeSlots[period].from} - {timeSlots[period].to} น.)
             </p>
           </div>
+          {pageLoading || false ? (
+            <>
+              {/* Room
+              <div className="h-8 w-30 mb-2 bg-gray-300 animate-pulse rounded-full"></div>
 
-          <ModeSelection
-            mode={mode}
-            setMode={setMode}
-            role={role}
-            disabledActivity={!isBookable(day, period, role, "activity")}
-            disabledClass={!isBookable(day, period, role, "class")}
-          />
+              day period
+              <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
+                <div className="w-30 h-5 bg-gray-300/80 animate-pulse rounded-full"></div>
+                <div className="w-40 h-5 bg-gray-300/80 animate-pulse rounded-full"></div>
+              </div> */}
 
-          <form onSubmit={(e) => handleSubmit(e)} className="w-full">
-            {mode === "class" ? (
-              <div className="space-y-4  mx-auto block mt-2">
-                <OptionInput
-                  title="ครูผู้สอน"
-                  options={teacherOptions}
-                  customStyles={customStyles}
-                  setValue={setTeacher}
-                  value={teacher}
-                />
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-                  {/* รายวิชา */}
-                  <OptionInput
-                    title="รายวิชา"
-                    options={subjectOptions}
-                    customStyles={customStyles}
-                    setValue={setSubject}
-                    value={subject}
-                  />
-
-                  {/* ห้องที่สอน */}
-                  <OptionInput
-                    title="ห้องที่สอน"
-                    options={roomOptions}
-                    customStyles={customStyles}
-                    setValue={setStudentRoom}
-                    value={studentClass}
-                  />
-                </div>
+              {/* Mode */}
+              <div className="flex justify-center items-center mb-4 gap-2 max-[450px]:hidden">
+                <div className="w-40 h-[29.5px] bg-gray-300/80 animate-pulse rounded-full"></div>
+                <div className="w-22 h-[29.5px] bg-gray-300/80 animate-pulse rounded-full"></div>
               </div>
-            ) : (
-              <div className=" mx-auto block mt-2">
-                <label className="block font-semibold mb-1 text-gray-700">
-                  รายละเอียด
-                </label>
-                <input
-                  type="text"
-                  className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-sm"
-                  placeholder="ประเภทกิจกรรมที่จะทำ..."
-                  value={activityDetail}
-                  maxLength={100}
-                  onChange={(e) => setActivityDetail(e.target.value)}
-                />
-              </div>
-            )}
+              <div className="max-[450px]:block hidden w-19 h-2 bg-gray-300/80 animate-pulse rounded-full"></div>
 
-            {errorMessage && (
-              <div className="flex gap-2 justify-start items-center mt-3">
-                <Warning className="w-5 h-5 text-red-500" />
-                <p className="text-red-500 text-[12px] text-start whitespace-pre-line">
-                  {errorMessage}
-                </p>
+              {/* Form */}
+              <div className=" mx-auto block mt-2 w-full">
+                <div className="w-25 h-6 bg-gray-300/80 animate-pulse rounded-full mb-1"></div>
+                <div className="w-full h-10 bg-gray-300/80 animate-pulse rounded-full"></div>
               </div>
-            )}
-            <button
-              type="submit"
-              className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9"
-            >
-              ยืนยันการจอง
-            </button>
-          </form>
+
+              {/* button */}
+              <div className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9">
+                ยืนยันการจอง
+              </div>
+            </>
+          ) : (
+            <>
+              <ModeSelection
+                mode={mode}
+                setMode={setMode}
+                role={role}
+                disabledActivity={!isBookable(day, period, role, "activity")}
+                disabledClass={!isBookable(day, period, role, "class")}
+              />
+              <form onSubmit={(e) => handleSubmit(e)} className="w-full">
+                {mode === "class" ? (
+                  <div className="space-y-4  mx-auto block mt-2">
+                    <OptionInput
+                      title="ครูผู้สอน"
+                      options={teacherOptions}
+                      customStyles={customStyles}
+                      setValue={setTeacher}
+                      value={teacher}
+                    />
+                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+                      {/* รายวิชา */}
+                      <OptionInput
+                        title="รายวิชา"
+                        options={subjectOptions}
+                        customStyles={customStyles}
+                        setValue={setSubject}
+                        value={subject}
+                      />
+
+                      {/* ห้องที่สอน */}
+                      <OptionInput
+                        title="ห้องที่สอน"
+                        options={roomOptions}
+                        customStyles={customStyles}
+                        setValue={setStudentRoom}
+                        value={studentClass}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className=" mx-auto block mt-2">
+                    <label className="block font-semibold mb-1 text-gray-700">
+                      รายละเอียด
+                    </label>
+                    <input
+                      type="text"
+                      className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-sm"
+                      placeholder="ประเภทกิจกรรมที่จะทำ..."
+                      value={activityDetail}
+                      maxLength={100}
+                      onChange={(e) => setActivityDetail(e.target.value)}
+                    />
+                  </div>
+                )}
+
+                {errorMessage && (
+                  <div className="flex gap-2 justify-start items-center mt-3">
+                    <Warning className="w-5 h-5 text-red-500" />
+                    <p className="text-red-500 text-[12px] text-start whitespace-pre-line">
+                      {errorMessage}
+                    </p>
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9"
+                >
+                  ยืนยันการจอง
+                </button>
+              </form>
+            </>
+          )}
         </div>
       )}
     </section>

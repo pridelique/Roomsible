@@ -16,8 +16,8 @@ const mapDay = {
 const DateTimeContext = createContext();
 
 function DateTimeProvider({ children }) {
-  const [day, setDay] = useState(mapDay[0]);
-  const [period, setPeriod] = useState(1);
+  const [day, setDay] = useState(null);
+  const [period, setPeriod] = useState(null);
   const [currentDay, setCurrentDay] = useState(getCurrentDay('eng') || 'monday');
   const [currentPeriod, setCurrentPeriod] = useState(getCurrentPeriod() || 1);
 

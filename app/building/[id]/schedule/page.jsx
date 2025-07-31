@@ -8,7 +8,7 @@ import { SessionContext } from "@provider/SessionProvider";
 import { notifyWaring } from "@utils/notify";
 import { supabase } from "@/utils/supabase";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
-import { dayThaiToEn } from "@utils/translateDay";
+import { dayEnToThai, dayThaiToEn } from "@utils/translateDay";
 import { isBookable } from "@utils/isBookable";
 
 function Schedule() {
@@ -23,25 +23,17 @@ function Schedule() {
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
-
-  const dayMap = {
-    "วันจันทร์": "monday",
-    "วันอังคาร": "tuesday",
-    "วันพุธ": "wednesday",
-    "วันพฤหัสบดี": "thursday",
-    "วันศุกร์": "friday",
-  };
+  const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 
   const filteredTimeSlots = timeSlots.filter(
     (slot) => slot.label >= 1 && slot.label <= 10
   );
 
-  console.log(user);
-  
 
   const handleOnClick = (day, period) => {
+    
     if (!user) {
       notifyWaring("กรุณาเข้าสู่ระบบก่อนทำการจองห้องเรียน");
       return;
@@ -64,7 +56,7 @@ function Schedule() {
   useEffect(() => {
     const fetchStatus = async () => {
       if (!room) return;
-
+      setLoading(true);
       const currentDay = getCurrentDay("eng");
       const currentPeriod = getCurrentPeriod();
 
@@ -75,6 +67,7 @@ function Schedule() {
 
       if (error) {
         console.error("Error fetching booking:", error.message);
+        setLoading(false);
         return;
       }
 
@@ -84,24 +77,25 @@ function Schedule() {
       });
 
       const newStatus = {};
-      days.forEach((dayThai) => {
-        const dayEng = dayMap[dayThai];
+      days.forEach((day) => {
         filteredTimeSlots.forEach((period) => {
-          const key = `${dayEng}-${period.label}`;
+          
+          const key = `${day}-${period.label}`;
           const bookingStatus = bookedMap[key];
 
           if (!bookingStatus) {
-            newStatus[`${dayThai}-${period.label}`] = "available";
+            newStatus[`${day}-${period.label}`] = "available";
           } else if (
             bookingStatus === "pending" &&
-            dayEng === currentDay &&
+            day === currentDay &&
             period.label === currentPeriod
           ) {
-            newStatus[`${dayThai}-${period.label}`] = "pending-now";
+            newStatus[`${day}-${period.label}`] = "pending-now";
           } else {
-            newStatus[`${dayThai}-${period.label}`] = "booked";
+            newStatus[`${day}-${period.label}`] = "booked";
           }
         });
+        setLoading(false);
       });
 
       setStatus(newStatus);
@@ -121,71 +115,94 @@ function Schedule() {
         </p>
       </div>
 
-      <div
-        className="bg-white overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll mx-auto"
-        style={{ maxWidth: maxWidth + 2 }}
-      >
         <div
-          className="w-fit border border-gray-300 overflow-hidden"
-          style={{
-            display: "grid",
-            gridTemplateColumns: `100px repeat(${filteredTimeSlots.length},120px)`,
-            gridTemplateRows: `60px repeat(${days.length},60px)`,
-          }}
-          ref={innerRef}
+          className="bg-white overflow-x-auto shadow-md rounded-md custom-scroll mx-auto max-w-[1300px] w-full"
+          // style={{ maxWidth: maxWidth + 2 }}
         >
-          {/* หัวตาราง */}
-          <div className="border border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">
-            วัน/เวลา
-          </div>
-          {filteredTimeSlots.map((period, index) => (
-            <div
-              key={`header-${index}`}
-              className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center"
-            >
-              <div className="text-gray-700">คาบที่ {period.label}</div>
-              <div className="text-xs text-gray-500 mt-0.5">
-                {period.from} - {period.to}
-              </div>
+          <div
+            className="w-fit rounded-lg border-2 border-gray-300 overflow-hidden"
+            style={{
+              display: "grid",
+              gridTemplateColumns: `100px repeat(${filteredTimeSlots.length},120px)`,
+              gridTemplateRows: `60px repeat(${days.length},60px)`,
+            }}
+            ref={innerRef}
+          >
+            {/* หัวตาราง */}
+            <div className="border-r-1 border-b-1 border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">
+              วัน/เวลา
             </div>
-          ))}
-
-          {/* แถวแต่ละวัน */}
-          {days.map((day) => (
-            <React.Fragment key={day}>
-              <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">
-                {day}
+            {filteredTimeSlots.map((period, index) => (
+              <div
+                key={`header-${index}`}
+                className={`border border-t-0 ${
+                  period.label == 10 && "border-r-0"
+                } border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center`}
+              >
+                <div className="text-gray-700">คาบที่ {period.label}</div>
+                <div className="text-xs text-gray-500 mt-0.5">
+                  {period.from} - {period.to}
+                </div>
               </div>
-              {filteredTimeSlots.map((period) => {
-                const key = `${day}-${period.label}`;
-                const cellStatus = status[key];
+            ))}
 
-                let bgColor = "bg-white";
-                if (cellStatus === "available") {
-                  bgColor = "bg-[#86EFAC] hover:bg-[#4ADE80] cursor-pointer";
-                } else if (cellStatus === "pending-now") {
-                  bgColor = "bg-[#FACC15]"; // เหลือง
-                } else if (cellStatus === "booked") {
-                  bgColor = "bg-[#FCA5A5]"; // แดง
-                }
+            {/* แถวแต่ละวัน */}
+            {days.map((day) => (
+              <React.Fragment key={day}>
+                <div
+                  className={`border border-l-0 ${day == 'friday' && "border-b-0"} border-gray-300 flex items-center justify-center bg-white text-gray-700`}
+                >
+                  {dayEnToThai[day]}
+                </div>
+                {filteredTimeSlots.map((period) => {
+                  const key = `${day}-${period.label}`;                  
+                  const cellStatus = status[key];
+                  
+                  let bgColor = "bg-white";
+                  if (cellStatus === "available") {
+                    bgColor = "bg-[#86EFAC] hover:bg-[#4ADE80] cursor-pointer";
+                  } else if (cellStatus === "pending-now") {
+                    bgColor = "bg-[#FACC15]"; // เหลือง
+                  } else if (cellStatus === "booked") {
+                    bgColor = "bg-[#FCA5A5]"; // แดง
+                  }
 
-                return (
-                  <button
-                    key={key}
-                    disabled={!isBookable(dayThaiToEn[day], period.label, user?.app_metadata?.role)}
-                    className={`border border-gray-200 ${bgColor} disabled:bg-black`}
-                    onClick={
-                      cellStatus === "available"
-                        ? () => handleOnClick(dayThaiToEn[day], period)
-                        : undefined
-                    }
-                  />
-                );
-              })}
-            </React.Fragment>
-          ))}
+                  if (loading )
+                    return (
+                      <div
+                        key={key}
+                        className={`border border-gray-300`}
+                      >
+                        <div className="bg-gray-200 animate-pulse h-full w-full"></div>
+                      </div>
+                    );
+
+                  return (
+                    <button
+                      key={key}
+                      disabled={
+                        !isBookable(
+                          day,
+                          period.label,
+                          user?.app_metadata?.role
+                        )
+                      }
+                      className={`border border-gray-300
+                        ${period.label == 10 && "border-r-0" } 
+                        ${day == 'friday' && "border-b-0"} 
+                        ${bgColor} disabled:bg-black cursor-pointer`}
+                      onClick={
+                        cellStatus == "available"
+                          ? () => handleOnClick(day, period)
+                          : undefined
+                      }
+                    />
+                  );
+                })}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
-      </div>
 
       <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
         <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />

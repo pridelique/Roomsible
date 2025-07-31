@@ -3,7 +3,7 @@ import { isPast } from "./isPast";
 
 export const isBookable = (day, period, role, type = 'display') => {
     if (!day || !period || !role) return false;
-    console.log(day, period, role, type);
+    // console.log(day, period, role, type);
     period = Number(period);
     if (type === 'display') {
         if (role === 'student') {

@@ -9,15 +9,10 @@ import Building from "@components/building_components/Building";
 import StatusTable from "@components/building_components/StatusTable";
 import ZoomPanAnimation from "@components/building_components/ZoomPanAnimation";
 import { animateDemo } from "@utils/animateDemo";
-import Loading from "@components/Loading";
-import { DateTimeContext } from "@provider/DateTimeProvider";
-import { dayThaiToEn } from "@utils/translateDay";
-import { supabase } from "@utils/supabase";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
   const router = useRouter();
-  const { day, period } = useContext(DateTimeContext)
   const outerRef = useRef(null);
   const innerRef = useRef(null);
   const buttonRef = useRef(null);
@@ -26,7 +21,6 @@ function BuildingPage({ params }) {
   const centerViewRef = useRef(null);
   const isAnimatedRef = useRef(false);
   const [animationState, setAnimationState] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [zooming, setZooming] = useState(false);
   const [fullscreen, setFullscreen] = useState(true);
   const [scale, setScale] = useState(1);
@@ -35,8 +29,6 @@ function BuildingPage({ params }) {
     width: "100%",
     justifyContent: "center",
   });
-
-  const [bookings, setBookings] = useState([]);
 
   const handleOnClick = (room) => {
     router.push(`/building/${id}/schedule?room=${room}`);
@@ -95,8 +87,11 @@ function BuildingPage({ params }) {
     zoomingRef.current = zooming;
   }, [zooming]);
 
+
+
+  // Center view on initial load
   useEffect(() => {
-    if (!loading && centerViewRef.current) {
+    if (centerViewRef.current) {
       centerViewRef.current(maxScale);
       setTimeout(() => {
         animateDemo(isAnimatedRef, zoomPanRef, zoomingRef, maxScale, setAnimationState);
@@ -104,39 +99,10 @@ function BuildingPage({ params }) {
     }
   }, [scale, maxScale]);
 
-  // get building data
-  useEffect(() => {    
-    const getBookings = async () => {
-      try {
-        const { data, error } = await 
-        supabase
-        .from('bookings')
-        .select('room, status, user_id')
-        .eq('building', id)
-        .eq('day', dayThaiToEn[day])
-        .eq('period', period)
-        if (error) {
-          console.error("Error fetching bookings:", error);
-          return;
-        }
-        console.log(data);
-        setBookings(data);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-        return;
-      }
-    }
-    setLoading(false);
-
-    getBookings();
-  }, [day, period, id])
-
   return (
     <section className="padding-x max-container w-full pt-6">
-      {loading && (
-        <Loading/>
-      )}
-      <div className={`${loading ? "opacity-0" : "opacity-100"}`}>
+
+      <div>
         <TransformWrapper
           panning={{
             lockAxisY: true,
@@ -186,7 +152,7 @@ function BuildingPage({ params }) {
                         ref={innerRef}
                         style={{ transform: `scale(${scale})` }}
                       >
-                        <Building id={id} handleOnClick={handleOnClick} bookings={bookings} />
+                        <Building id={id} handleOnClick={handleOnClick}/>
                       </div>
                     </div>
                   </TransformComponent>
