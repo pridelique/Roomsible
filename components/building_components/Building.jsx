@@ -19,13 +19,15 @@ const mapDay = {
 };
 
 function Building({ id, handleOnClick, showName = true }) {
-  const [currentDay, setCurrentDay] = useState(mapDay[0]);
-  const [currentPeriod, setCurrentPeriod] = useState(0);
+  // const [currentDay, setCurrentDay] = useState(mapDay[0]);
+  // const [currentPeriod, setCurrentPeriod] = useState(0);
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
-  const { day, period } = useContext(DateTimeContext);
+  const { day, period, currentDay, currentPeriod } = useContext(DateTimeContext);
   const { user } = useContext(SessionContext);
 
+  // console.log(currentDay, currentPeriod);
+  
   // setCurrentDay(getCurrentDay('th'))
   // setCurrentPeriod(getCurrentPeriod)
 
@@ -78,15 +80,19 @@ function Building({ id, handleOnClick, showName = true }) {
     }
     const booking = bookings.find((b) => b.room === roomName);
     // console.log(booking)
-
+    
     if (!booking) return "available";
-
+    
     if (user.id === booking.user_id) {
       return "mybooking";
     }
+    
+    console.log(currentDay, day, currentPeriod, period);
+    console.log(currentDay, day, currentPeriod, period);
+    
     // Pending room
     if (booking.status === "pending") {
-      if (currentDay === day && currentPeriod === period) {
+      if (currentDay === dayThaiToEn[day] && currentPeriod === period) {
         return "pending";
       } else return "booked";
     }
