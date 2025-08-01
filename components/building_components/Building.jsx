@@ -135,7 +135,7 @@ function Building({ id, handleOnClick, showName = true }) {
                 <Room
                   key={`${rowIndex}-${colIndex}`}
                   {...room}
-                  status={status}
+                  status={room.name === 'ไม่มีห้อง' ? "none" : status}
                   handleOnClick={handleOnClick}
                   showName={showName}
                   loading={loading}
