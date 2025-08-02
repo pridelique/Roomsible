@@ -26,8 +26,8 @@ function Building({ id, handleOnClick, showName = true }) {
   const { day, period, currentDay, currentPeriod } = useContext(DateTimeContext);
   const { user } = useContext(SessionContext);
 
-  // console.log(currentDay, currentPeriod);
-  
+  // console.log(currentDay, day, currentPeriod, period);
+
   // setCurrentDay(getCurrentDay('th'))
   // setCurrentPeriod(getCurrentPeriod)
 
@@ -83,19 +83,28 @@ function Building({ id, handleOnClick, showName = true }) {
     
     if (!booking) return "available";
     
-    if (user.id === booking.user_id) {
+    if (booking.status === "cancelled") {
+      return "cancelled"
+    }
+
+    if (user?.id === booking.user_id) {
       return "mybooking";
     }
     
-    console.log(currentDay, day, currentPeriod, period);
-    console.log(currentDay, day, currentPeriod, period);
-    
+
     // Pending room
     if (booking.status === "pending") {
       if (currentDay === dayThaiToEn[day] && currentPeriod === period) {
         return "pending";
       } else return "booked";
     }
+
+    // Test Pending Room
+    // if (booking.status === "pending") {
+    //   if (testDay === dayThaiToEn[day] && testPeriod === period) {
+    //     return "pending";
+    //   } else return "booked";
+    // }
 
     // Confirmed Room
     else if (booking.status === "confirmed") {
