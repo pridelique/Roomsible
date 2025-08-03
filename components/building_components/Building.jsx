@@ -6,16 +6,14 @@ import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import { schedule } from "@data";
 import { bookableRoom } from "@data";
-import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 import { supabase } from "@utils/supabase";
-import { dayThaiToEn } from "@utils/translateDay";
 
 const mapDay = {
-  วันจันทร์: 0,
-  วันอังคาร: 1,
-  วันพุธ: 2,
-  วันพฤหัสบดี: 3,
-  วันศุกร์: 4,
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
 };
 
 function Building({ id, handleOnClick, showName = true }) {
@@ -50,7 +48,7 @@ function Building({ id, handleOnClick, showName = true }) {
           .from("bookings")
           .select("room, status, user_id")
           .eq("building", id)
-          .eq("day", dayThaiToEn[day])
+          .eq("day", day)
           .eq("period", period);
         if (error) {
           console.error("Error fetching bookings:", error);
@@ -94,7 +92,7 @@ function Building({ id, handleOnClick, showName = true }) {
 
     // Pending room
     if (booking.status === "pending") {
-      if (currentDay === dayThaiToEn[day] && currentPeriod === period) {
+      if (currentDay === day && currentPeriod === period) {
         return "pending";
       } else return "booked";
     }

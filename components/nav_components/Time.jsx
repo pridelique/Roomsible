@@ -46,7 +46,10 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
             className="mt-[1px]"
             />
           {period ? (
-            <p>{screenWidth > 460 ? `คาบ ${period}` : period}</p>
+            <>
+              <p className="max-[460px]:hidden block">คาบ {period}</p>
+              <p className="max-[460px]:block hidden">{period}</p>
+            </>
           ) : (
             <div className={`w-10 h-3 rounded-full animate-pulse bg-gray-300`}></div>
           )}

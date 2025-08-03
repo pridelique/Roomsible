@@ -2,15 +2,16 @@
 
 import Image from "@node_modules/next/image";
 import { arrow_down, date } from "@public/assets/icons";
+import { dayEnToThai } from "@utils/translateDay";
 import { useEffect, useRef, useState } from "react";
 
-const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
+const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 const dayShort = {
-  วันจันทร์: "จ.",
-  วันอังคาร: "อ.",
-  วันพุธ: "พ.",
-  วันพฤหัสบดี: "พฤ.",
-  วันศุกร์: "ศ.",
+  monday: "จ.",
+  tuesday: "อ.",
+  wednesday: "พ.",
+  thursday: "พฤ.",
+  friday: "ศ.",
 };
 
 function Date({ day, setDay, dateDropdown, setDateDropdown }) {
@@ -55,7 +56,10 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
             className="mt-[1px]"
           />
           {day ? (
-            <p>{screenWidth > 460 ? day : dayShort[day]}</p>
+            <>
+              <p className="max-[460px]:hidden block">{dayEnToThai[day]}</p>
+              <p className="max-[460px]:block hidden">{dayShort[day]}</p>
+            </>
           ) : (
             <div className={`w-10 h-3 rounded-full animate-pulse bg-gray-300`}></div>
           )}
@@ -85,7 +89,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
                   }, 0)
                 }
               >
-                <p>{screenWidth > 460 ? day : dayShort[day]}</p>
+                <p>{screenWidth > 460 ? dayEnToThai[day] : dayShort[day]}</p>
               </li>
             ))}
           </ul>

@@ -10,12 +10,13 @@ import { timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import Loading from "@components/Loading";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
+import { dayEnToThai } from "@utils/translateDay";
 const mapDay = {
-  วันจันทร์: 0,
-  วันอังคาร: 1,
-  วันพุธ: 2,
-  วันพฤหัสบดี: 3,
-  วันศุกร์: 4,
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
 };
 
 export default function HomePage() {
@@ -266,7 +267,7 @@ export default function HomePage() {
                         <div className="mt-40 flex items-center justify-center gap-20 text-gray-600">
                           <div className="flex flex-col justify-end items-end font-semibold">
                             {day ? (
-                              <h2 className="text-[93px]">{day}</h2>
+                              <h2 className="text-[93px]">{dayEnToThai[day]}</h2>
                             ) : (
                               <div
                                 className={`w-100 h-24 rounded-full animate-pulse bg-gray-300 mt-3`}
