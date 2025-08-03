@@ -84,7 +84,7 @@ function Building({ id, handleOnClick, showName = true }) {
     if (!booking) return "available";
     
     if (booking.status === "cancelled") {
-      return "cancelled"
+      return "available"
     }
 
     if (user?.id === booking.user_id) {
