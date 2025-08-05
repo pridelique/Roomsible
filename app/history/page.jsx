@@ -16,6 +16,7 @@ import { Guest_Profile } from "@public/assets/images";
 import { supabase } from "@utils/supabase";
 import { dayEnToThai } from "@utils/translateDay";
 import { useState, useEffect, useRef, useContext } from "react";
+import { toZonedTime } from "date-fns-tz";
 
 const thStatus = {
   all: "ทั้งหมด",
@@ -44,6 +45,7 @@ function HistoryPage() {
   const [selectedPage, setSelectedPage] = useState(totalBookings == 0 ? 0 : 1);
   const { user } = useContext(SessionContext);
   const [userDetails, setUserDetails] = useState(null);
+  const [bookingsLoading, setBookingsLoading] = useState(true);
   const fetched = useRef(false);
   const router = useRouter();
 
@@ -99,7 +101,7 @@ function HistoryPage() {
     // console.log("Bookings updated:", dayFilter);
   }, [statusFilter, selectedDate, bookings]);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (!user) return;
     const role = user?.app_metadata?.role;
     if (role === "student" || role === "leader") {
@@ -148,7 +150,6 @@ function HistoryPage() {
           .eq("user_id", user.id);
         if (updateError) {
           console.log("Error updating banned_until:", updateError);
-          return;
         }
         setUserDetails((prev) => ({ ...prev, banned_until: null }));
       }
@@ -156,6 +157,7 @@ function HistoryPage() {
 
     const getBookings = async () => {
       if (!user) return;
+      setBookingsLoading(true);
       const { data: bookings, error } = await supabase
         .from("bookings")
         .select(
@@ -164,17 +166,18 @@ function HistoryPage() {
         .eq("user_id", user?.id);
       if (error && error.code !== "PGRST116") {
         console.log("Error fetching bookings:", error);
-        return;
+      } else {
+        console.log(bookings);
+        setBookings(bookings.filter((item) => item.status != "cancelled"));
+        setAllBookings(bookings);
       }
-      console.log(bookings);
-      setBookings(bookings.filter((item) => item.status != "cancelled"));
-      setAllBookings(bookings);
+      setBookingsLoading(false);
     };
     getUserDetails();
     getBookings();
   }, [user]);
 
-  if (user === "loading") return <Loading />;
+  // if (user === "loading") return <Loading />;
 
   return (
     <div>
@@ -192,32 +195,47 @@ function HistoryPage() {
           </div>
 
           <div className="relative max-w-4xl mx-auto flex flex-col">
-            <div className="flex pt-20 md:pt-7 md:pb-9 justify-center md:justify-start bg-white p-3 shadow-md max-[400px]:text-base text-lg md:text-2xl text-gray-700">
+            <div className="flex pt-20 md:pt-7 justify-center md:justify-start bg-white p-3 shadow-md max-[400px]:text-base text-lg md:text-2xl md:h-30 text-gray-700">
               <div className="text-center md:text-start md:ml-75 leading-10">
-                <p>
-                  {userDetails?.firstname} {userDetails?.lastname}
-                </p>
-                <p className="sm:text-base text-sm text-gray-500">
-                  {userDetails?.classroom} เลขที่ {userDetails?.no}
-                  {userDetails?.banned_until ? (
-                    <span className="ml-10 text-[13px] text-red-500">
-                      คุณถูกระงับสิทธิ์จนถึงวันที่{" "}
-                      {format(userDetails?.banned_until, "dd/MM/yyyy")}
-                    </span>
-                  ) : (
-                    <>
-                      {bookingQuota > 0 ? (
-                        <span className="ml-10 text-[13px] text-green-500">
-                          สิทธิ์คงเหลือ {bookingQuota} ห้อง
+                {userDetails ? (
+                  <>
+                    <p>
+                      {userDetails?.firstname} {userDetails?.lastname}
+                    </p>
+                    <div className="sm:text-base text-sm text-gray-500">
+                      {userDetails?.classroom} เลขที่ {userDetails?.no}
+                      {userDetails?.banned_until ? (
+                        <span className="ml-10 text-[13px] text-red-500">
+                          คุณถูกระงับสิทธิ์จนถึงวันที่{" "}
+                          {format(userDetails?.banned_until, "dd/MM/yyyy")}
                         </span>
                       ) : (
-                        <span className="ml-10 text-[13px] text-red-500">
-                          หมดสิทธิ์การจองห้อง
-                        </span>
+                        <>
+                          {bookingsLoading ? (
+                            <span className="sm:h-4 h-[14px] w-20 mt-3 rounded-full bg-gray-300 animate-pulse"></span>
+                          ) : (
+                            <>
+                              {bookingQuota > 0 ? (
+                                <span className="ml-10 text-[13px] text-green-500">
+                                  สิทธิ์คงเหลือ {bookingQuota} ห้อง
+                                </span>
+                              ) : (
+                                <span className="ml-10 text-[13px] text-red-500">
+                                  หมดสิทธิ์การจองห้อง
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </>
                       )}
-                    </>
-                  )}
-                </p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col max-md:items-center">
+                    <div className="w-50 max-[400px]:h-4 h-[18px] md:h-6 mt-2 rounded-full bg-gray-300 animate-pulse"></div>
+                    <div className="sm:h-4 h-[14px] w-70 mt-3 rounded-full bg-gray-300 animate-pulse"></div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between mt-8 mb-7 px-9 gap-4">
@@ -242,6 +260,7 @@ function HistoryPage() {
               statusList={statusList}
               // dayFilter={dayFilter}
               bookings={bookings}
+              bookingsLoading={bookingsLoading}
               // dayFilterFuction={dayFilterFuction}
             />
 
@@ -252,6 +271,7 @@ function HistoryPage() {
                 setSelectedPage={setSelectedPage}
                 totalPages={totalPages}
                 totalBookings={totalBookings}
+                bookingsLoading={bookingsLoading}
               />
               <div className="mt-3 mb-6 max-[500px]:mb-0 px-4 relative w-full">
                 <div className="overflow-y-hidden w-full border border-gray-300 custom-scroll p-0 h-[314px] rounded-lg shadow-lg relative bg-white">
@@ -284,49 +304,82 @@ function HistoryPage() {
                       </tr>
                     </thead>
                     <tbody className="text-gray-500 text-base">
-                      {bookings
-                        // .filter((booking) => dayFilterFuction(booking))
-                        .filter(
-                          (booking) =>
-                            statusFilter === "all" ||
-                            booking.status === statusFilter
-                        )
-                        .sort((a, b) => {
-                          const dayA = dayList.indexOf(a.day);
-                          const dayB = dayList.indexOf(b.day);
-                          if (dayA == dayB) return a.period - b.period;
-                          return dayA - dayB;
-                        })
-                        .slice(
-                          selectedPage * 5 - 5,
-                          Math.min(selectedPage * 5, totalBookings)
-                        )
-                        .map((booking, index) => (
-                          <tr
-                            key={booking.booking_id}
-                            className="relative even:bg-gray-100 bg-white"
-                          >
-                            <td className="py-2.5 px-4 whitespace-nowrap">
-                              {dayEnToThai[booking.day].slice(3)}
-                            </td>
-                            <td className="py-2.5 px-4 whitespace-nowrap">
-                              {booking.period}
-                            </td>
-                            <td className="py-2.5 px-4 whitespace-nowrap max-md:hidden">
-                              {timeSlots[booking.period].from} -{" "}
-                              {timeSlots[booking.period].to}
-                            </td>
-                            <td className="py-2.5 px-4 whitespace-nowrap">
-                              {booking.room}
-                            </td>
-                            <td className="py-2.5 px-4 whitespace-nowrap">
-                              {booking.type === "activity"
-                                ? "กิจกรรม"
-                                : "เรียน"}
-                            </td>
-                            <td className="py-2.5 whitespace-nowrap flex items-center justify-center">
-                              <p
-                                className={`w-25 py-1 rounded-lg
+                      {bookingsLoading ? (
+                        <>
+                          {[...Array(5)].map((_, index) => (
+                            <tr
+                              key={index}
+                              className="relative even:bg-gray-100 bg-white"
+                            >
+                              <td className="py-4 px-6 whitespace-nowrap">
+                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
+                              </td>
+                              <td className="py-4 px-6 whitespace-nowrap">
+                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
+                              </td>
+                              <td className="py-4 px-6 whitespace-nowrap max-md:hidden">
+                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
+                              </td>
+                              <td className="py-4 px-6 whitespace-nowrap">
+                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
+                              </td>
+                              <td className="py-4 px-6 whitespace-nowrap">
+                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
+                              </td>
+                              <td className="py-4 px-6 whitespace-nowrap">
+                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
+                              </td>
+                              <td className="py-4 px-6 whitespace-nowrap">
+                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
+                              </td>
+                            </tr>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          {bookings
+                            // .filter((booking) => dayFilterFuction(booking))
+                            .filter(
+                              (booking) =>
+                                statusFilter === "all" ||
+                                booking.status === statusFilter
+                            )
+                            .sort((a, b) => {
+                              const dayA = dayList.indexOf(a.day);
+                              const dayB = dayList.indexOf(b.day);
+                              if (dayA == dayB) return a.period - b.period;
+                              return dayA - dayB;
+                            })
+                            .slice(
+                              selectedPage * 5 - 5,
+                              Math.min(selectedPage * 5, totalBookings)
+                            )
+                            .map((booking, index) => (
+                              <tr
+                                key={booking.booking_id}
+                                className="relative even:bg-gray-100 bg-white"
+                              >
+                                <td className="py-2.5 px-4 whitespace-nowrap">
+                                  {dayEnToThai[booking.day].slice(3)}
+                                </td>
+                                <td className="py-2.5 px-4 whitespace-nowrap">
+                                  {booking.period}
+                                </td>
+                                <td className="py-2.5 px-4 whitespace-nowrap max-md:hidden">
+                                  {timeSlots[booking.period].from} -{" "}
+                                  {timeSlots[booking.period].to}
+                                </td>
+                                <td className="py-2.5 px-4 whitespace-nowrap">
+                                  {booking.room}
+                                </td>
+                                <td className="py-2.5 px-4 whitespace-nowrap">
+                                  {booking.type === "activity"
+                                    ? "กิจกรรม"
+                                    : "เรียน"}
+                                </td>
+                                <td className="py-2.5 whitespace-nowrap flex items-center justify-center">
+                                  <p
+                                    className={`w-25 py-1 rounded-lg
                               ${
                                 booking.status === "confirmed" &&
                                 "text-green-500 bg-green-300/20"
@@ -340,30 +393,32 @@ function HistoryPage() {
                                 "text-red-500 bg-red-200/20"
                               }
                               `}
-                              >
-                                {thStatus[booking.status]}
-                              </p>
-                            </td>
-                            <td
-                              className={`py-2 px-4 text-center sticky z-2 right-0 shadow-lg ${
-                                index % 2 ? "bg-gray-100" : "bg-white"
-                              }`}
-                            >
-                              <div className="flex items-center justify-center">
-                                <OptionButton
-                                  booking={booking}
-                                  cancelBooking={cancelBooking}
-                                />
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      {totalBookings === 0 && (
-                        <tr>
-                          <td colSpan="7" className="py-4 text-gray-500">
-                            ไม่มีรายการจอง
-                          </td>
-                        </tr>
+                                  >
+                                    {thStatus[booking.status]}
+                                  </p>
+                                </td>
+                                <td
+                                  className={`py-2 px-4 text-center sticky z-2 right-0 shadow-lg ${
+                                    index % 2 ? "bg-gray-100" : "bg-white"
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-center">
+                                    <OptionButton
+                                      booking={booking}
+                                      cancelBooking={cancelBooking}
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          {totalBookings === 0 && (
+                            <tr>
+                              <td colSpan="7" className="py-4 text-gray-500">
+                                ไม่มีรายการจอง
+                              </td>
+                            </tr>
+                          )}
+                        </>
                       )}
                     </tbody>
                   </table>
