@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import { toZonedTime } from "date-fns-tz";
+
 
 export const GET = async () => {
   const supabaseAdmin = createClient(
@@ -12,7 +14,7 @@ export const GET = async () => {
       .from("bookings")
       .update({ status: "cancelled" })
       .eq("status", "pending")
-      .lte("expired_at", new Date().toISOString())
+      .lte("expired_at", toZonedTime(new Date(), "Asia/Bangkok"))
       .select("room, user_id");
     if (error) {
       console.error("Error updating bookings:", error);
@@ -40,7 +42,7 @@ export const GET = async () => {
       }
       const { auto_cancel_count } = user;
       const newAutoCancelCount = auto_cancel_count + 1;
-      const BannedUntil = new Date();
+      const BannedUntil = toZonedTime(new Date(), "Asia/Bangkok");;
       // Set to the start of the week (Monday)
       BannedUntil.setDate(BannedUntil.getDate() - (BannedUntil.getDay() - 1));
       BannedUntil.setHours(0, 0, 0, 0);

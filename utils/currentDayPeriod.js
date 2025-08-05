@@ -1,11 +1,13 @@
 import timeSlots from "@data/timeSlots";
+import { toZonedTime } from "date-fns-tz";
 
 const dayEn = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 const dayTh = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
 
+
 export const getCurrentDay = (type = 'index') => {
-  const today = new Date();
+  const today = toZonedTime(new Date(), "Asia/Bangkok");
   const day = today.getDay();
   if (type === 'index') return day;
   else if (type === 'eng') return dayEn[day];
@@ -13,7 +15,7 @@ export const getCurrentDay = (type = 'index') => {
 };
 
 export const getCurrentPeriod = () => {
-  const today = new Date();
+  const today = toZonedTime(new Date(), "Asia/Bangkok");
   const hours = today.getHours();
   const minutes = today.getMinutes();
   const currentTime = hours * 60 + minutes;

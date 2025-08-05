@@ -138,8 +138,10 @@ function HistoryPage() {
       }
       setUserDetails(data);
 
+      const now = toZonedTime(new Date(), "Asia/Bangkok");
+
       // reset banned_until if it is in the past
-      if (data.banned_until && new Date(data.banned_until) < new Date()) {
+      if (data.banned_until && new Date(data.banned_until) < now) {
         const { error: updateError } = await supabase
           .from("users")
           .update({ banned_until: null })

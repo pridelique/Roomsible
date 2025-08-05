@@ -1,4 +1,4 @@
-import { isInTorrorrow } from "./isInTomorrow";
+import { inInTomorrow } from "./isInTomorrow";
 import { isPast } from "./isPast";
 
 export const isBookable = (day, period, role, type = 'display') => {
@@ -7,7 +7,7 @@ export const isBookable = (day, period, role, type = 'display') => {
     period = Number(period);
     if (type === 'display') {
         if (role === 'student') {
-            if (isPast(day, period) || !isInTorrorrow(day)) return false;
+            if (isPast(day, period) || !inInTomorrow(day)) return false;
         } else {
             if (isPast(day, period)) return false;
         }
@@ -18,7 +18,7 @@ export const isBookable = (day, period, role, type = 'display') => {
             if (isPast(day, period)) return false;
         }
     } else if (type === 'activity') {
-        if (role !== 'admin' && (isPast(day, period) || !isInTorrorrow(day))) {
+        if (role !== 'admin' && (isPast(day, period) || !inInTomorrow(day))) {
             return false;
         }
     }
