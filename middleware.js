@@ -63,7 +63,7 @@ export const middleware = async (req) => {
     } else if (!period || isNaN(period) || period < 1 || period > 10) {
       return NextResponse.json({ error: "Invalid period" }, { status: 400 });
     } else if (!isBookable(day, period, role, 'display')) {
-      return NextResponse.json({ error: "Room is not bookable", day, period, role, currentDay: getCurrentDay(), currentPeriod: getCurrentPeriod() }, { status: 400 });
+      return NextResponse.json({ error: "Room is not bookable", day, period, role, currentDay: getCurrentDay(), currentPeriod: getCurrentPeriod(), date: new Date() }, { status: 400 });
     }
     
     if (!room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || !isBookable(day, period, role)) {
