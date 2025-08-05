@@ -52,7 +52,7 @@ export const middleware = async (req) => {
     // เหลือเชคห้อง
     const room = searchParams.get("room");
     const day = searchParams.get("day");
-    const period = searchParams.get("period");
+    const period = Number(searchParams.get("period"));
     console.log(room);
 
     if (!room || !bookableRoom.includes(room)) {

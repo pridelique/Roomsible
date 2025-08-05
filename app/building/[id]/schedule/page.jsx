@@ -176,7 +176,8 @@ function Schedule() {
                         <div className="bg-gray-200 animate-pulse h-full w-full"></div>
                       </div>
                     );
-
+                  console.log(day, String(period.label), user?.app_metadata?.role);
+                  
                   return (
                     <button
                       key={key}
