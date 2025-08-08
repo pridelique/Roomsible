@@ -137,8 +137,13 @@
   font-style: normal;
 }
 body {
-  font-family: "Mali", cursive;
-  font-weight: 500;
+  /* font-family: "Mali", cursive;
+  font-weight: 500; */
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  /* font-family: "Noto Sans Thai", sans-serif;
+  font-weight: 500; */
   font-style: normal;
   user-select: none;
   -webkit-user-select: none;
