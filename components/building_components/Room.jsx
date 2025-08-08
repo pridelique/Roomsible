@@ -44,7 +44,7 @@ function Room({
           {showName && name}
           {showName && status !== "none" && status !== "unavailable" && (
             <button 
-              className="absolute bottom-[6px] right-[6px] cursor-pointer hover:scale-105 active:scale-105 active:shadow-md"
+              className="absolute bottom-[6px] right-[6px] cursor-pointer hover:scale-110 active:scale-110 active:shadow-md transition-all duration-200 ease-in-out"
               onClick={(e) => {
                 e.stopPropagation();
                 handleScheduleClick(room);
