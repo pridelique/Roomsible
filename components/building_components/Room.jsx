@@ -42,7 +42,7 @@ function Room({
           }
         >
           {showName && name}
-          {status !== "none" && status !== "unavailable" && (
+          {showName && status !== "none" && status !== "unavailable" && (
             <button 
               className="absolute bottom-[6px] right-[6px] cursor-pointer hover:scale-105 active:scale-105 active:shadow-md"
               onClick={(e) => {
