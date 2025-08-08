@@ -7,6 +7,15 @@ import jwt from "jsonwebtoken";
 import { getStartTime } from "@utils/getStartTime";
 import { isBookable } from "@utils/isBookable";
 import { toZonedTime } from "date-fns-tz";
+import { schedule } from "@data/schedule";
+
+const mapDay = {
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
+};
 
 export const POST = async (req) => {
   const {
@@ -34,6 +43,12 @@ export const POST = async (req) => {
   
   if (!bookableRoom.includes(room)) {
     return NextResponse.json({ message: "Invalid room" }, { status: 400 });
+  }
+
+  if (schedule[room]) {
+    if (schedule[room][mapDay[day]][period] === "In-Use") {
+      return NextResponse.json({ message: "Already booked" }, { status: 409 });
+    }
   }
 
   try {
