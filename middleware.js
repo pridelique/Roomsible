@@ -46,27 +46,18 @@ export const middleware = async (req) => {
     }
   }
 
-// building schedule form page   
-  else if (pathname.startsWith("/building/") && pathname.includes("/schedule/form")) {
+// form page   
+  else if (pathname.startsWith("/form/")) {
     if (!session) return NextResponse.redirect(new URL("/", req.url));
     const { searchParams } = req.nextUrl;
     // เหลือเชคห้อง
+    const buildingId = searchParams.get("building");
     const room = searchParams.get("room");
     const day = searchParams.get("day");
     const period = Number(searchParams.get("period"));
     console.log(room);
-
-    if (!room || !bookableRoom.includes(room)) {
-      return NextResponse.json({ error: "Invalid room" }, { status: 400 });
-    } else if (!day || !checkDay.includes(day)) {
-      return NextResponse.json({ error: "Invalid day" }, { status: 400 });
-    } else if (!period || isNaN(period) || period < 1 || period > 10) {
-      return NextResponse.json({ error: "Invalid period" }, { status: 400 });
-    } else if (!isBookable(day, period, role, 'display')) {
-      return NextResponse.json({ error: "Room is not bookable", day, period, role, currentDay: getCurrentDay(), currentPeriod: getCurrentPeriod(), date: new Date() }, { status: 400 });
-    }
     
-    if (!room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || !isBookable(day, period, role)) {
+    if (!buildingId || !room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || buildingId < 0 || buildingId > 7 || !isBookable(day, period, role)) {
       return NextResponse.redirect(new URL("/", req.url));   
     }
   }
@@ -84,5 +75,5 @@ export const middleware = async (req) => {
 };
 
 export const config = {
-  matcher: ["/admin/:path*", "/login", "/building/:path*"],
+  matcher: ["/admin/:path*", "/login", "/building/:path*", "/form/:path*"],
 };

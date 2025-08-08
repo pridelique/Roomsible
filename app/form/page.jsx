@@ -6,7 +6,7 @@ import {
   useSearchParams,
 } from "@node_modules/next/navigation";
 import { timeSlots } from "@data";
-import { warning, Arrow_down, Warning } from "@public/assets/icons";
+import { warning, Arrow_down, Warning, building } from "@public/assets/icons";
 import Image from "@node_modules/next/image";
 import { buildingImages } from "@public/assets/images";
 import { teacherOptions, subjectOptions, roomOptions } from "@data";
@@ -65,8 +65,8 @@ function BookingForm() {
   const { user } = useContext(SessionContext);
   const [role, setRole] = useState(user?.app_metadata?.role || "student");
 
-  const { id } = useParams();
   const searchParams = useSearchParams();
+  const buildingId = searchParams.get("building") || "0";
   const room = searchParams.get("room") || "0";
   const period = searchParams.get("period") || "1";
   const day = searchParams.get("day") || "monday";
@@ -97,7 +97,7 @@ function BookingForm() {
         },
         body: JSON.stringify({
           room,
-          building: id,
+          building: buildingId,
           period,
           day,
           type: mode,
@@ -177,7 +177,7 @@ function BookingForm() {
             <ErrorBox
               src={warning}
               handleOnclick={() =>
-                router.push(`/building/${id}/schedule?room=${room}`)
+                router.push(`/building/${buildingId}/schedule?room=${room}`)
               }
               {...error}
             />
@@ -189,7 +189,7 @@ function BookingForm() {
                 {/* Image Container */}
                 <div className="flex-[1_1_200px]">
                   <Image
-                    src={buildingImages[id]}
+                    src={buildingImages[buildingId]}
                     alt="Building"
                     width={448}
                     height={300}

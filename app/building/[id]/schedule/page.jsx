@@ -39,7 +39,7 @@ function Schedule() {
       return;
     }
     router.push(
-      `/building/${buildingId}/schedule/form?room=${room}&day=${day}&period=${period.label}`
+      `/form?building=${buildingId}&room=${room}&day=${day}&period=${period.label}`
     );
   };
 
