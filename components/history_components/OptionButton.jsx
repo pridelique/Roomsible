@@ -25,15 +25,19 @@ function OptionButton({ booking, cancelBooking }) {
   }, []);
 
   const isCancelable = () => {
-    if (booking.type === 'class' && isPast(booking.day, booking.period)) {
-      return false;
-    } else if (booking.status === 'pending') {
-      if (booking.day == getCurrentDay('eng') && booking.period == getCurrentPeriod()) {        
-        return false
+    // if (booking.type === 'class' && isPast(booking.day, booking.period)) {
+    //   return false;
+    // } else
+    if (booking.status === "pending") {
+      if (
+        booking.day == getCurrentDay("eng") &&
+        booking.period == getCurrentPeriod() ||
+        isPast(booking.day, booking.period)
+      ) {
+        return false;
       }
-    }
+    } else if (booking.status === "confirmed") return false;
     return true;
-    
   };
   // isCancelable()
 
@@ -47,7 +51,9 @@ function OptionButton({ booking, cancelBooking }) {
       </button>
       {isOpenOption && (
         <ul
-          className={`absolute right-full w-36 bg-white border border-gray-300 rounded shadow-md text-sm z-3 ${isCancelable() ? '-top-[45px]' : '-top-[6px]'}`}
+          className={`absolute right-full w-36 bg-white border border-gray-300 rounded shadow-md text-sm z-3 ${
+            isCancelable() ? "-top-[45px]" : "-top-[6px]"
+          }`}
           ref={optionRef}
         >
           <li
@@ -76,7 +82,11 @@ function OptionButton({ booking, cancelBooking }) {
           ref={detailRef}
         >
           {/* <div className="font-medium mb-2">รายละเอียดการจอง</div> */}
-          <div>{booking.type === 'class' ? `${booking.teacher} วิชา${booking.subject} ${booking.student_class}`: `${booking.detail}`}</div>
+          <div>
+            {booking.type === "class"
+              ? `${booking.teacher} วิชา${booking.subject} ${booking.student_class}`
+              : `${booking.detail}`}
+          </div>
           <div className="flex justify-end">
             <button
               onClick={() => setTimeout(() => setIsOpenDetail(false), 0)}
