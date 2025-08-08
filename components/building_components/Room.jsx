@@ -1,4 +1,5 @@
 import { statusColors } from "@data";
+import { Schedule } from "@public/assets/icons";
 
 function Room({
   room,
@@ -6,6 +7,7 @@ function Room({
   name,
   col_span,
   handleOnClick,
+  handleScheduleClick,
   showName,
   loading = false,
 }) {
@@ -22,25 +24,35 @@ function Room({
         ${status === "none" ? "hidden" : ""}`}
         >
           {/* {showName && name} */}
-
         </div>
       ) : (
         <div
           className={`relative z-1 bg-gray-200 rounded-md shadow-sm  flex justify-center items-center text-center text-sm w-full h-full p-1 transition-all duration-200 ease-in-out
         ${status === "none" ? "hidden" : ""}
         ${
-          status !== "none" && status !== "unavailable"
+          status === "available"
             ? "cursor-pointer hover:scale-105 active:scale-105 active:shadow-md"
             : ""
         }`}
           style={{ backgroundColor: statusColors[status] }}
           onClick={
-            status !== "none" && status !== "unavailable"
+            status === "available"
               ? () => handleOnClick(room)
               : () => {}
           }
         >
           {showName && name}
+          {status !== "none" && status !== "unavailable" && (
+            <button 
+              className="absolute bottom-[6px] right-[6px] cursor-pointer hover:scale-105 active:scale-105 active:shadow-md"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleScheduleClick(room);
+              }}
+            >
+              <Schedule className="w-4 h-4 text-gray-700" />
+            </button>
+          )}
         </div>
       )}
     </div>

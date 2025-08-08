@@ -21,6 +21,7 @@ import date from './date.png';
 import clock from './clock.png';
 import link from './link.png';
 import Calendar from './calendar.svg';
+import Schedule from './schedule.svg';
 
 import warning from './warning.png'
 import Warning from './warning.svg'
@@ -52,6 +53,7 @@ export {
   clock,
   link,
   Calendar,
+  Schedule,
 
   warning,
   Warning,

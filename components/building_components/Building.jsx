@@ -16,7 +16,7 @@ const mapDay = {
   friday: 4,
 };
 
-function Building({ id, handleOnClick, showName = true }) {
+function Building({ id, handleOnClick, handleScheduleClick, showName = true }) {
   // const [currentDay, setCurrentDay] = useState(mapDay[0]);
   // const [currentPeriod, setCurrentPeriod] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -150,6 +150,7 @@ function Building({ id, handleOnClick, showName = true }) {
                   {...room}
                   status={room.name === 'ไม่มีห้อง' ? "none" : status}
                   handleOnClick={handleOnClick}
+                  handleScheduleClick={handleScheduleClick}
                   showName={showName}
                   loading={loading}
                 />

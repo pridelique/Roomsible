@@ -9,9 +9,11 @@ import Building from "@components/building_components/Building";
 import StatusTable from "@components/building_components/StatusTable";
 import ZoomPanAnimation from "@components/building_components/ZoomPanAnimation";
 import { animateDemo } from "@utils/animateDemo";
+import { DateTimeContext } from "@provider/DateTimeProvider";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
+  const { day, period } = useContext(DateTimeContext)
   const router = useRouter();
   const outerRef = useRef(null);
   const innerRef = useRef(null);
@@ -30,7 +32,13 @@ function BuildingPage({ params }) {
     justifyContent: "center",
   });
 
-  const handleOnClick = (room) => {
+  const handleFormClick = (room) => {
+    router.push(
+      `/form?building=${id}&room=${room}&day=${day}&period=${period}`
+    );
+  };
+
+  const handleScheduleClick = (room) => {
     router.push(`/building/${id}/schedule?room=${room}`);
   };
 
@@ -152,7 +160,7 @@ function BuildingPage({ params }) {
                         ref={innerRef}
                         style={{ transform: `scale(${scale})` }}
                       >
-                        <Building id={id} handleOnClick={handleOnClick}/>
+                        <Building id={id} handleOnClick={handleFormClick} handleScheduleClick={handleScheduleClick}/>
                       </div>
                     </div>
                   </TransformComponent>
