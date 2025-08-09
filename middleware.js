@@ -12,6 +12,7 @@ export const middleware = async (req) => {
   const { pathname } = req.nextUrl;
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
+  console.log("Middleware triggered");
 
   const {
     data: { session },
@@ -47,7 +48,7 @@ export const middleware = async (req) => {
   }
 
 // form page   
-  else if (pathname.startsWith("/form/")) {
+  else if (pathname.startsWith("/form")) {
     if (!session) return NextResponse.redirect(new URL("/", req.url));
     const { searchParams } = req.nextUrl;
     // เหลือเชคห้อง
@@ -55,8 +56,7 @@ export const middleware = async (req) => {
     const room = searchParams.get("room");
     const day = searchParams.get("day");
     const period = Number(searchParams.get("period"));
-    console.log(room);
-    
+
     if (!buildingId || !room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || buildingId < 0 || buildingId > 7 || !isBookable(day, period, role)) {
       return NextResponse.redirect(new URL("/", req.url));   
     }
@@ -75,5 +75,5 @@ export const middleware = async (req) => {
 };
 
 export const config = {
-  matcher: ["/admin/:path*", "/login", "/building/:path*", "/form/:path*"],
+  matcher: ["/admin/:path*", "/login", "/building/:path*", "/form"],
 };
