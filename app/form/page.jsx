@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, Suspense } from "react";
 import {
   useParams,
   useRouter,
@@ -168,176 +168,182 @@ function BookingForm() {
   }, [day, period, role]);
 
   return (
-    <section className="padding-x max-container w-full pt-6 ">
-      {isSubmiting ? (
-        <>
-          {loading && <Loading />}
+      <section className="padding-x max-container w-full pt-6 ">
+        {isSubmiting ? (
+          <>
+            {loading && <Loading />}
 
-          {error && (
-            <ErrorBox
-              src={warning}
-              handleOnclick={() =>
-                router.push(`/building/${buildingId}/schedule?room=${room}`)
-              }
-              {...error}
-            />
-          )}
+            {error && (
+              <ErrorBox
+                src={warning}
+                handleOnclick={() =>
+                  router.push(`/building/${buildingId}/schedule?room=${room}`)
+                }
+                {...error}
+              />
+            )}
 
-          {success && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 flex justify-center">
-              <div className="bg-white rounded-3xl shadow-md w-full max-w-sm sm:max-w-2xl sm:h-[400px] border border-gray-300 flex flex-col sm:flex-row overflow-hidden">
-                {/* Image Container */}
-                <div className="flex-[1_1_200px]">
-                  <Image
-                    src={buildingImages[buildingId]}
-                    alt="Building"
-                    width={448}
-                    height={300}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="flex-[2_1_300px] p-4 sm:p-6 flex flex-col justify-center">
-                  <div className="text-3xl font-semibold mb-4 text-green-600 text-center sm:text-left">
-                    การจองสำเร็จ
+            {success && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 flex justify-center">
+                <div className="bg-white rounded-3xl shadow-md w-full max-w-sm sm:max-w-2xl sm:h-[400px] border border-gray-300 flex flex-col sm:flex-row overflow-hidden">
+                  {/* Image Container */}
+                  <div className="flex-[1_1_200px]">
+                    <Image
+                      src={buildingImages[buildingId]}
+                      alt="Building"
+                      width={448}
+                      height={300}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                  <p className="text-gray-600 mt-2 text-center sm:text-left">
-                    คุณได้จองห้อง {room} {dayEnToThai[day]} คาบ {period}{" "}
-                    เรียบร้อยแล้ว
-                    กรุณาตรวจสอบรายละเอียดการจองอีกครั้งในหน้าประวัติ
-                  </p>
 
-                  <hr className="w-full border border-gray-300 my-6" />
+                  {/* Content */}
+                  <div className="flex-[2_1_300px] p-4 sm:p-6 flex flex-col justify-center">
+                    <div className="text-3xl font-semibold mb-4 text-green-600 text-center sm:text-left">
+                      การจองสำเร็จ
+                    </div>
+                    <p className="text-gray-600 mt-2 text-center sm:text-left">
+                      คุณได้จองห้อง {room} {dayEnToThai[day]} คาบ {period}{" "}
+                      เรียบร้อยแล้ว
+                      กรุณาตรวจสอบรายละเอียดการจองอีกครั้งในหน้าประวัติ
+                    </p>
 
-                  <Link
-                    href="/"
-                    className="py-2 rounded-full shadow-sm mx-0 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white text-center"
-                  >
-                    กลับหน้าแรก
-                  </Link>
+                    <hr className="w-full border border-gray-300 my-6" />
+
+                    <Link
+                      href="/"
+                      className="py-2 rounded-full shadow-sm mx-0 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-white text-center"
+                    >
+                      กลับหน้าแรก
+                    </Link>
+                  </div>
                 </div>
               </div>
+            )}
+          </>
+        ) : (
+          <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 flex flex-col items-center">
+            <h2 className="text-3xl font-semibold text-center mb-2 text-gray-700">
+              ห้อง {room}
+            </h2>
+            <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
+              <p>
+                {dayEnToThai[day]} คาบ {period}
+              </p>
+              <p>
+                ({timeSlots[period].from} - {timeSlots[period].to} น.)
+              </p>
             </div>
-          )}
-        </>
-      ) : (
-        <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 flex flex-col items-center">
-          <h2 className="text-3xl font-semibold text-center mb-2 text-gray-700">
-            ห้อง {room}
-          </h2>
-          <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
-            <p>
-              {dayEnToThai[day]} คาบ {period}
-            </p>
-            <p>
-              ({timeSlots[period].from} - {timeSlots[period].to} น.)
-            </p>
-          </div>
-          {pageLoading || false ? (
-            <>
-              {/* Room
+            {pageLoading || false ? (
+              <>
+                {/* Room
               <div className="h-8 w-30 mb-2 bg-gray-300 animate-pulse rounded-full"></div>
-
+              
               day period
               <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
-                <div className="w-30 h-5 bg-gray-300/80 animate-pulse rounded-full"></div>
-                <div className="w-40 h-5 bg-gray-300/80 animate-pulse rounded-full"></div>
+              <div className="w-30 h-5 bg-gray-300/80 animate-pulse rounded-full"></div>
+              <div className="w-40 h-5 bg-gray-300/80 animate-pulse rounded-full"></div>
               </div> */}
 
-              {/* Mode */}
-              <div className="flex justify-center items-center mb-4 gap-2 max-[450px]:hidden">
-                <div className="w-40 h-[29.5px] bg-gray-300/80 animate-pulse rounded-full"></div>
-                <div className="w-22 h-[29.5px] bg-gray-300/80 animate-pulse rounded-full"></div>
-              </div>
-              <div className="max-[450px]:block hidden w-19 h-2 bg-gray-300/80 animate-pulse rounded-full"></div>
+                {/* Mode */}
+                <div className="flex justify-center items-center mb-4 gap-2 max-[450px]:hidden">
+                  <div className="w-40 h-[29.5px] bg-gray-300/80 animate-pulse rounded-full"></div>
+                  <div className="w-22 h-[29.5px] bg-gray-300/80 animate-pulse rounded-full"></div>
+                </div>
+                <div className="max-[450px]:block hidden w-19 h-2 bg-gray-300/80 animate-pulse rounded-full"></div>
 
-              {/* Form */}
-              <div className=" mx-auto block mt-2 w-full">
-                <div className="w-25 h-6 bg-gray-300/80 animate-pulse rounded-full mb-1"></div>
-                <div className="w-full h-10 bg-gray-300/80 animate-pulse rounded-full"></div>
-              </div>
+                {/* Form */}
+                <div className=" mx-auto block mt-2 w-full">
+                  <div className="w-25 h-6 bg-gray-300/80 animate-pulse rounded-full mb-1"></div>
+                  <div className="w-full h-10 bg-gray-300/80 animate-pulse rounded-full"></div>
+                </div>
 
-              {/* button */}
-              <div className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9">
-                ยืนยันการจอง
-              </div>
-            </>
-          ) : (
-            <>
-              <ModeSelection
-                mode={mode}
-                setMode={setMode}
-                role={role}
-                disabledActivity={!isBookable(day, period, role, "activity")}
-                disabledClass={!isBookable(day, period, role, "class")}
-              />
-              <form onSubmit={(e) => handleSubmit(e)} className="w-full">
-                {mode === "class" ? (
-                  <div className="space-y-4  mx-auto block mt-2">
-                    <OptionInput
-                      title="ครูผู้สอน"
-                      options={teacherOptions}
-                      customStyles={customStyles}
-                      setValue={setTeacher}
-                      value={teacher}
-                    />
-                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-                      {/* รายวิชา */}
+                {/* button */}
+                <div className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9">
+                  ยืนยันการจอง
+                </div>
+              </>
+            ) : (
+              <>
+                <ModeSelection
+                  mode={mode}
+                  setMode={setMode}
+                  role={role}
+                  disabledActivity={!isBookable(day, period, role, "activity")}
+                  disabledClass={!isBookable(day, period, role, "class")}
+                />
+                <form onSubmit={(e) => handleSubmit(e)} className="w-full">
+                  {mode === "class" ? (
+                    <div className="space-y-4  mx-auto block mt-2">
                       <OptionInput
-                        title="รายวิชา"
-                        options={subjectOptions}
+                        title="ครูผู้สอน"
+                        options={teacherOptions}
                         customStyles={customStyles}
-                        setValue={setSubject}
-                        value={subject}
+                        setValue={setTeacher}
+                        value={teacher}
                       />
+                      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+                        {/* รายวิชา */}
+                        <OptionInput
+                          title="รายวิชา"
+                          options={subjectOptions}
+                          customStyles={customStyles}
+                          setValue={setSubject}
+                          value={subject}
+                        />
 
-                      {/* ห้องที่สอน */}
-                      <OptionInput
-                        title="ห้องที่สอน"
-                        options={roomOptions}
-                        customStyles={customStyles}
-                        setValue={setStudentRoom}
-                        value={studentClass}
+                        {/* ห้องที่สอน */}
+                        <OptionInput
+                          title="ห้องที่สอน"
+                          options={roomOptions}
+                          customStyles={customStyles}
+                          setValue={setStudentRoom}
+                          value={studentClass}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className=" mx-auto block mt-2">
+                      <label className="block font-semibold mb-1 text-gray-700">
+                        รายละเอียด
+                      </label>
+                      <input
+                        type="text"
+                        className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-sm"
+                        placeholder="ประเภทกิจกรรมที่จะทำ..."
+                        value={activityDetail}
+                        maxLength={100}
+                        onChange={(e) => setActivityDetail(e.target.value)}
                       />
                     </div>
-                  </div>
-                ) : (
-                  <div className=" mx-auto block mt-2">
-                    <label className="block font-semibold mb-1 text-gray-700">
-                      รายละเอียด
-                    </label>
-                    <input
-                      type="text"
-                      className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-sm"
-                      placeholder="ประเภทกิจกรรมที่จะทำ..."
-                      value={activityDetail}
-                      maxLength={100}
-                      onChange={(e) => setActivityDetail(e.target.value)}
-                    />
-                  </div>
-                )}
+                  )}
 
-                {errorMessage && (
-                  <div className="flex gap-2 justify-start items-center mt-3">
-                    <Warning className="w-5 h-5 text-red-500" />
-                    <p className="text-red-500 text-[12px] text-start whitespace-pre-line">
-                      {errorMessage}
-                    </p>
-                  </div>
-                )}
-                <button
-                  type="submit"
-                  className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9"
-                >
-                  ยืนยันการจอง
-                </button>
-              </form>
-            </>
-          )}
-        </div>
-      )}
-    </section>
+                  {errorMessage && (
+                    <div className="flex gap-2 justify-start items-center mt-3">
+                      <Warning className="w-5 h-5 text-red-500" />
+                      <p className="text-red-500 text-[12px] text-start whitespace-pre-line">
+                        {errorMessage}
+                      </p>
+                    </div>
+                  )}
+                  <button
+                    type="submit"
+                    className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9"
+                  >
+                    ยืนยันการจอง
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        )}
+      </section>
   );
 }
-export default BookingForm;
+export default function FormPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <BookingForm />
+    </Suspense>
+  )
+}
