@@ -116,7 +116,7 @@ function Schedule() {
       </div>
 
         <div
-          className="bg-white overflow-x-auto shadow-md rounded-md custom-scroll mx-auto max-w-[1300px] w-full"
+          className="bg-white overflow-x-auto shadow-md rounded-md custom-scroll mx-auto max-w-[1300px] w-full overscroll-contain"
           // style={{ maxWidth: maxWidth + 2 }}
         >
           <div
