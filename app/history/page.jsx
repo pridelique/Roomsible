@@ -398,7 +398,7 @@ function HistoryPage() {
                                   </p>
                                 </td>
                                 <td
-                                  className={`py-2 px-4 text-center sticky z-2 right-0 shadow-lg ${
+                                  className={`py-2 px-4 text-center sticky z-2 right-0 ${
                                     index % 2 ? "bg-gray-100" : "bg-white"
                                   }`}
                                 >
