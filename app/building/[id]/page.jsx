@@ -4,16 +4,18 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useRouter } from "@node_modules/next/navigation";
 import Image from "@node_modules/next/image";
-import { zoom_in, zoom_out } from "@public/assets/icons";
+import { Warning, zoom_in, zoom_out } from "@public/assets/icons";
 import Building from "@components/building_components/Building";
 import StatusTable from "@components/building_components/StatusTable";
 import ZoomPanAnimation from "@components/building_components/ZoomPanAnimation";
 import { animateDemo } from "@utils/animateDemo";
 import { DateTimeContext } from "@provider/DateTimeProvider";
+import { SessionContext } from "@provider/SessionProvider";
+import ErrorBox from "@components/ErrorBox";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
-  const { day, period } = useContext(DateTimeContext)
+  const { day, period } = useContext(DateTimeContext);
   const router = useRouter();
   const outerRef = useRef(null);
   const innerRef = useRef(null);
@@ -21,7 +23,9 @@ function BuildingPage({ params }) {
   const zoomPanRef = useRef(null);
   const zoomingRef = useRef(null);
   const centerViewRef = useRef(null);
+  const errorBoxRef = useRef(null);
   const isAnimatedRef = useRef(false);
+  const [showError, setShowError] = useState(false);
   const [animationState, setAnimationState] = useState(false);
   const [zooming, setZooming] = useState(false);
   const [fullscreen, setFullscreen] = useState(true);
@@ -32,10 +36,16 @@ function BuildingPage({ params }) {
     justifyContent: "center",
   });
 
+  const { user } = useContext(SessionContext);
+
   const handleFormClick = (room) => {
-    router.push(
-      `/form?building=${id}&room=${room}&day=${day}&period=${period}`
-    );
+    if (user && user !== "loading") {
+      router.push(
+        `/form?building=${id}&room=${room}&day=${day}&period=${period}`
+      );
+    } else {
+      setShowError(true);
+    }
   };
 
   const handleScheduleClick = (room) => {
@@ -46,7 +56,13 @@ function BuildingPage({ params }) {
     if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
     window.timeOutZooming = setTimeout(() => {
       setZooming(false);
-      animateDemo(isAnimatedRef, zoomPanRef, zoomingRef, maxScale, setAnimationState)
+      animateDemo(
+        isAnimatedRef,
+        zoomPanRef,
+        zoomingRef,
+        maxScale,
+        setAnimationState
+      );
     }, 5000);
   };
 
@@ -57,6 +73,18 @@ function BuildingPage({ params }) {
     resetMessage();
     setFullscreen(!fullscreen);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (errorBoxRef.current && !errorBoxRef.current.contains(event.target)) {
+        setShowError(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const resize = () => {
@@ -95,21 +123,24 @@ function BuildingPage({ params }) {
     zoomingRef.current = zooming;
   }, [zooming]);
 
-
-
   // Center view on initial load
   useEffect(() => {
     if (centerViewRef.current) {
       centerViewRef.current(maxScale);
       setTimeout(() => {
-        animateDemo(isAnimatedRef, zoomPanRef, zoomingRef, maxScale, setAnimationState);
+        animateDemo(
+          isAnimatedRef,
+          zoomPanRef,
+          zoomingRef,
+          maxScale,
+          setAnimationState
+        );
       }, 300);
     }
   }, [scale, maxScale]);
 
   return (
     <section className="padding-x max-container w-full pt-6">
-
       <div>
         <TransformWrapper
           panning={{
@@ -147,7 +178,7 @@ function BuildingPage({ params }) {
                   ref={outerRef}
                 >
                   {!zooming && maxScale !== 1 && (
-                    <ZoomPanAnimation animationState={animationState}/>
+                    <ZoomPanAnimation animationState={animationState} />
                   )}
 
                   <TransformComponent>
@@ -160,7 +191,11 @@ function BuildingPage({ params }) {
                         ref={innerRef}
                         style={{ transform: `scale(${scale})` }}
                       >
-                        <Building id={id} handleOnClick={handleFormClick} handleScheduleClick={handleScheduleClick}/>
+                        <Building
+                          id={id}
+                          handleOnClick={handleFormClick}
+                          handleScheduleClick={handleScheduleClick}
+                        />
                       </div>
                     </div>
                   </TransformComponent>
@@ -189,6 +224,30 @@ function BuildingPage({ params }) {
           }}
         </TransformWrapper>
       </div>
+      {showError && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-8">
+          <div className="absolute top-1/2 left-1/2 -translate-1/2 px-3 w-full">
+            <div className="bg-white text-white px-8 pt-8 pb-6 rounded-xl z-3 shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center mx-auto" ref={errorBoxRef}>
+              <Warning className="w-16 h-16 text-red-400" />
+
+              <h3 className="text-xl text-gray-700 mt-3 font-semibold">
+                ไม่สามารถจองห้อง
+              </h3>
+              <p className="leading-6 mt-2 text-slate-gray px-3 whitespace-pre-line">
+                กรุณาเข้าสู่ระบบเพื่อจองห้อง
+              </p>
+
+              {/* <hr className="w-full border border-gray-300 my-5" /> */}
+              <button
+                className={`text-white bg-gradient-to-r hover:bg-gradient-to-br focus:outline-none font-medium text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mt-6 from-red-400 via-red-500 to-red-600 shadow-red-500/50`}
+                onClick={() => router.push("/login")}
+              >
+                เข้าสู่ระบบ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
