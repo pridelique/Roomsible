@@ -3,7 +3,7 @@
 import { navLink } from "@data";
 import Image from "@node_modules/next/image";
 import { building } from "@public/assets/icons";
-import { use, useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useRef, useState } from "react";
 import NavButton from "./nav_components/NavButton";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
 import Logo from "./nav_components/Logo";
@@ -19,24 +19,24 @@ import Profile from "./nav_components/Profile";
 import { supabase } from "@utils/supabase";
 
 const dayWidth = {
-  monday: 143.28750610351562,
-  tuesday: 147.7624969482422,
-  wednesday: 119.6875,
-  thursday: 170.4499969482422,
-  friday: 130.02500915527344,
+  monday: 134.35000610351562,
+  tuesday: 142.1999969482422,
+  wednesday: 115.2249984741211,
+  thursday: 162.0124969482422,
+  friday: 124.5374984741211,
 };
 
 const periodWidth = {
-  1: 118.82500457763672,
-  2: 120.7249984741211,
-  3: 121.2874984741211,
-  4: 121.48750305175781,
-  5: 121.1500015258789,
-  6: 121.51250457763672,
-  7: 120.70000457763672,
-  8: 121.61250305175781,
-  9: 121.3375015258789,
-  10: 129.46250915527344,
+  1: 113.8375015258789,
+  2: 117.07500457763672,
+  3: 117.23750305175781,
+  4: 117.6500015258789,
+  5: 117.17500305175781,
+  6: 118.1624984741211,
+  7: 116.88750457763672,
+  8: 118.45000457763672,
+  9: 118.1624984741211,
+  10: 125.7125015258789,
 };
 
 function Nav() {
@@ -49,6 +49,8 @@ function Nav() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, setUser } = useContext(SessionContext);
+  const dateRef = useRef(null);
+  const timeRef = useRef(null); 
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -82,7 +84,7 @@ function Nav() {
   // Set nav mode in sessionStorage
   useEffect(() => {
     if (isShowtime == null) return;
-    console.log("Setting nav mode:", isShowtime ? "time" : "building");
+    // console.log("Setting nav mode:", isShowtime ? "time" : "building");
     
     sessionStorage.setItem("nav_mode", isShowtime ? "time" : "building");
   }, [isShowtime])
@@ -104,6 +106,12 @@ function Nav() {
     console.log("User session:", user);
   }, [user]);
 
+  useEffect(() => {
+    console.log(dateRef.current?.getBoundingClientRect()?.width);
+    console.log(timeRef.current?.getBoundingClientRect()?.width);
+
+  },[day, period]);
+
   return (
     <header className="z-10 relative w-full text-[17px] bg-white">
       <nav
@@ -119,7 +127,7 @@ function Nav() {
             <ul className="flex max-[850px]:hidden md:gap-1 lg:gap-2 text-slate-gray items-center absolute left-1/2 -translate-x-1/2">
               {isShowtime ? (
                 <>
-                  <li className="text-slate-gray relative">
+                  <li className="text-slate-gray relative" ref={dateRef}>
                     <Date
                       day={day}
                       setDay={setDay}
@@ -144,6 +152,7 @@ function Nav() {
                   <li
                     className="text-slate-gray relative mr-3"
                     style={{ marginRight: dayWidth[day] - periodWidth[period] }}
+                    ref={timeRef}
                   >
                     <Time
                       period={period}
