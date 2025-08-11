@@ -2,7 +2,7 @@
 import Building from "@components/building_components/Building";
 import { buildings, status } from "@data";
 import { useRouter } from "@node_modules/next/navigation";
-import { useRef, useEffect, useState, useContext } from "react";
+import { useRef, useEffect, useState, useContext, use } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { addDays, format, getDay, set } from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
@@ -24,6 +24,7 @@ export default function HomePage() {
   const setDay = getCurrentDay();
   const setPeriod = getCurrentPeriod();
   const router = useRouter();
+  const outestRef = useRef(null);
   const outerRef = useRef(null);
   const innerRef = useRef(null);
   const building5Ref = useRef(null);
@@ -96,12 +97,13 @@ export default function HomePage() {
 
   useEffect(() => {
     const resize = () => {
+      const outest = outestRef.current;
       const outer = outerRef.current;
       const inner = innerRef.current;
-      if (!outer || !inner) return;
+      if (!outest || !outer || !inner) return;
       const scaleX = outer.clientWidth / inner.offsetWidth;
       const scaleY = outer.clientHeight / inner.offsetHeight;
-      setScreenHeight(window.innerHeight);
+      setScreenHeight(outest.clientHeight);
       setScale(Math.min(1, scaleX, scaleY));
 
       if (Math.min(1, scaleX) === 1) {
@@ -128,7 +130,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section className="padding-x max-container w-full pt-6">
+    <section className="flex-1 flex flex-col px-2 max-container w-full pt-3">
       {loading && <Loading />}
       <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl ytext-gray-700 font-semibold">
         แผนผังโรงเรียนสตรีวิทยา
@@ -136,12 +138,12 @@ export default function HomePage() {
       <p className="text-center text-slate-gray mt-[2px] text-sm md:text-base mb-4">
         เลือกตึกที่ต้องการดูแผนผังอาคาร
       </p>
-      <div className="relative w-full h-full ">
+      <div className="relative w-full h-full flex-1" ref={outestRef}>
         <TransformWrapper>
           <div
-            className="w-full"
+            className="w-full h-full flex-1"
             ref={outerRef}
-            style={{ height: screenHeight - 250 }}
+            style={{ height: Math.max(screenHeight - 20, 250) }}
           >
             <div className="bg-white flex justify-center items-start rounded-lg overflow-hidden shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] w-fit h-fit mx-auto">
               <TransformComponent>
