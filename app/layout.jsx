@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
               <Nav />
               <main className="relative flex flex-col flex-1 w-full h-full">
                 {children}
-                <ToastContainer stacked={true} />
+                <ToastContainer stacked={true} className={"ToastContainer-responsive"}/>
               </main>
             </body>
           </SessionProvider>

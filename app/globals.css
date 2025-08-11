@@ -154,3 +154,16 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* ใน CSS */
+@media (max-width: 480px) {
+  .ToastContainer-responsive {
+    position: fixed !important;
+    top: 1rem;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    /* width: auto !important; */
+    max-width: 95vw !important;
+  }
+}
+
