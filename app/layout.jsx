@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
           <SessionProvider>
             <body className="antialiased vsc-initialized min-w-screen min-h-screen flex flex-col">
               <Nav />
-              <main className="relative flex-1 w-full h-full">
+              <main className="relative flex flex-col flex-1 w-full h-full">
                 {children}
                 <ToastContainer stacked={true} />
               </main>
