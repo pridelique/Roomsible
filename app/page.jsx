@@ -4,7 +4,7 @@ import { buildings, status } from "@data";
 import { useRouter } from "@node_modules/next/navigation";
 import { useRef, useEffect, useState, useContext, use } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { addDays, format, getDay, set } from "date-fns";
+import { addDays, format, getDate, getDay, getMonth, getYear, set } from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
@@ -19,6 +19,8 @@ const mapDay = {
   friday: 4,
 };
 
+const thaiMonth = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+
 export default function HomePage() {
   const { currentDay, currentPeriod } = useContext(DateTimeContext);
   const setDay = getCurrentDay();
@@ -29,6 +31,7 @@ export default function HomePage() {
   const innerRef = useRef(null);
   const building5Ref = useRef(null);
   const building6Ref = useRef(null);
+  const resizeRef = useRef(null);
   const [scale, setScale] = useState(1);
   const [monday, setMonday] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -39,7 +42,7 @@ export default function HomePage() {
     width: "100%",
     justifyContent: "center",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [building5Size, setBuilding5Size] = useState({ width: 0, height: 0 });
   const [building6Size, setBuilding6Size] = useState({ width: 0, height: 0 });
 
@@ -121,24 +124,32 @@ export default function HomePage() {
     resize();
     setTimeout(() => {
       resize();
+    }, 0);
+    setTimeout(() => {
       setLoading(false);
-    }, 300);
+      
+    }, 10);
     window.addEventListener("resize", resize);
+    if (resizeRef.current) clearInterval(resizeRef.current);
+    resizeRef.current = setInterval(() => {
+      resize();
+    }, 1000);
     return () => {
       window.removeEventListener("resize", resize);
+      clearInterval(resizeRef.current);
     };
   }, []);
 
   return (
-    <section className="flex-1 flex flex-col px-2 max-container w-full pt-3">
-      {loading && <Loading />}
+    <section className="flex-1 flex flex-col px-2 max-container w-full pt-4">
+      {/* {loading && <Loading />} */}
       <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl ytext-gray-700 font-semibold">
         แผนผังโรงเรียนสตรีวิทยา
       </h2>
       <p className="text-center text-slate-gray mt-[2px] text-sm md:text-base mb-4">
         เลือกตึกที่ต้องการดูแผนผังอาคาร
       </p>
-      <div className="relative w-full h-full flex-1" ref={outestRef}>
+      <div className={`relative w-full h-full flex-1 ${loading && 'opacity-0'}`} ref={outestRef}>
         <TransformWrapper>
           <div
             className="w-full h-full flex-1"
@@ -165,7 +176,7 @@ export default function HomePage() {
                     >
                       {/* ตึก 5 */}
                       <div
-                        className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all"
+                        className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale]"
                         style={{
                           width: building5Size.width,
                           height: building5Size.height,
@@ -179,7 +190,7 @@ export default function HomePage() {
                           <Building id={5} showName={false} />
                           <div className="absolute w-full h-full top-0 z-2"></div>
                         </div>
-                        <h2 className="mt-124 text-[40px] leading-13 text-slate-gray w-fit text-center ml-3.5">
+                        <h2 className="mt-124 text-[40px] leading-13 text-slate-gray w-fit text-center ml-10">
                           อาคาร 5 {buildings[5].name}
                         </h2>
                       </div>
@@ -188,7 +199,7 @@ export default function HomePage() {
                       <div className="ml-16 flex flex-col justify-start items-end">
                         {/* ตึก 4 */}
                         <div
-                          className="relative top-0 text-center cursor-pointer mr-35 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all flex flex-col justify-center items-center"
+                          className="relative top-0 text-center cursor-pointer mr-35 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale] flex flex-col justify-center items-center"
                           onClick={() => handleOnClick(4)}
                         >
                           <Building id={4} showName={false} />
@@ -199,7 +210,7 @@ export default function HomePage() {
                         </div>
                         {/* ตึก 6 */}
                         <div
-                          className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all"
+                          className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale]"
                           style={{
                             width: building6Size.width,
                             height: building6Size.height,
@@ -213,7 +224,7 @@ export default function HomePage() {
                             <Building id={6} showName={false} />
                             <div className="absolute w-full h-full top-0 z-2"></div>
                           </div>
-                          <h2 className="mt-154 text-[40px] leading-13 text-slate-gray w-fit text-center ml-16.5">
+                          <h2 className="mt-154 text-[40px] leading-13 text-slate-gray w-fit text-center ml-22">
                             อาคาร 6 {buildings[6].name}
                           </h2>
                         </div>
@@ -225,7 +236,7 @@ export default function HomePage() {
                         <div className="flex gap-20">
                           {/* ตึก 3 */}
                           <div
-                            className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all"
+                            className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale]"
                             onClick={() => handleOnClick(3)}
                           >
                             <div className="px-4">
@@ -269,7 +280,9 @@ export default function HomePage() {
                         <div className="mt-40 flex items-center justify-center gap-20 text-gray-600">
                           <div className="flex flex-col justify-end items-end font-semibold">
                             {day ? (
-                              <h2 className="text-[93px]">{dayEnToThai[day]}</h2>
+                              <h2 className="text-[93px]">
+                                {dayEnToThai[day]}
+                              </h2>
                             ) : (
                               <div
                                 className={`w-100 h-24 rounded-full animate-pulse bg-gray-300 mt-3`}
@@ -287,7 +300,9 @@ export default function HomePage() {
                           <div className="flex flex-col justify-center items-start">
                             {day ? (
                               <p className="text-6xl mt-1">
-                                {format(selectedDate, "dd-MM-yyyy")}
+                                {getDate(selectedDate)}{" "}
+                                {thaiMonth[getMonth(selectedDate)]}{" "}
+                                {getYear(selectedDate)+543}{" "}
                               </p>
                             ) : (
                               <div
@@ -296,9 +311,9 @@ export default function HomePage() {
                             )}
                             {period ? (
                               <p className="text-6xl mt-8">
-                              ({timeSlots[period].from} - {timeSlots[period].to}{" "}
-                              น.)
-                            </p>
+                                ({timeSlots[period].from} -{" "}
+                                {timeSlots[period].to} น.)
+                              </p>
                             ) : (
                               <div
                                 className={`w-110 h-15 rounded-full animate-pulse bg-gray-300 mt-8`}
@@ -308,7 +323,7 @@ export default function HomePage() {
                         </div>
                         {/* ตึก 7 */}
                         <div
-                          className="relative text-center cursor-pointer mt-60 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all w-fit ml-10"
+                          className="relative text-center cursor-pointer mt-60 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale] w-fit ml-10"
                           onClick={() => handleOnClick(7)}
                         >
                           <Building id={7} showName={false} />
@@ -322,7 +337,13 @@ export default function HomePage() {
                       {/* Status */}
                       <div className="absolute bottom-35 left-30 flex flex-col items-start gap-4 mt-4 mb-2 scale-350 origin-bottom-left">
                         {status.map((item) => (
-                          <StatusLabel {...item} key={item.statusEng} />
+                          <div key={item.statusEng} className="flex gap-2 justify-start items-center text-slate-gray text-base">
+                            <div
+                              className="size-4 rounded-sm shadow-lg"
+                              style={{ backgroundColor: item.color }}
+                            ></div>
+                            <span>{item.statusThai}</span>
+                          </div>
                         ))}
                       </div>
                     </div>
