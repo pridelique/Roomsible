@@ -8,7 +8,7 @@ function MenuList({ item, setIsShow, checkPath }) {
         href={item.path}
         className={`block px-6 py-3.5 ${
           checkPath(item) ? "text-red-400" : "text-slate-gray"
-        } hover:bg-gray-100 w-full`}
+        } hover:bg-gray-100 active:bg-gray-200 w-full`}
         onClick={() => setTimeout(() =>  setIsShow(false), 0)}
       >
         <div className="flex item-center gap-3">

@@ -12,7 +12,7 @@ function NavDropdown({ setNavDropdown, checkPath, ref }) {
             <Link
               onClick={() => setTimeout(() => setNavDropdown(false), 0)}
               href={`/building/${item.id}`}
-              className="w-56 text-start  block px-5 py-2.5 hover:bg-gray-100"
+              className="w-56 text-start  block px-5 py-2.5 hover:bg-gray-100 active:bg-gray-200"
             >
               <p
                 className={` ${

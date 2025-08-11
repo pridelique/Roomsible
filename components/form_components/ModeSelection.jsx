@@ -30,7 +30,7 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
         </button>
 
         {/* underline */}
-         <span className={`absolute border left-0 -bottom-0.5 border-[#466AB0] rounded-full transition-all duration-300 ${mode === 'activity' ? 'w-[88px] translate-x-[181px]' : 'w-[158px]'}`}></span>
+         <span className={`absolute border left-0 -bottom-0.5 border-[#466AB0] rounded-full transition-all duration-300 ${mode === 'activity' ? 'w-[78px] translate-x-[172px]' : 'w-[146px]'}`}></span>
         </div>
 
         {/* mobile */}

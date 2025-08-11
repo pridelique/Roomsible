@@ -13,14 +13,14 @@ const status = [
     color: statusColors['available']
   },
   {
-    statusEng: "unavailable",
-    statusThai: "ใช้ไม่ได้",
-    color: statusColors['unavailable']
-  },
-  {
     statusEng: "booked",
     statusThai: "จองแล้ว",
     color: statusColors['booked']
+  },
+  {
+    statusEng: "pending",
+    statusThai: "รอยืนยัน",
+    color: statusColors['pending']
   },
   {
     statusEng: "mybooking",
@@ -28,9 +28,9 @@ const status = [
     color: statusColors['mybooking']
   },
   {
-    statusEng: "pending",
-    statusThai: "รอยืนยัน",
-    color: statusColors['pending']
+    statusEng: "unavailable",
+    statusThai: "ใช้ไม่ได้",
+    color: statusColors['unavailable']
   },
 ];
 

@@ -44,7 +44,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
   return (
     <>
       <div
-        className="cursor-pointer hover:bg-gray-100 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg  max-[460px]:gap-3"
+        className="cursor-pointer hover:bg-gray-100 active:bg-gray-200 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg  max-[460px]:gap-3"
         onClick={() => setTimeout(() => setDateDropdown(!dateDropdown), 0)}
       >
         <div className="flex gap-2 justify-center items-center max-[460px]:gap-4">
@@ -81,7 +81,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
             {days.map((day) => (
               <li
                 key={day}
-                className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-center"
+                className="px-3 py-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer text-center"
                 onClick={() =>
                   setTimeout(() => {
                     setDay(day);

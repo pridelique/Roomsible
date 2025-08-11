@@ -200,7 +200,7 @@ function BuildingPage({ params }) {
                     </div>
                   </TransformComponent>
                   <button
-                    className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-200 opacity-40 p-2 m-2 object-cover cursor-pointer justify-center items-center ${
+                    className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-300 active:bg-gray-400 opacity-40 p-2 m-2 object-cover cursor-pointer justify-center items-center ${
                       maxScale === 1 ? "hidden" : "flex"
                     } `}
                     onClick={() => handleZoom(centerView)}

@@ -138,7 +138,7 @@ function Nav() {
                   <li>
                     {/* ปุ่ม toggle time */}
                     <button
-                      className="w-fit h-fit flex justify-center items-center transition-transform duration-300 mt-0.5 p-2 mx-2 rounded-full hover:bg-gray-200 cursor-pointer opacity-60"
+                      className="w-fit h-fit flex justify-center items-center transition-transform duration-300 mt-0.5 p-2 mx-2 rounded-full hover:bg-gray-200 active:bg-gray-300 cursor-pointer opacity-60"
                       onClick={() => setTimeout(() => handleToggleTime(), 0)}
                     >
                       <Image
@@ -213,7 +213,7 @@ function Nav() {
 
         {/* ปุ่มเมนู */}
         <button
-          className="rounded-xl hover:bg-gray-100 p-2 hidden max-[850px]:flex justify-center items-center cursor-pointer"
+          className="rounded-xl hover:bg-gray-100 active:bg-gray-200 p-2 hidden max-[850px]:flex justify-center items-center cursor-pointer"
           onClick={() => setTimeout(() => setIsShow(!isShow), 0)}
         >
           <MenuIcon className="size-[28px]" />

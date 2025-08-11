@@ -34,7 +34,7 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
   return (
       <>
       <div
-        className="cursor-pointer hover:bg-gray-100 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg max-[460px]:gap-3"
+        className="cursor-pointer hover:bg-gray-100 active:bg-gray-200 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg max-[460px]:gap-3"
         onClick={() => setTimeout(() => setTimeDropdown(!timeDropdown), 0)}
         >
         <div className="flex gap-2 justify-center items-center max-[460px]:gap-3">
@@ -64,7 +64,7 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
             {periods.map((period) => (
               <li
               key={period}
-              className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-center"
+              className="px-3 py-1.5 hover:bg-gray-100 active:bg-gray-200 cursor-pointer text-center"
               onClick={() => setTimeout(() => {
                 setPeriod(period);
                 setTimeDropdown(false);
