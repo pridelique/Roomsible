@@ -55,9 +55,9 @@ function login() {
   };
   
   return (
-  <section className="relative flex flex-1 min-[460px]:padding-x  max-container w-full pt-6 max-[460px]:p-0">
+  <section className="relative flex flex-1 max-container w-full pt-6 md:padding-x p-2 max-[460px]:p-0">
     {/* <ToastContainer/> */}
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-16 max-[460px]:px-0 max-[460px]:relative max-[460px]:top-0 max-[460px]:left-0 max-[460px]:-translate-x-0 max-[460px]:-translate-y-0">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full md:px-16 max-[460px]:px-0 max-[460px]:relative max-[460px]:top-0 max-[460px]:left-0 max-[460px]:-translate-x-0 max-[460px]:-translate-y-0">
       <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-md w-full max-w-[400px] md:max-w-4xl sm:min-h-[400px] mx-auto border border-gray-300 overflow-hidden mb-7 max-[460px]:rounded-none max-[460px]:shadow-none max-[460px]:border-none max-[460px]:max-w-[460px] max-[460px]:m-0 h-full">
 
         {/* Image */}
@@ -73,7 +73,7 @@ function login() {
         </div>
 
         {/* Form */}
-        <div className="px-15 max-[460px]:px-10 flex-[1_1_300px] pt-8 pb-8 w-full md:w-[200px] flex flex-col justify-center">
+        <div className="px-15 max-[460px]:px-10 flex-[1_1_300px] pt-8 pb-8 w-full md:w-[200px] flex flex-col md:justify-center">
           {/* <div className="flex justify-center">
             <Image
               src={logo}
