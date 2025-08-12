@@ -24,7 +24,9 @@ function BuildingPage({ params }) {
   const zoomingRef = useRef(null);
   const centerViewRef = useRef(null);
   const errorBoxRef = useRef(null);
+  const resizeRef = useRef(null);
   const isAnimatedRef = useRef(false);
+  const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
   const [animationState, setAnimationState] = useState(false);
   const [zooming, setZooming] = useState(false);
@@ -91,11 +93,13 @@ function BuildingPage({ params }) {
       const outer = outerRef.current;
       const inner = innerRef.current;
       if (!outer || !inner) return;
-      const maxHeight = window.innerHeight - 270;
       const scaleX = outer.clientWidth / inner.offsetWidth;
+      const maxHeight = Math.max(inner.offsetHeight*scaleX, window.innerHeight - 270);
       const scaleY =
         Math.min(outer.clientHeight, maxHeight) / (inner.offsetHeight * scaleX);
 
+      console.log(scaleX, scale);
+      
       setScale(Math.min(1, scaleX));
       setMaxScale(Math.max(1, scaleY));
       if (Math.min(1, scaleX) === 1)
@@ -112,10 +116,15 @@ function BuildingPage({ params }) {
         });
     };
     resize();
-    setTimeout(() => resize(), 10);
+    setTimeout(() => resize(), 0);
+    setTimeout(() => {
+      setLoading(false);
+    }, 10);
     window.addEventListener("resize", resize);
+    resizeRef.current = setInterval(() => resize(), 1000);
     return () => {
       window.removeEventListener("resize", resize);
+      clearInterval(resizeRef.current);
     };
   }, [id]);
 
@@ -140,8 +149,14 @@ function BuildingPage({ params }) {
   }, [scale, maxScale]);
 
   return (
-    <section className="padding-x max-container w-full pt-6">
-      <div>
+    <section className="px-2 max-container w-full pt-4">
+      <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl text-gray-700 font-semibold">
+        อาคาร {id} {buildings[id]?.name}
+      </h2>
+      <p className="text-center text-slate-gray mt-[2px] text-sm md:text-base">
+        เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
+      </p>
+      <div className={`${loading && 'opacity-0'}`}>
         <TransformWrapper
           panning={{
             lockAxisY: true,
@@ -166,13 +181,6 @@ function BuildingPage({ params }) {
             centerViewRef.current = centerView;
             return (
               <>
-                <h2 className="text-center text-xl md:text-2xl lg:text-3xl text-gray-700 font-semibold">
-                  อาคาร {id} {buildings[id]?.name}
-                </h2>
-                <p className="text-center text-slate-gray mt-2 text-sm md:text-base">
-                  เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
-                </p>
-
                 <div
                   className="bg-white rounded-xl max-w-xl mx-auto mt-3 mb-6 relative  shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
                   ref={outerRef}
@@ -227,7 +235,10 @@ function BuildingPage({ params }) {
       {showError && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-8">
           <div className="absolute top-1/2 left-1/2 -translate-1/2 px-3 w-full">
-            <div className="bg-white text-white px-8 pt-8 pb-6 rounded-xl z-3 shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center mx-auto" ref={errorBoxRef}>
+            <div
+              className="bg-white text-white px-8 pt-8 pb-6 rounded-xl z-3 shadow-lg text-center w-full  max-w-[340px] flex flex-col justify-center items-center mx-auto"
+              ref={errorBoxRef}
+            >
               <Warning className="w-16 h-16 text-red-400" />
 
               <h3 className="text-xl text-gray-700 mt-3 font-semibold">

@@ -143,7 +143,7 @@ export default function HomePage() {
   return (
     <section className="flex-1 flex flex-col px-2 max-container w-full pt-4">
       {/* {loading && <Loading />} */}
-      <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl ytext-gray-700 font-semibold">
+      <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl text-gray-700 font-semibold">
         แผนผังโรงเรียนสตรีวิทยา
       </h2>
       <p className="text-center text-slate-gray mt-[2px] text-sm md:text-base mb-4">
