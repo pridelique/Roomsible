@@ -28,7 +28,7 @@ import Warning from './warning.svg'
 import x_mark from './x_mark.png'
 import X_Mark from './x_mark.svg'
 import check_mark from './check_mark.png'
-
+import InfoIcon from './information.svg';
 export {
   menu,
 
@@ -60,4 +60,5 @@ export {
   x_mark,
   X_Mark,
   check_mark,
+  InfoIcon
 };

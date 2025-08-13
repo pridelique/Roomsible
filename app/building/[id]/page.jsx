@@ -13,6 +13,7 @@ import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
 import BookingCard from "@components/building_components/BookingCard";
+import { InfoIcon } from "@public/assets/icons";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
@@ -26,8 +27,10 @@ function BuildingPage({ params }) {
   const centerViewRef = useRef(null);
   const errorBoxRef = useRef(null);
   const resizeRef = useRef(null);
+  const tooltipRef = useRef(null);
   const isAnimatedRef = useRef(false);
   const [loading, setLoading] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [showError, setShowError] = useState(false);
   const [animationState, setAnimationState] = useState(false);
   const [zooming, setZooming] = useState(false);
@@ -84,7 +87,7 @@ function BuildingPage({ params }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (errorBoxRef.current && !errorBoxRef.current.contains(event.target)) {
-        setShowError(false);
+        setShowTooltip(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -99,12 +102,15 @@ function BuildingPage({ params }) {
       const inner = innerRef.current;
       if (!outer || !inner) return;
       const scaleX = outer.clientWidth / inner.offsetWidth;
-      const maxHeight = Math.max(inner.offsetHeight*scaleX, window.innerHeight - 270);
+      const maxHeight = Math.max(
+        inner.offsetHeight * scaleX,
+        window.innerHeight - 270
+      );
       const scaleY =
         Math.min(outer.clientHeight, maxHeight) / (inner.offsetHeight * scaleX);
 
       console.log(scaleX, scale);
-      
+
       setScale(Math.min(1, scaleX));
       setMaxScale(Math.max(1, scaleY));
       if (Math.min(1, scaleX) === 1)
@@ -166,6 +172,18 @@ function BuildingPage({ params }) {
   //   });
   // }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        setShowTooltip(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <section className="px-2 max-container w-full pt-4">
       <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl text-gray-700 font-semibold">
@@ -174,7 +192,26 @@ function BuildingPage({ params }) {
       <p className="text-center text-slate-gray mt-[2px] text-sm md:text-base">
         เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
       </p>
-      <div className={`${loading && 'opacity-0'}`}>
+      <div className={`relative mt-3 w-fit mx-auto ${loading && "opacity-0"}`}>
+        <div
+          className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3"
+          onClick={(e) => { 
+            setShowTooltip(!showTooltip);
+          }}
+          ref={tooltipRef}
+        >
+          <span
+            tabIndex={1}
+            className="text-gray-400 hover:text-gray-500 active:text-gray-600 cursor-pointer"
+          >
+            <InfoIcon className="w-8 h-8" />
+          </span>
+          {showTooltip && (
+            <div className="relative ml-2 bg-white border border-gray-200 rounded-lg shadow px-4 py-2 text-sm text-gray-600 z-50 whitespace-nowrap">
+              สามารถเลื่อนและซูมแผนผังได้
+            </div>
+          )}
+        </div>
         <TransformWrapper
           panning={{
             lockAxisY: true,
@@ -200,7 +237,7 @@ function BuildingPage({ params }) {
             return (
               <>
                 <div
-                  className="bg-white rounded-xl max-w-xl mx-auto mt-3 mb-6 relative  shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
+                  className="bg-white rounded-xl max-w-xl mx-auto mb-6 relative  shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
                   ref={outerRef}
                 >
                   {/* {!zooming && maxScale !== 1 && (
@@ -279,7 +316,13 @@ function BuildingPage({ params }) {
         </div>
       )}
       {bookingCard && (
-        <BookingCard {...bookingCard} handleFormClick={handleFormClick} handleScheduleClick={handleScheduleClick} buildingId={id} setBookingCard={setBookingCard} />
+        <BookingCard
+          {...bookingCard}
+          handleFormClick={handleFormClick}
+          handleScheduleClick={handleScheduleClick}
+          buildingId={id}
+          setBookingCard={setBookingCard}
+        />
       )}
     </section>
   );
