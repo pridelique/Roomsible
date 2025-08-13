@@ -1,12 +1,13 @@
 "use client";
-import { timeSlots } from "@data";
+import { buildings, timeSlots } from "@data";
 import { addDays } from "@node_modules/date-fns/addDays";
 import { getDate } from "@node_modules/date-fns/getDate";
 import { getDay } from "@node_modules/date-fns/getDay";
 import { getMonth } from "@node_modules/date-fns/getMonth";
 import { getYear } from "@node_modules/date-fns/getYear";
+import { CalendarDays, Clock, MapPin, Users } from "@node_modules/lucide-react";
 import { SessionContext } from "@provider/SessionProvider";
-import { Schedule } from "@public/assets/icons";
+import { InfoIcon, Schedule } from "@public/assets/icons";
 import { isBookable } from "@utils/isBookable";
 import { isInTomorrow } from "@utils/isInTomorrow";
 import { isPast } from "@utils/isPast";
@@ -35,7 +36,6 @@ const mapDay = {
   thursday: 3,
   friday: 4,
 };
-
 
 const statusColors = {
   available: {
@@ -171,7 +171,7 @@ function BookingCard({
               </span>
             </div>
           </div>
-          <div className="text-[34px] font-semibold text-gray-800 tracking-wide drop-shadow-sm text-start">
+          <div className="text-4xl font-semibold text-gray-800 tracking-wide drop-shadow-sm text-start">
             {room
               ? String(room).startsWith("ห้อง")
                 ? room
@@ -268,7 +268,7 @@ function BookingCard({
           </div> */}
 
           {/* วัน คาบ */}
-          <div className="flex items-center justify-center gap-4 text-gray-600">
+          {/* <div className="flex items-center justify-center gap-4 text-gray-600">
             <div className="flex flex-col justify-end items-end font-semibold">
               <h2 className="text-3xl mt-3">{dayEnToThai[day]}</h2>
               <h3 className="text-lg mt-2">คาบที่ {period}</h3>
@@ -283,15 +283,82 @@ function BookingCard({
                 ({timeSlots[period].from} - {timeSlots[period].to} น.)
               </p>
             </div>
+          </div> */}
+
+          {/* Content Section with details */}
+          <div className="flex flex-col space-y-5 bg-gray-00 w-full">
+            {/* Day and Date */}
+            <div className="flex items-center space-x-4 text-gray-700">
+              <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
+                <CalendarDays className="h-6 w-6 text-red-500" />
+              </div>
+              <div className="flex flex-col">
+                {/* <span className="text-md text-gray-500">
+                  วันและวันที่
+                </span> */}
+                <span className="text-lg font-semibold">
+                  {dayEnToThai[day]}
+                </span>
+                
+                <span className="text-md text-gray-600">
+                  {getDate(selectedDate)} {thaiMonth[getMonth(selectedDate)]}{" "}
+                  {getYear(selectedDate) + 543}{" "}
+                </span>
+              </div>
+            </div>
+
+            {/* Period and Time */}
+            <div className="flex items-center space-x-4 text-gray-700">
+              <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
+                <Clock className="h-6 w-6 text-red-500" />
+              </div>
+              <div className="flex flex-col">
+                {/* <span className="text-md text-gray-500">
+                  คาบและเวลา
+                </span> */}
+                <span className="text-lg font-semibold">
+                  คาบที่ {period}
+                </span>
+                <span className="text-md text-gray-600">
+                  {timeSlots[period].from} - {timeSlots[period].to} น.
+                </span>
+              </div>
+            </div>
+
+            {/* Room Details */}
+            <div className="flex items-center space-x-4 text-gray-700">
+              <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
+                <MapPin className="h-6 w-6 text-red-500" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-md text-gray-500">
+                  สถานที่
+                </span>
+                <span className="text-lg font-semibold">ตึก {buildingId} - {buildings[buildingId].name}</span>
+              </div>
+            </div>
+
+            {/* Capacity */}
+            {/* <div className="flex items-center space-x-4 text-gray-700">
+              <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
+                <Users className="h-6 w-6 text-red-500" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-md font-medium text-gray-500">
+                  ความจุ
+                </span>
+                <span className="text-lg font-bold">{data.capacity}</span>
+              </div>
+            </div> */}
           </div>
 
-          <div className="flex items-center gap-3 mt-6">
+          <div className="flex items-center gap-3 mt-2">
             <div className="relative flex-1">
               <button
-                className={`w-full font-semibold py-2 px-6 rounded-lg shadow transition duration-150 flex items-center justify-center gap-2 text-lg  ${
+                className={`w-full font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150 flex items-center justify-center gap-2 text-lg ${
                   bookable
                     ? "bg-gradient-to-bl hover:bg-gradient-to-tr from-green-500 via-green-400 to-emerald-400 text-white hover:scale-105 active:scale-95 cursor-pointer"
-                    : "bg-gray-300 text-gray-500"
+                    : "bg-gray-300/80 text-gray-500/80"
                 }`}
                 onClick={() => handleFormClick(room)}
                 disabled={!bookable}
@@ -306,22 +373,9 @@ function BookingCard({
                     onFocus={() => setShowTooltip(true)}
                     onBlur={() => setShowTooltip(false)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      tabIndex={0}
-                      className="w-5 h-5 ml-1 text-gray-400 hover:text-gray-500 focus:text-gray-600 focus:outline-none cursor-pointer"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <circle cx="12" cy="12" r="10" strokeWidth={2} />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 16v-4m0-4h.01"
-                      />
-                    </svg>
+                    <span className="ml-1 text-gray-400 hover:text-gray-500 focus:text-gray-600 focus:outline-none cursor-pointer">
+                      <InfoIcon className="w-6 h-6 " />
+                    </span>
                     {showTooltip && (
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white border border-gray-200 rounded-lg shadow px-4 py-2 text-sm text-gray-600 z-50 whitespace-nowrap">
                         {tooltipContent || "ไม่สามารถจองได้"}
@@ -333,7 +387,7 @@ function BookingCard({
             </div>
             <button
               type="button"
-              className="w-11 h-11 flex items-center justify-center rounded-full bg-white/70 hover:bg-gray-100 active:bg-gray-200 shadow  duration-150 scale-105 hover:scale-110 active:scale-95 cursor-pointer"
+              className="w-11 h-11 flex items-center justify-center rounded-full bg-white/70 hover:bg-gray-100 active:bg-gray-200 shadow-md duration-150 scale-105 hover:scale-110 active:scale-95 cursor-pointer"
               title="ดูตารางห้อง"
               onClick={() => handleScheduleClick(room)}
             >

@@ -190,7 +190,7 @@ function BuildingPage({ params }) {
         อาคาร {id} {buildings[id]?.name}
       </h2>
       <p className="text-center text-slate-gray mt-[2px] text-sm md:text-base">
-        เลือกห้องเพื่อดูตารางการใช้งานห้องเรียน
+        เลือกห้องเพื่อดำเนินการ
       </p>
       <div className={`relative mt-3 w-fit mx-auto ${loading && "opacity-0"}`}>
         <div
