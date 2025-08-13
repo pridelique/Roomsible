@@ -31,7 +31,7 @@ function BuildingPage({ params }) {
   const [showError, setShowError] = useState(false);
   const [animationState, setAnimationState] = useState(false);
   const [zooming, setZooming] = useState(false);
-  const [fullscreen, setFullscreen] = useState(true);
+  const [fullscreen, setFullscreen] = useState(false);
   const [scale, setScale] = useState(1);
   const [maxScale, setMaxScale] = useState(1);
   const [containerStyle, setcontainerStyle] = useState({
@@ -59,25 +59,25 @@ function BuildingPage({ params }) {
     router.push(`/building/${id}/schedule?room=${room}`);
   };
 
-  const resetMessage = () => {
-    if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
-    window.timeOutZooming = setTimeout(() => {
-      setZooming(false);
-      animateDemo(
-        isAnimatedRef,
-        zoomPanRef,
-        zoomingRef,
-        maxScale,
-        setAnimationState
-      );
-    }, 5000);
-  };
+  // const resetMessage = () => {
+  //   if (window.timeOutZooming) clearTimeout(window.timeOutZooming);
+  //   window.timeOutZooming = setTimeout(() => {
+  //     setZooming(false);
+  //     animateDemo(
+  //       isAnimatedRef,
+  //       zoomPanRef,
+  //       zoomingRef,
+  //       maxScale,
+  //       setAnimationState
+  //     );
+  //   }, 5000);
+  // };
 
   const handleZoom = (centerView) => {
     if (fullscreen) centerView(1);
     else centerView(maxScale);
     setZooming(true);
-    resetMessage();
+    // resetMessage();
     setFullscreen(!fullscreen);
   };
 
@@ -138,20 +138,20 @@ function BuildingPage({ params }) {
   }, [zooming]);
 
   // Center view on initial load
-  useEffect(() => {
-    if (centerViewRef.current) {
-      centerViewRef.current(maxScale);
-      setTimeout(() => {
-        animateDemo(
-          isAnimatedRef,
-          zoomPanRef,
-          zoomingRef,
-          maxScale,
-          setAnimationState
-        );
-      }, 300);
-    }
-  }, [scale, maxScale]);
+  // useEffect(() => {
+  //   if (centerViewRef.current) {
+  //     centerViewRef.current(maxScale);
+  //     // setTimeout(() => {
+  //     //   animateDemo(
+  //     //     isAnimatedRef,
+  //     //     zoomPanRef,
+  //     //     zoomingRef,
+  //     //     maxScale,
+  //     //     setAnimationState
+  //     //   );
+  //     // }, 300);
+  //   }
+  // }, [scale, maxScale]);
 
   // useEffect(() => {
   //   setBookingCard({
@@ -191,9 +191,9 @@ function BuildingPage({ params }) {
           onInit={(ref) => {
             zoomPanRef.current = ref;
           }}
-          onZoomStop={() => resetMessage()}
+          // onZoomStop={() => resetMessage()}
           onPanning={() => setZooming(true)}
-          onPanningStop={() => resetMessage()}
+          // onPanningStop={() => resetMessage()}
         >
           {({ centerView }) => {
             centerViewRef.current = centerView;
@@ -203,9 +203,9 @@ function BuildingPage({ params }) {
                   className="bg-white rounded-xl max-w-xl mx-auto mt-3 mb-6 relative  shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
                   ref={outerRef}
                 >
-                  {!zooming && maxScale !== 1 && (
+                  {/* {!zooming && maxScale !== 1 && (
                     <ZoomPanAnimation animationState={animationState} />
-                  )}
+                  )} */}
 
                   <TransformComponent>
                     <div
