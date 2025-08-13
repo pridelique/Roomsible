@@ -202,13 +202,18 @@ function BuildingPage({ params }) {
         >
           <span
             tabIndex={1}
-            className="text-gray-400 hover:text-gray-500 active:text-gray-600 cursor-pointer"
+            className="text-gray-500 hover:text-gray-600 hover:bg-gray-100 hover:scale-110 active:text-gray-700 active:bg-gray-200 active:scale-90 cursor-pointer bg-white transition duration-150 shadow-lg rounded-full p-1.5"
           >
-            <InfoIcon className="w-8 h-8" />
+            <InfoIcon className="w-7 h-7" />
           </span>
           {showTooltip && (
-            <div className="relative ml-2 bg-white border border-gray-200 rounded-lg shadow px-4 py-2 text-sm text-gray-600 z-50 whitespace-nowrap">
-              สามารถเลื่อนและซูมแผนผังได้
+            <div className="relative ml-2 bg-white border border-gray-200 rounded-lg shadow px-4 py-3 text-sm text-gray-600 z-50 whitespace-nowrap">
+              <p className="font-semibold mb-2">วิธีใช้งาน</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>คลิกที่ห้องเพื่อดูรายละเอียด</li>
+                <li>สีของห้องแสดงสถานะการใช้งาน</li>
+                <li>สามารถเลื่อนและซูมแผนผังได้</li>
+              </ul>
             </div>
           )}
         </div>
@@ -237,7 +242,7 @@ function BuildingPage({ params }) {
             return (
               <>
                 <div
-                  className="bg-white rounded-xl max-w-xl mx-auto mb-6 relative  shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
+                  className="bg-white rounded-xl max-w-xl mx-auto mb-3 relative shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
                   ref={outerRef}
                 >
                   {/* {!zooming && maxScale !== 1 && (
@@ -280,7 +285,7 @@ function BuildingPage({ params }) {
                     />
                   </button>
                 </div>
-                <div className="flex justify-center max-w-xl mx-auto mt-3">
+                <div className="flex justify-center max-w-xl mx-auto pt-4 bg-white shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] rounded-lg w-fit px-4 mb-6">
                   <StatusTable />
                 </div>
               </>

@@ -5,7 +5,7 @@ import { getDate } from "@node_modules/date-fns/getDate";
 import { getDay } from "@node_modules/date-fns/getDay";
 import { getMonth } from "@node_modules/date-fns/getMonth";
 import { getYear } from "@node_modules/date-fns/getYear";
-import { CalendarDays, Clock, MapPin, Users } from "@node_modules/lucide-react";
+import { BookOpen, CalendarDays, Clock, MapPin, Users } from "@node_modules/lucide-react";
 import { SessionContext } from "@provider/SessionProvider";
 import { InfoIcon, Schedule } from "@public/assets/icons";
 import { isBookable } from "@utils/isBookable";
@@ -152,10 +152,10 @@ function BookingCard({
 
   return (
     <div className="absolute inset-0 z-4 flex items-center justify-center">
-      <div className="absolute inset-0 bg-white/70 backdrop-blur-lg transition-all duration-200" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-all duration-200" />
       <div className="relative z-5">
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-2xl bg-white/90 backdrop-blur-xl px-10 py-8 max-w-md mx-auto flex flex-col gap-7 min-w-[420px] border border-gray-100 transition-transform duration-200 hover:shadow-2xl focus:outline-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-2xl bg-white backdrop-blur-xl px-10 py-8 max-w-md mx-auto flex flex-col min-w-[420px] border border-gray-100 transition-transform duration-200 hover:shadow-2xl focus:outline-none"
           tabIndex={0}
           ref={cardRef}
         >
@@ -178,112 +178,8 @@ function BookingCard({
                 : `ห้อง ${room}`
               : "ชื่อห้อง"}
           </div>
-          {/* <div className="flex justify-center gap-6 mt-2">
-            <div className="flex flex-col items-center bg-gradient-to-br from-red-100 via-white to-gray-100 rounded-xl px-5 py-3 shadow border border-red-200/40 min-w-[100px]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-red-400 text-xl mb-1"
-                width={24}
-                height={24}
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <rect
-                  x="3"
-                  y="4"
-                  width="18"
-                  height="18"
-                  rx="3"
-                  fill="#fecaca"
-                />
-                <rect x="3" y="8" width="18" height="14" rx="2" fill="#fff" />
-                <rect x="7" y="12" width="2" height="2" rx="1" fill="#fca5a5" />
-                <rect
-                  x="11"
-                  y="12"
-                  width="2"
-                  height="2"
-                  rx="1"
-                  fill="#fca5a5"
-                />
-                <rect
-                  x="15"
-                  y="12"
-                  width="2"
-                  height="2"
-                  rx="1"
-                  fill="#fca5a5"
-                />
-                <rect x="7" y="16" width="2" height="2" rx="1" fill="#fca5a5" />
-                <rect
-                  x="11"
-                  y="16"
-                  width="2"
-                  height="2"
-                  rx="1"
-                  fill="#fca5a5"
-                />
-                <rect
-                  x="15"
-                  y="16"
-                  width="2"
-                  height="2"
-                  rx="1"
-                  fill="#fca5a5"
-                />
-                <rect x="7" y="2" width="2" height="4" rx="1" fill="#ef4444" />
-                <rect x="15" y="2" width="2" height="4" rx="1" fill="#ef4444" />
-              </svg>
-              <div className="text-red-700 font-bold text-lg">
-                {day || "ไม่ระบุ"}
-              </div>
-              
-            </div>
-            <div className="flex flex-col items-center bg-gradient-to-br from-gray-100 via-white to-red-100 rounded-xl px-5 py-3 shadow border border-gray-200/40 min-w-[100px]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-gray-400 text-xl mb-1"
-                width={24}
-                height={24}
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="12" cy="12" r="10" fill="#f3f4f6" />
-                <circle cx="12" cy="12" r="8" fill="#fff" />
-                <rect x="11" y="7" width="2" height="6" rx="1" fill="#f87171" />
-                <rect
-                  x="12"
-                  y="12"
-                  width="5"
-                  height="2"
-                  rx="1"
-                  fill="#f87171"
-                  transform="rotate(45 12 12)"
-                />
-              </svg>
-              <div className="text-gray-700 font-bold text-lg">
-                คาบ {period || "ไม่ระบุ"}
-              </div>
-            </div>
-          </div> */}
 
-          {/* วัน คาบ */}
-          {/* <div className="flex items-center justify-center gap-4 text-gray-600">
-            <div className="flex flex-col justify-end items-end font-semibold">
-              <h2 className="text-3xl mt-3">{dayEnToThai[day]}</h2>
-              <h3 className="text-lg mt-2">คาบที่ {period}</h3>
-            </div>
-            <span className="border-2 border-gray-500 h-20 mt-5"></span>
-            <div className="flex flex-col justify-center items-start">
-              <p className="text-lg mt-5">
-                {getDate(selectedDate)} {thaiMonth[getMonth(selectedDate)]}{" "}
-                {getYear(selectedDate) + 543}{" "}
-              </p>
-              <p className="text-lg mt-2">
-                ({timeSlots[period].from} - {timeSlots[period].to} น.)
-              </p>
-            </div>
-          </div> */}
+          <span className="border border-gray-300 w-full mx-auto my-5"></span>
 
           {/* Content Section with details */}
           <div className="flex flex-col space-y-5 bg-gray-00 w-full">
@@ -331,28 +227,17 @@ function BookingCard({
                 <MapPin className="h-6 w-6 text-red-500" />
               </div>
               <div className="flex flex-col">
-                <span className="text-md text-gray-500">
-                  สถานที่
+                <span className="text-lg font-semibold">
+                  อาคาร {buildingId}
                 </span>
-                <span className="text-lg font-semibold">ตึก {buildingId} - {buildings[buildingId].name}</span>
+                <span className="text-md text-gray-600">
+                  {buildings[buildingId]?.name || "ไม่ระบุ"}
+                </span>
               </div>
             </div>
-
-            {/* Capacity */}
-            {/* <div className="flex items-center space-x-4 text-gray-700">
-              <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
-                <Users className="h-6 w-6 text-red-500" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-md font-medium text-gray-500">
-                  ความจุ
-                </span>
-                <span className="text-lg font-bold">{data.capacity}</span>
-              </div>
-            </div> */}
           </div>
 
-          <div className="flex items-center gap-3 mt-2">
+          <div className="flex items-center gap-3 mt-6">
             <div className="relative flex-1">
               <button
                 className={`w-full font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150 flex items-center justify-center gap-2 text-lg ${
@@ -363,7 +248,12 @@ function BookingCard({
                 onClick={() => handleFormClick(room)}
                 disabled={!bookable}
               >
-                {bookable ? "จองเลย" : "ไม่สามารถจองได้"}
+                {bookable ? (
+                  <>
+                    <BookOpen className="w-6 h-6" />
+                    จองห้องนี้
+                  </>
+                  ) : "ไม่สามารถจองได้"}
                 {!bookable && (
                   <span
                     className="absolute right-4 flex items-center"

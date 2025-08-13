@@ -31,7 +31,7 @@ function Room({
         ${status === "none" ? "hidden" : ""}
         ${
           (status !== "none" && status !== "unavailable")
-            ? "cursor-pointer hover:scale-105 active:scale-105 active:shadow-md"
+            ? "cursor-pointer hover:scale-105 active:scale-95 active:shadow-md"
             : ""
         }`}
           style={{ backgroundColor: statusColors[status] }}
