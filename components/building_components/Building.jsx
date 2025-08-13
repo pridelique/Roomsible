@@ -150,7 +150,7 @@ function Building({ id, handleOnClick, handleScheduleClick, showName = true }) {
                   {...room}
                   status={room.name === 'ไม่มีห้อง' ? "none" : status}
                   handleOnClick={handleOnClick}
-                  handleScheduleClick={handleScheduleClick}
+                  // handleScheduleClick={handleScheduleClick}
                   showName={showName}
                   loading={loading}
                 />

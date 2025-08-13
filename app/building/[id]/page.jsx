@@ -12,6 +12,7 @@ import { animateDemo } from "@utils/animateDemo";
 import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
+import BookingCard from "@components/building_components/BookingCard";
 
 function BuildingPage({ params }) {
   const { id } = React.use(params);
@@ -37,8 +38,12 @@ function BuildingPage({ params }) {
     width: "100%",
     justifyContent: "center",
   });
-
+  const [bookingCard, setBookingCard] = useState(null);
   const { user } = useContext(SessionContext);
+
+  const handleOnClick = (room, status) => {
+    setBookingCard({ room, day, period, status });
+  };
 
   const handleFormClick = (room) => {
     if (user && user !== "loading") {
@@ -148,6 +153,19 @@ function BuildingPage({ params }) {
     }
   }, [scale, maxScale]);
 
+  // useEffect(() => {
+  //   setBookingCard({
+  //     room: '1303',
+  //     day: 'wednesday',
+  //     period: 3,
+  //     buildingId: id,
+  //     status: 'available',
+  //     setBookingCard,
+  //     handleFormClick,
+  //     handleScheduleClick,
+  //   });
+  // }, []);
+
   return (
     <section className="px-2 max-container w-full pt-4">
       <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl text-gray-700 font-semibold">
@@ -201,8 +219,9 @@ function BuildingPage({ params }) {
                       >
                         <Building
                           id={id}
-                          handleOnClick={handleFormClick}
-                          handleScheduleClick={handleScheduleClick}
+                          handleOnClick={handleOnClick}
+                          // handleOnClick={handleFormClick}
+                          // handleScheduleClick={handleScheduleClick}
                         />
                       </div>
                     </div>
@@ -258,6 +277,9 @@ function BuildingPage({ params }) {
             </div>
           </div>
         </div>
+      )}
+      {bookingCard && (
+        <BookingCard {...bookingCard} handleFormClick={handleFormClick} handleScheduleClick={handleScheduleClick} buildingId={id} setBookingCard={setBookingCard} />
       )}
     </section>
   );

@@ -20,7 +20,7 @@ const dayIndex = [
   "friday",
 ];
 
-export const inInTomorrow = (day) => {
+export const isInTomorrow = (day) => {
   // console.log(getCurrentDay())
   let currentDay = days[getCurrentDay()];
   const now = toZonedTime(new Date(), "Asia/Bangkok"); // console.log(now.getHours());

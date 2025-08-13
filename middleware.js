@@ -3,7 +3,7 @@ import { createMiddlewareClient } from "@node_modules/@supabase/auth-helpers-nex
 import { NextResponse } from "@node_modules/next/server";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 import { isBookable } from "@utils/isBookable";
-import { inInTomorrow } from "@utils/isInTomorrow";
+import { isInTomorrow } from "@utils/isInTomorrow";
 import { isPast } from "@utils/isPast";
 
 const checkDay = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
