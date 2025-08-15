@@ -4,7 +4,7 @@ import { arrow_down, arrow_down_selected } from "@public/assets/icons";
 function NavBuilding({ item, navDropdown, setNavDropdown, checkPath }) {
   return (
     <button
-      className="cursor-pointer px-4 py-2 flex gap-2 items-center md:mx-3 lg:mx-6"
+      className="cursor-pointer px-4 py-2 flex gap-2 items-center md:mx-3 lg:mx-6 hover:bg-gray-100 active:bg-gray-200 rounded-lg"
       onClick={() => setTimeout(() => setNavDropdown(!navDropdown), 0)}
     >
       <p className={` ${checkPath(item) ? "text-red-400" : "text-slate-gray"}`}>

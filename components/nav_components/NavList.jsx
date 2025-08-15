@@ -7,7 +7,7 @@ function NavList({ item, checkPath }) {
         href={item.path}
         className={`${
           checkPath(item) ? "text-red-400" : "text-slate-gray"
-        } block px-4 py-2 md:mx-3 lg:mx-6 w-fit`}
+        } block px-4 py-2 md:mx-3 lg:mx-6 w-fit rounded-lg hover:bg-gray-100 active:bg-gray-200 `}
       >
         <p className="w-full whitespace-nowrap">{item.label}</p>
       </Link>

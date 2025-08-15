@@ -1,13 +1,16 @@
 "use client";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import "@app/globals.css";
 import { statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
-import { DateTimeContext } from "@provider/DateTimeProvider";
 import { notifyWaring } from "@utils/notify";
 import { supabase } from "@/utils/supabase";
+import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
+import { dayEnToThai, dayThaiToEn } from "@utils/translateDay";
+import { isBookable } from "@utils/isBookable";
+import { CalendarPlus } from "@node_modules/lucide-react";
 
 function Schedule() {
   const router = useRouter();
@@ -16,22 +19,14 @@ function Schedule() {
   const buildingId = param.id;
   const room = searchParams.get("room");
 
-  const { currentDay, currentPeriod } = useContext(DateTimeContext);
   const { user } = useContext(SessionContext);
 
   const innerRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(0);
   const [status, setStatus] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
-
-  const dayMap = {
-    "วันจันทร์": "monday",
-    "วันอังคาร": "tuesday",
-    "วันพุธ": "wednesday",
-    "วันพฤหัสบดี": "thursday",
-    "วันศุกร์": "friday",
-  };
+  const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 
   const filteredTimeSlots = timeSlots.filter(
     (slot) => slot.label >= 1 && slot.label <= 10
@@ -43,7 +38,7 @@ function Schedule() {
       return;
     }
     router.push(
-      `/building/${buildingId}/schedule/form?room=${room}&day=${day}&period=${period.label}`
+      `/form?building=${buildingId}&room=${room}&day=${day}&period=${period.label}`
     );
   };
 
@@ -60,6 +55,9 @@ function Schedule() {
   useEffect(() => {
     const fetchStatus = async () => {
       if (!room) return;
+      setLoading(true);
+      const currentDay = getCurrentDay("eng");
+      const currentPeriod = getCurrentPeriod();
 
       const { data, error } = await supabase
         .from("bookings")
@@ -68,6 +66,7 @@ function Schedule() {
 
       if (error) {
         console.error("Error fetching booking:", error.message);
+        setLoading(false);
         return;
       }
 
@@ -77,112 +76,259 @@ function Schedule() {
       });
 
       const newStatus = {};
-      days.forEach((dayThai) => {
-        const dayEng = dayMap[dayThai];
+      days.forEach((day) => {
         filteredTimeSlots.forEach((period) => {
-          const key = `${dayEng}-${period.label}`;
+          const key = `${day}-${period.label}`;
           const bookingStatus = bookedMap[key];
 
           if (!bookingStatus) {
-            newStatus[`${dayThai}-${period.label}`] = "available";
+            newStatus[`${day}-${period.label}`] = "available";
           } else if (
             bookingStatus === "pending" &&
-            dayEng === currentDay &&
+            day === currentDay &&
             period.label === currentPeriod
           ) {
-            newStatus[`${dayThai}-${period.label}`] = "pending-now";
+            newStatus[`${day}-${period.label}`] = "pending-now";
           } else {
-            newStatus[`${dayThai}-${period.label}`] = "booked";
+            newStatus[`${day}-${period.label}`] = "booked";
           }
         });
+        setLoading(false);
       });
 
       setStatus(newStatus);
     };
 
     fetchStatus();
-  }, [room, currentDay, currentPeriod]);
+  }, [room]);
 
   return (
-    <section className="padding-x max-container w-full pt-6">
-      <div className="text-center mb-4">
-        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
-          ตารางการใช้งานห้อง {room}
-        </h2>
-        <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
-          เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
-        </p>
-      </div>
+    // <section className="padding-x max-container w-full pt-6">
+    //   <div className="text-center mb-4">
+    //     <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
+    //       ตารางการใช้งานห้อง {room}
+    //     </h2>
+    //     <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
+    //       เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
+    //     </p>
+    //   </div>
 
-      <div
-        className="bg-white overflow-x-auto border border-gray-300 shadow-md rounded-md custom-scroll mx-auto"
-        style={{ maxWidth: maxWidth + 2 }}
-      >
-        <div
-          className="w-fit border border-gray-300 overflow-hidden"
-          style={{
-            display: "grid",
-            gridTemplateColumns: `100px repeat(${filteredTimeSlots.length},120px)`,
-            gridTemplateRows: `60px repeat(${days.length},60px)`,
-          }}
-          ref={innerRef}
-        >
-          {/* หัวตาราง */}
-          <div className="border border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">
-            วัน/เวลา
-          </div>
-          {filteredTimeSlots.map((period, index) => (
-            <div
-              key={`header-${index}`}
-              className="border border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center"
-            >
-              <div className="text-gray-700">คาบที่ {period.label}</div>
-              <div className="text-xs text-gray-500 mt-0.5">
-                {period.from} - {period.to}
-              </div>
+    //     <div
+    //       className="bg-white overflow-x-auto shadow-md rounded-md custom-scroll mx-auto max-w-[1300px] w-full overscroll-contain"
+    //       // style={{ maxWidth: maxWidth + 2 }}
+    //     >
+    //       <div
+    //         className="w-fit rounded-lg border-2 border-gray-300 overflow-hidden"
+    //         style={{
+    //           display: "grid",
+    //           gridTemplateColumns: `100px repeat(${filteredTimeSlots.length},120px)`,
+    //           gridTemplateRows: `60px repeat(${days.length},60px)`,
+    //         }}
+    //         ref={innerRef}
+    //       >
+    //         {/* หัวตาราง */}
+    //         <div className="border-r-1 border-b-1 border-gray-300 text-gray-700 flex items-center justify-center font-semibold bg-white">
+    //           วัน/เวลา
+    //         </div>
+    //         {filteredTimeSlots.map((period, index) => (
+    //           <div
+    //             key={`header-${index}`}
+    //             className={`border border-t-0 ${
+    //               period.label == 10 && "border-r-0"
+    //             } border-gray-300 flex flex-col items-center justify-center bg-white text-sm px-1 text-center`}
+    //           >
+    //             <div className="text-gray-700">คาบที่ {period.label}</div>
+    //             <div className="text-xs text-gray-500 mt-0.5">
+    //               {period.from} - {period.to}
+    //             </div>
+    //           </div>
+    //         ))}
+
+    //         {/* แถวแต่ละวัน */}
+    //         {days.map((day) => (
+    //           <React.Fragment key={day}>
+    //             <div
+    //               className={`border border-l-0 ${day == 'friday' && "border-b-0"} border-gray-300 flex items-center justify-center bg-white text-gray-700`}
+    //             >
+    //               {dayEnToThai[day]}
+    //             </div>
+    //             {filteredTimeSlots.map((period) => {
+    //               const key = `${day}-${period.label}`;
+    //               const cellStatus = status[key];
+
+    //               let bgColor = "bg-white";
+    //               if (cellStatus === "available") {
+    //                 bgColor = "bg-[#86EFAC] hover:bg-[#4ADE80] cursor-pointer";
+    //               } else if (cellStatus === "pending-now") {
+    //                 bgColor = "bg-[#FACC15]"; // เหลือง
+    //               } else if (cellStatus === "booked") {
+    //                 bgColor = "bg-[#FCA5A5]"; // แดง
+    //               }
+
+    //               if (loading )
+    //                 return (
+    //                   <div
+    //                     key={key}
+    //                     className={`border border-gray-300`}
+    //                   >
+    //                     <div className="bg-gray-200 animate-pulse h-full w-full"></div>
+    //                   </div>
+    //                 );
+    //               console.log(day, String(period.label), user?.app_metadata?.role);
+
+    //               return (
+    //                 <button
+    //                   key={key}
+    //                   disabled={
+    //                     !isBookable(
+    //                       day,
+    //                       period.label,
+    //                       user?.app_metadata?.role
+    //                     )
+    //                   }
+    //                   className={`border border-gray-300
+    //                     ${period.label == 10 && "border-r-0" }
+    //                     ${day == 'friday' && "border-b-0"}
+    //                     ${bgColor} disabled:bg-black cursor-pointer`}
+    //                   onClick={
+    //                     cellStatus == "available"
+    //                       ? () => handleOnClick(day, period)
+    //                       : undefined
+    //                   }
+    //                 />
+    //               );
+    //             })}
+    //           </React.Fragment>
+    //         ))}
+    //       </div>
+    //     </div>
+
+    //   <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
+    //     <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
+    //     <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
+    //     <StatusLabel statusThai={"รออนุมัติ"} color={"#FACC15"} />
+    //   </div>
+    // </section>
+    <section className="min-[460px]:px-4 min-[460px]:py-4 max-container w-full flex-1 flex">
+      <div className="bg-white min-[460px]:rounded-3xl min-[460px]:shadow-lg px-6 py-4 w-full min-[460px]:h-full mx-auto max-w-[1200px] max-[460px]:flex-1">
+        {/* <div className="text-center mb-4">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
+            ตารางการใช้งานห้อง {room}
+          </h2>
+          <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
+            เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
+          </p>
+        </div> */}
+
+        <header className="relative p-6 rounded-3xl overflow-hidden shadow-xl bg-gradient-to-br z-3 from-red-500 via-rose-500 to-pink-500 mb-4">
+          <div className="absolute -top-10 -left-10 w-48 h-48 bg-white opacity-10 rounded-full transform rotate-45"></div>
+          <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white opacity-10 rounded-full transform -rotate-45"></div>
+          <div className="relative z-10 flex flex-col items-center justify-center text-center">
+            <div className="p-4 rounded-full bg-white/20 bg-opacity-20 backdrop-filter backdrop-blur-sm mb-2">
+              <CalendarPlus className="w-9 h-9 text-white" />
             </div>
-          ))}
+            <h1 className="text-[33px] font-semibold text-white">
+              {room
+              ? String(room).startsWith("ห้อง")
+                ? room
+                : `ห้อง ${room}`
+              : "ชื่อห้อง"}
+            </h1>
+            <p className="text-lg text-white">ตารางการใช้ห้องเรียน</p>
+          </div>
+        </header>
 
-          {/* แถวแต่ละวัน */}
-          {days.map((day) => (
-            <React.Fragment key={day}>
-              <div className="border border-gray-300 flex items-center justify-center bg-white text-gray-700">
-                {day}
+        <div className="overflow-x-auto custom-scroll pb-1.5">
+          <div className="absolute w-fit bg-white text-gray-700 space-y-1">
+            <div className="pr-2 flex justify-center items-center h-15">
+            </div>
+            {days.map((day) => (
+              <div
+                key={day}
+                className="pr-4 h-13 flex justify-end items-center"
+              >
+                {dayEnToThai[day].replace("วัน", "")}
               </div>
-              {filteredTimeSlots.map((period) => {
-                const key = `${day}-${period.label}`;
-                const cellStatus = status[key];
+            ))}
+          </div>
+          <div className="w-fit ml-22 space-y-1">
+            <div className="flex gap-1">
+              {filteredTimeSlots.map((period) => (
+                <div key={period.label} className="p-2 text-center w-25 h-15">
+                  <div className="text-gray-700">คาบที่ {period.label}</div>
+                  <div className="text-xs text-gray-500 mt-0.5 whitespace-nowrap">
+                    {period.from} - {period.to}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {days.map((day) => (
+              <div className="flex gap-1" key={day}>
+                {filteredTimeSlots.map((period) => {
+                  const key = `${day}-${period.label}`;
+                  const cellStatus = status[key];
 
-                let bgColor = "bg-white";
-                if (cellStatus === "available") {
-                  bgColor = "bg-[#86EFAC] hover:bg-[#4ADE80] cursor-pointer";
-                } else if (cellStatus === "pending-now") {
-                  bgColor = "bg-[#FACC15]"; // เหลือง
-                } else if (cellStatus === "booked") {
-                  bgColor = "bg-[#FCA5A5]"; // แดง
-                }
-
-                return (
-                  <div
-                    key={key}
-                    className={`border border-gray-200 ${bgColor}`}
-                    onClick={
-                      cellStatus === "available"
-                        ? () => handleOnClick(day, period)
-                        : undefined
+                  let bgColor = "bg-white";
+                  if (isBookable(day, period.label, user?.app_metadata?.role)) {
+                    if (cellStatus === "available") {
+                      bgColor =
+                        "bg-green-300 hover:bg-green-400 active:bg-green-500 cursor-pointer hover:scale-105 active:scale-95 transition duration-150";
+                    } else if (cellStatus === "pending-now") {
+                      bgColor = "bg-yellow-300"; // เหลือง
+                    } else if (cellStatus === "booked") {
+                      bgColor = "bg-red-300"; // แดง
                     }
-                  />
-                );
-              })}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
+                  } else {
+                    if (cellStatus === "available") {
+                      bgColor = "bg-green-300/50";
+                    } else if (cellStatus === "pending-now") {
+                      bgColor = "bg-yellow-300/50"; // เหลือง
+                    } else if (cellStatus === "booked") {
+                      bgColor = "bg-red-300/50"; // แดง
+                    }
+                  }
 
-      <div className="flex max-w-xl w-fit gap-6 mx-auto mt-6">
-        <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
-        <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
-        <StatusLabel statusThai={"รออนุมัติ"} color={"#FACC15"} />
+                  if (loading)
+                    return (
+                      <div
+                        key={key}
+                        className={`bg-gray-200 animate-pulse w-25 h-13 rounded-lg`}
+                      ></div>
+                    );
+                  console.log(
+                    day,
+                    String(period.label),
+                    user?.app_metadata?.role
+                  );
+
+                  return (
+                    <button
+                      key={key}
+                      disabled={
+                        !isBookable(day, period.label, user?.app_metadata?.role)
+                      }
+                      className={`rounded-lg w-25 h-13
+                      ${bgColor} cursor-pointer`}
+                      onClick={
+                        cellStatus == "available"
+                          ? () => handleOnClick(day, period)
+                          : undefined
+                      }
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="border border-gray-200 w-full mt-5 mb-4"></div>
+
+          <div className="flex max-w-xl w-fit mx-auto gap-6 md:gap-10 scale-110">
+            <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
+            <StatusLabel statusThai={"รออนุมัติ"} color={"#FACC15"} />
+            <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
+          </div>
       </div>
     </section>
   );

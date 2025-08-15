@@ -2,20 +2,21 @@
 
 import Image from "@node_modules/next/image";
 import { arrow_down, date } from "@public/assets/icons";
+import { dayEnToThai } from "@utils/translateDay";
 import { useEffect, useRef, useState } from "react";
 
-const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์"];
+const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 const dayShort = {
-  วันจันทร์: "จ.",
-  วันอังคาร: "อ.",
-  วันพุธ: "พ.",
-  วันพฤหัสบดี: "พฤ.",
-  วันศุกร์: "ศ.",
+  monday: "จ.",
+  tuesday: "อ.",
+  wednesday: "พ.",
+  thursday: "พฤ.",
+  friday: "ศ.",
 };
 
 function Date({ day, setDay, dateDropdown, setDateDropdown }) {
   const dropdownRef = useRef(null);
-  const [screenWidth, setScreenWidth] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(undefined);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -43,7 +44,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
   return (
     <>
       <div
-        className="cursor-pointer hover:bg-gray-100 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg  max-[460px]:gap-3"
+        className="cursor-pointer hover:bg-gray-100 active:bg-gray-200 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg  max-[460px]:gap-3"
         onClick={() => setTimeout(() => setDateDropdown(!dateDropdown), 0)}
       >
         <div className="flex gap-2 justify-center items-center max-[460px]:gap-4">
@@ -54,7 +55,15 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
             height={20}
             className="mt-[1px]"
           />
-          <p>{screenWidth > 460 ? day : dayShort[day]}</p>
+          {day ? (
+            <>
+              <p className="max-[460px]:hidden block">{dayEnToThai[day]}</p>
+              <p className="max-[460px]:block hidden">{dayShort[day]}</p>
+            </>
+          ) : (
+            <div className={`w-10 h-3 rounded-full animate-pulse bg-gray-300`}></div>
+          )}
+          
         </div>
         <div
           className="flex justify-center items-center transition-transform duration-150"
@@ -72,7 +81,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
             {days.map((day) => (
               <li
                 key={day}
-                className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-center"
+                className="px-3 py-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer text-center"
                 onClick={() =>
                   setTimeout(() => {
                     setDay(day);
@@ -80,7 +89,7 @@ function Date({ day, setDay, dateDropdown, setDateDropdown }) {
                   }, 0)
                 }
               >
-                <p>{screenWidth > 460 ? day : dayShort[day]}</p>
+                <p>{screenWidth > 460 ? dayEnToThai[day] : dayShort[day]}</p>
               </li>
             ))}
           </ul>

@@ -34,7 +34,7 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
   return (
       <>
       <div
-        className="cursor-pointer hover:bg-gray-100 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg max-[460px]:gap-3"
+        className="cursor-pointer hover:bg-gray-100 active:bg-gray-200 flex justify-between items-center gap-2 pl-3 pr-2 py-2 rounded-lg max-[460px]:gap-3"
         onClick={() => setTimeout(() => setTimeDropdown(!timeDropdown), 0)}
         >
         <div className="flex gap-2 justify-center items-center max-[460px]:gap-3">
@@ -45,7 +45,14 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
             height={20}
             className="mt-[1px]"
             />
-          <p>{screenWidth > 460 ? `คาบ ${period}` : period}</p>
+          {period ? (
+            <>
+              <p className="max-[460px]:hidden block">คาบ {period}</p>
+              <p className="max-[460px]:block hidden">{period}</p>
+            </>
+          ) : (
+            <div className={`w-10 h-3 rounded-full animate-pulse bg-gray-300`}></div>
+          )}
         </div>
         <div className="flex justify-center items-center transition-transform duration-150" style={{transform : `rotate(${ timeDropdown ? 180 : 0}deg)`}}>
           <Image src={arrow_down} alt="arrow_down" width={16} height={16} />
@@ -57,7 +64,7 @@ function Time({ period, setPeriod, timeDropdown, setTimeDropdown }) {
             {periods.map((period) => (
               <li
               key={period}
-              className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-center"
+              className="px-3 py-1.5 hover:bg-gray-100 active:bg-gray-200 cursor-pointer text-center"
               onClick={() => setTimeout(() => {
                 setPeriod(period);
                 setTimeDropdown(false);

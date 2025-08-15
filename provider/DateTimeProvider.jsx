@@ -4,20 +4,20 @@ import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 import { createContext, useEffect, useRef, useState } from "react";
 
 const mapDay = {
-  0: "วันจันทร์",
-  1: "วันจันทร์",
-  2: "วันอังคาร",
-  3: "วันพุธ",
-  4: "วันพฤหัสบดี",
-  5: "วันศุกร์",
-  6: "วันจันทร์",
+  0: "monday",
+  1: "monday",
+  2: "tuesday",
+  3: "wednesday",
+  4: "thursday",
+  5: "friday",
+  6: "monday",
 };
 
 const DateTimeContext = createContext();
 
 function DateTimeProvider({ children }) {
-  const [day, setDay] = useState(mapDay[0]);
-  const [period, setPeriod] = useState(1);
+  const [day, setDay] = useState(null);
+  const [period, setPeriod] = useState(null);
   const [currentDay, setCurrentDay] = useState(getCurrentDay('eng') || 'monday');
   const [currentPeriod, setCurrentPeriod] = useState(getCurrentPeriod() || 1);
 
@@ -40,6 +40,19 @@ function DateTimeProvider({ children }) {
   }, [])
 
   useEffect(() => {
+    if (!day || !period) return;    
+    sessionStorage.setItem("day_period", JSON.stringify({ day, period }));
+  }, [day, period]);
+
+  useEffect(() => {
+    const data = JSON.parse(sessionStorage.getItem("day_period"));
+    console.log(data);
+    if (data?.day && data?.period) {
+      setDay(data.day);
+      setPeriod(data.period);
+      return;
+    }
+
     const currentDay = getCurrentDay();
     const currentPeriod = getCurrentPeriod();
     

@@ -6,6 +6,16 @@ import { isPast } from "@utils/isPast";
 import jwt from "jsonwebtoken";
 import { getStartTime } from "@utils/getStartTime";
 import { isBookable } from "@utils/isBookable";
+import { toZonedTime } from "date-fns-tz";
+import { schedule } from "@data/schedule";
+
+const mapDay = {
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
+};
 
 export const POST = async (req) => {
   const {
@@ -21,7 +31,7 @@ export const POST = async (req) => {
   } = await req.json();
   const cookieStore = await cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
+  
   if (!room || !building || !period || !day || !type) {
     return NextResponse.json(
       { message: "Missing required fields" },
@@ -30,12 +40,17 @@ export const POST = async (req) => {
   }
 
   // Validate room, building, period, and day
-
+  
   if (!bookableRoom.includes(room)) {
     return NextResponse.json({ message: "Invalid room" }, { status: 400 });
   }
 
-  
+  if (schedule[room]) {
+    if (schedule[room][mapDay[day]][period] === "In-Use") {
+      return NextResponse.json({ message: "Already booked" }, { status: 409 });
+    }
+  }
+
   try {
     // get user
     const {
@@ -51,16 +66,21 @@ export const POST = async (req) => {
     }
     const user_id = user.id;
     const { role } = user.app_metadata || {};
-
+    const now = toZonedTime(new Date(), "Asia/Bangkok");
+    
+    
     // check banned
-    const { data: { banned_until }, error: userDataError } = await supabase
-      .from("users")
-      .select("banned_until")
-      .eq("user_id", user_id)
-      .single();
-    
+    const {
+      data: { banned_until },
+      error: userDataError,
+    } = await supabase
+    .from("users")
+    .select("banned_until")
+    .eq("user_id", user_id)
+    .single();
+
     // console.log("banned_until:", banned_until);
-    
+
     if (userDataError) {
       console.error("Error fetching user data:", userDataError);
       return NextResponse.json(
@@ -70,11 +90,8 @@ export const POST = async (req) => {
     }
 
     if (banned_until) {
-      if (banned_until > new Date().toISOString()) {
-        return NextResponse.json(
-          { message: "Banned" },
-          { status: 403 }
-        );
+      if (banned_until > now.toISOString()) {
+        return NextResponse.json({ message: "Banned" }, { status: 403 });
       } else {
         // Reset banned_until if the user is no longer banned
         const { error: resetBanError } = await supabase
@@ -90,7 +107,7 @@ export const POST = async (req) => {
         }
       }
     }
-    
+
     // Check if the room is bookable for the given day and period
     if (!isBookable(day, period, role, type)) {
       return NextResponse.json(
@@ -121,7 +138,6 @@ export const POST = async (req) => {
     }
 
     // get expired time
-    const now = new Date();
     const nowPlus10 = new Date(now.getTime() + 10 * 60 * 1000);
 
     // สมมติ bookingStart คือเวลาเริ่มคาบ
@@ -131,17 +147,17 @@ export const POST = async (req) => {
     const maxTime = Math.max(bookingStart.getTime(), nowPlus10.getTime());
     const expired_at = new Date(maxTime);
 
-
     // Check if the room is already booked for the given day and period
-    const { data: existingBookings, error: existingBookingsError } = await    supabase
-      .from("bookings")
-      .select("booking_id")
-      .eq("room", room)
-      .eq("day", day)
-      .eq("period", period)
-      .neq("status", "cancelled")
-      .limit(1);
-    
+    const { data: existingBookings, error: existingBookingsError } =
+      await supabase
+        .from("bookings")
+        .select("booking_id")
+        .eq("room", room)
+        .eq("day", day)
+        .eq("period", period)
+        .neq("status", "cancelled")
+        .limit(1);
+
     if (existingBookingsError) {
       console.error("Error checking existing bookings:", existingBookingsError);
       return NextResponse.json(
@@ -151,13 +167,9 @@ export const POST = async (req) => {
     }
 
     if (existingBookings.length > 0) {
-        // Unique violation error code
-        return NextResponse.json(
-          { message: "Already booked" },
-          { status: 409 }
-        );
+      // Unique violation error code
+      return NextResponse.json({ message: "Already booked" }, { status: 409 });
     }
-
 
     // Insert the booking into the database
     const { error: bookingError } = await supabase.from("bookings").insert({
@@ -216,7 +228,7 @@ export const DELETE = async (req) => {
     const { error } = await supabase
       .from("bookings")
       .delete()
-      .eq("booking_id", booking_id)
+      .eq("booking_id", booking_id);
     if (error) {
       console.error("Error during booking deletion:", error);
       return NextResponse.json(

@@ -9,7 +9,7 @@ function MenuDropdown({ setIsShow, checkPath }) {
           <li key={item.id} className="group">
             <Link
               href={`/building/${item.id}`}
-              className="w-full text-start flex px-10 py-3.5 hover:bg-gray-100 relative"
+              className="w-full text-start flex px-10 py-3.5 hover:bg-gray-100 active:bg-gray-200 relative"
               onClick={() => setTimeout(() => setIsShow(false), 0)}
             >
               <span

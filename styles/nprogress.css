@@ -1,0 +1,20 @@
+/* styles/nprogress.css */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #f87171; /* สีฟ้าแบบ YouTube */
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transition: all 0.2s;
+  box-shadow: none !important; /* ลบเงา */
+}
+
+#nprogress .peg {
+  display: none !important; /* ซ่อนเอฟเฟกต์ปลายแถบ */
+}

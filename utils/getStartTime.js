@@ -1,4 +1,5 @@
 import timeSlots from "@data/timeSlots";
+import { toZonedTime } from "date-fns-tz";
 const DAYS_MAP = {
   monday: 1,
   tuesday: 2,
@@ -10,8 +11,7 @@ const DAYS_MAP = {
 export const getStartTime = (day, period) => {
   period = Number(period);
 
-  const now = new Date();
-
+  const now = toZonedTime(new Date(), "Asia/Bangkok");
   const targetDayOfWeek = DAYS_MAP[day];
   const currentDayOfWeek = now.getDay(); // 0=Sunday, 1=Monday...
 

@@ -1,8 +1,9 @@
 import { bookableRoom } from "@data";
 import { createMiddlewareClient } from "@node_modules/@supabase/auth-helpers-nextjs/dist";
 import { NextResponse } from "@node_modules/next/server";
+import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 import { isBookable } from "@utils/isBookable";
-import { isInTorrorrow } from "@utils/isInTomorrow";
+import { isInTomorrow } from "@utils/isInTomorrow";
 import { isPast } from "@utils/isPast";
 
 const checkDay = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
@@ -11,6 +12,7 @@ export const middleware = async (req) => {
   const { pathname } = req.nextUrl;
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
+  console.log("Middleware triggered");
 
   const {
     data: { session },
@@ -45,17 +47,17 @@ export const middleware = async (req) => {
     }
   }
 
-// building schedule form page   
-  else if (pathname.startsWith("/building/") && pathname.includes("/schedule/form")) {
+// form page   
+  else if (pathname.startsWith("/form")) {
     if (!session) return NextResponse.redirect(new URL("/", req.url));
     const { searchParams } = req.nextUrl;
     // เหลือเชคห้อง
+    const buildingId = searchParams.get("building");
     const room = searchParams.get("room");
     const day = searchParams.get("day");
-    const period = searchParams.get("period");
-    // console.log(room);
-    
-    if (!room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || !isBookable(day, period, role)) {
+    const period = Number(searchParams.get("period"));
+
+    if (!buildingId || !room || !day || !period || !bookableRoom.includes(room) || !checkDay.includes(day) || isNaN(period) || period < 1 || period > 10 || buildingId < 0 || buildingId > 7 || !isBookable(day, period, role)) {
       return NextResponse.redirect(new URL("/", req.url));   
     }
   }
@@ -73,5 +75,5 @@ export const middleware = async (req) => {
 };
 
 export const config = {
-  matcher: ["/admin/:path*", "/login", "/building/:path*"],
+  matcher: ["/admin/:path*", "/login", "/building/:path*", "/form"],
 };

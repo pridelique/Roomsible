@@ -60,7 +60,7 @@ function NavLink({ navLink, session, checkPath, handleToggleTime }) {
                 )}
               </li>
               {/* {session && ( */}
-                <li className="mt-0.5 hover:bg-gray-100 p-1 rounded-full">
+                <li className="mt-0.5 hover:bg-gray-100 active:bg-gray-200 p-1 rounded-full">
                   <button
                     className="w-fit h-fit flex justify-center items-center cursor-pointer opacity-80"
                     onClick={() => setTimeout(() => handleToggleTime(), 0)}

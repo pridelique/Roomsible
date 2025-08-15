@@ -5,10 +5,10 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
   return (
     <>
         {/* computer */}
-      <div className="flex justify-evenly mb-4 gap-6  max-[450px]:hidden relative">
+      <div className="flex justify-evenly mb-4 gap-6  relative">
         <button
           disabled={disabledClass}
-          className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50  ${
+          className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap  ${
             mode === "class"
               ? "text-[#466AB0] font-semibold"
               : "text-gray-500"
@@ -19,7 +19,7 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
         </button>
         <button
           disabled={disabledActivity}
-          className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50 ${
+          className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap ${
             mode === "activity"
               ? "text-[#466AB0] font-semibold"
               : "text-gray-500"
@@ -30,12 +30,12 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
         </button>
 
         {/* underline */}
-         <span className={`absolute border left-0 -bottom-0.5 border-[#466AB0] rounded-full transition-all duration-300 ${mode === 'activity' ? 'w-[88px] translate-x-[181px]' : 'w-[158px]'}`}></span>
+         <span className={`absolute border left-0 -bottom-0.5 border-[#466AB0] rounded-full transition-all duration-300 ${mode === 'activity' ? 'w-[78px] translate-x-[172px]' : 'w-[146px]'}`}></span>
         </div>
 
         {/* mobile */}
       <div
-        className="w-50 relative pb-1.5 text-[#466AB0] font-semibold cursor-pointer hidden overflow-hidden max-[450px]:flex group mb-4"
+        className="w-50 relative pb-1.5 text-[#466AB0] font-semibold cursor-pointer hidden overflow-hidden  group mb-4"
         onClick={() => {
           if (disabledActivity || disabledClass) return;
           setMode(`${mode === "activity" ? "class" : "activity"}`)
