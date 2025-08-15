@@ -8,9 +8,7 @@ const supabaseAdmin = createClient(
 
 export const POST = async (req) => {
   const { email, password, role, firstname, lastname, classroom, no } = await req.json();
-
-  console.log({ email, password, role, firstname, lastname, classroom, no });
-
+  
   // Validate input
   if (
     !email ||
