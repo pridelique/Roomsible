@@ -7,16 +7,24 @@ const supabaseAdmin = createClient(
 );
 
 export const POST = async (req) => {
-  const { email, password, role } = await req.json();
+  const { email, password, role, firstname, lastname, classroom, no } = await req.json();
 
   // Validate input
   if (
     !email ||
     !password ||
     !role ||
+    !firstname ||
+    !lastname ||
+    !classroom ||
+    !no ||
     typeof email !== "string" ||
     typeof password !== "string" ||
     typeof role !== "string" ||
+    typeof firstname !== "string" ||
+    typeof lastname !== "string" ||
+    typeof classroom !== "string" ||
+    typeof no !== "number" ||
     (role != "student" &&
       role != "leader" &&
       role != "teacher" &&
@@ -50,10 +58,10 @@ export const POST = async (req) => {
       .insert({
         user_id: data.user.id,
         email: data.user.email,
-        firstname: "สมปอง",
-        lastname: "สุขสมบูรณ์",
-        classroom: "ม.1.1",
-        no: 1,
+        firstname,
+        lastname,
+        classroom,
+        no,
         role,
       });
 
