@@ -154,7 +154,7 @@ export default function HomePage() {
           <div
             className="w-full h-full flex-1"
             ref={outerRef}
-            style={{ height: Math.max(screenHeight - 20, 250) }}
+            style={{ height: Math.max(screenHeight - 30, 250) }}
           >
             <div className="bg-white flex justify-center items-start rounded-lg overflow-hidden shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] w-fit h-fit mx-auto">
               <TransformComponent>

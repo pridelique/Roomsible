@@ -209,8 +209,8 @@ function Schedule() {
     //     <StatusLabel statusThai={"รออนุมัติ"} color={"#FACC15"} />
     //   </div>
     // </section>
-    <section className="min-[460px]:px-4 min-[460px]:py-6 max-container w-full">
-      <div className="bg-white rounded-lg shadow-lg px-6 py-4 w-full mx-auto max-w-[1200px]">
+    <section className="min-[460px]:px-4 min-[460px]:py-4 max-container w-full flex-1 flex">
+      <div className="bg-white min-[460px]:rounded-3xl min-[460px]:shadow-lg px-6 py-4 w-full min-[460px]:h-full mx-auto max-w-[1200px] max-[460px]:flex-1">
         {/* <div className="text-center mb-4">
           <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
             ตารางการใช้งานห้อง {room}
@@ -220,35 +220,38 @@ function Schedule() {
           </p>
         </div> */}
 
-        <header className="relative p-8 md:p-12 rounded-3xl overflow-hidden shadow-xl bg-gradient-to-br from-red-500 via-rose-500 to-pink-500 mb-8">
+        <header className="relative p-6 rounded-3xl overflow-hidden shadow-xl bg-gradient-to-br z-3 from-red-500 via-rose-500 to-pink-500 mb-4">
           <div className="absolute -top-10 -left-10 w-48 h-48 bg-white opacity-10 rounded-full transform rotate-45"></div>
           <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white opacity-10 rounded-full transform -rotate-45"></div>
           <div className="relative z-10 flex flex-col items-center justify-center text-center">
-            <div className="p-5 rounded-full bg-white/20 bg-opacity-20 backdrop-filter backdrop-blur-sm mb-4">
-              <CalendarPlus className="w-10 h-10 text-white" />
+            <div className="p-4 rounded-full bg-white/20 bg-opacity-20 backdrop-filter backdrop-blur-sm mb-2">
+              <CalendarPlus className="w-9 h-9 text-white" />
             </div>
-            <h1 className="text-4xl font-semibold text-white tracking-tight">
-              ห้องเรียน 402
+            <h1 className="text-[33px] font-semibold text-white">
+              {room
+              ? String(room).startsWith("ห้อง")
+                ? room
+                : `ห้อง ${room}`
+              : "ชื่อห้อง"}
             </h1>
-            <p className="text-lg text-white mt-1">ระบบจองห้องเรียนออนไลน์</p>
+            <p className="text-lg text-white">ตารางการใช้ห้องเรียน</p>
           </div>
         </header>
 
         <div className="overflow-x-auto custom-scroll pb-1.5">
           <div className="absolute w-fit bg-white text-gray-700 space-y-1">
-            <div className="px-2 flex justify-center items-center h-15">
-              วัน/เวลา
+            <div className="pr-2 flex justify-center items-center h-15">
             </div>
             {days.map((day) => (
               <div
                 key={day}
-                className="px-2 h-13 flex justify-end items-center"
+                className="pr-4 h-13 flex justify-end items-center"
               >
                 {dayEnToThai[day].replace("วัน", "")}
               </div>
             ))}
           </div>
-          <div className="w-fit ml-25 space-y-1">
+          <div className="w-fit ml-22 space-y-1">
             <div className="flex gap-1">
               {filteredTimeSlots.map((period) => (
                 <div key={period.label} className="p-2 text-center w-25 h-15">
@@ -319,16 +322,13 @@ function Schedule() {
           </div>
         </div>
 
-        <div className="border border-gray-200 w-full my-5"></div>
+        <div className="border border-gray-200 w-full mt-5 mb-4"></div>
 
-        <div>
-          <p className="text-lg font-semibold">สถานะการจอง</p>
-          <div className="flex max-w-xl w-fit mx-auto gap-6 mt-6">
+          <div className="flex max-w-xl w-fit mx-auto gap-6 md:gap-10 scale-110">
             <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
-            <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
             <StatusLabel statusThai={"รออนุมัติ"} color={"#FACC15"} />
+            <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
           </div>
-        </div>
       </div>
     </section>
   );

@@ -195,7 +195,7 @@ function BuildingPage({ params }) {
       <div className={`relative mt-3 w-fit mx-auto ${loading && "opacity-0"}`}>
         <div
           className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3"
-          onClick={(e) => { 
+          onClick={(e) => {
             setShowTooltip(!showTooltip);
           }}
           ref={tooltipRef}
@@ -241,52 +241,55 @@ function BuildingPage({ params }) {
             centerViewRef.current = centerView;
             return (
               <>
-                <div
-                  className="bg-white rounded-xl max-w-xl mx-auto mb-3 relative shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]  overflow-hidden"
-                  ref={outerRef}
-                >
-                  {/* {!zooming && maxScale !== 1 && (
+                <div className="bg-white rounded-xl max-w-xl mx-auto mb-3 relative shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)]">
+                  <div
+                    className="relative overflow-hidden"
+                    ref={outerRef}
+                  >
+                    {/* {!zooming && maxScale !== 1 && (
                     <ZoomPanAnimation animationState={animationState} />
                   )} */}
 
-                  <TransformComponent>
-                    <div
-                      className="flex cursor-grab active:cursor-grabbing max-h-[500px] justify-center items-center"
-                      style={containerStyle}
-                    >
+                    <TransformComponent>
                       <div
-                        className="origin-left p-10 h-fit"
-                        ref={innerRef}
-                        style={{ transform: `scale(${scale})` }}
+                        className="flex cursor-grab active:cursor-grabbing max-h-[500px] justify-center items-center"
+                        style={containerStyle}
                       >
-                        <Building
-                          id={id}
-                          handleOnClick={handleOnClick}
-                          // handleOnClick={handleFormClick}
-                          // handleScheduleClick={handleScheduleClick}
-                        />
+                        <div
+                          className="origin-left p-10 h-fit"
+                          ref={innerRef}
+                          style={{ transform: `scale(${scale})` }}
+                        >
+                          <Building
+                            id={id}
+                            handleOnClick={handleOnClick}
+                            // handleOnClick={handleFormClick}
+                            // handleScheduleClick={handleScheduleClick}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </TransformComponent>
-                  <button
-                    className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-300 active:bg-gray-400 opacity-40 p-2 m-2 object-cover cursor-pointer justify-center items-center ${
-                      maxScale === 1 ? "hidden" : "flex"
-                    } `}
-                    onClick={() => handleZoom(centerView)}
-                    ref={buttonRef}
-                  >
-                    <Image
-                      src={fullscreen ? zoom_in : zoom_out}
-                      alt="zoom"
-                      width={20}
-                      height={20}
-                      draggable={false}
-                      className="select-none"
-                    />
-                  </button>
-                </div>
-                <div className="flex justify-center max-w-xl mx-auto pt-4 bg-white shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] rounded-lg w-fit px-4 mb-6">
-                  <StatusTable />
+                    </TransformComponent>
+                    <button
+                      className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-300 active:bg-gray-400 opacity-40 p-2 m-2 object-cover cursor-pointer justify-center items-center ${
+                        maxScale === 1 ? "hidden" : "flex"
+                      } `}
+                      onClick={() => handleZoom(centerView)}
+                      ref={buttonRef}
+                    >
+                      <Image
+                        src={fullscreen ? zoom_in : zoom_out}
+                        alt="zoom"
+                        width={20}
+                        height={20}
+                        draggable={false}
+                        className="select-none"
+                      />
+                    </button>
+                  </div>
+                  <div className="border border-gray-200 w-11/12 mx-auto"></div>
+                  <div className="flex justify-center max-w-xl mx-auto pt-4 bg-white w-fit px-4">
+                    <StatusTable />
+                  </div>
                 </div>
               </>
             );
