@@ -10,6 +10,10 @@ import { SessionContext } from "@provider/SessionProvider";
 function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [classroom, setClassroom] = useState("");
+  const [no, setNo] = useState("");
   const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,7 +26,7 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!email || !password || !firstname || !lastname || !classroom || !no || !role) {
       setError("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
@@ -38,7 +42,7 @@ function RegisterPage() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password, role }),
+            body: JSON.stringify({ email, password, role, firstname, lastname, classroom, no }),
         })
         const data = await res.json();
         if (!res.ok) {
@@ -127,6 +131,50 @@ function RegisterPage() {
                     placeholder="Role (student, leader, teacher, admin)"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
+                    className="w-full outline-none placeholder-gray-500 text-gray-700"
+                    required
+                  />
+                </li>
+                <li className="flex items-center border-b border-gray-400 pb-2 ">
+                  <UserCheck className="w-5 h-5 text-gray-500 mr-3 ml-3" />
+                  <input
+                    type="text"
+                    placeholder="Firstname"
+                    value={firstname}
+                    onChange={(e) => setFirstname(e.target.value)}
+                    className="w-full outline-none placeholder-gray-500 text-gray-700"
+                    required
+                  />
+                </li>
+                <li className="flex items-center border-b border-gray-400 pb-2 ">
+                  <UserCheck className="w-5 h-5 text-gray-500 mr-3 ml-3" />
+                  <input
+                    type="text"
+                    placeholder="Lastname"
+                    value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
+                    className="w-full outline-none placeholder-gray-500 text-gray-700"
+                    required
+                  />
+                </li>
+                <li className="flex items-center border-b border-gray-400 pb-2 ">
+                  <UserCheck className="w-5 h-5 text-gray-500 mr-3  ml-3" />
+                  <input
+                    type="text"
+                    placeholder="Classroom"
+                    value={classroom}
+                    onChange={(e) => setClassroom(e.target.value)}
+                    className="w-full outline-none placeholder-gray-500 text-gray-700"
+                    required
+                  />
+                </li>
+                <li className="flex items-center border-b border-gray-400 pb-2 ">
+                  <UserCheck className="w-5 h-5 text-gray-500 mr-3  ml-3" />
+                  <input
+                    type="text"
+                    placeholder="No"
+                    value={no}
+                    onChange={(e) => setNo(e.target.value)}
                     className="w-full outline-none placeholder-gray-500 text-gray-700"
                     required
                   />
