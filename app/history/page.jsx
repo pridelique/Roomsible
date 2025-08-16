@@ -180,7 +180,7 @@ function HistoryPage() {
   // if (user === "loading") return <Loading />;
 
   return (
-    <div>
+    <section>
       {user ? (
         <div className="relative mx-auto max-w-4xl ">
           <img
@@ -238,11 +238,13 @@ function HistoryPage() {
                 )}
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between mt-8 mb-7 px-9 gap-4">
-              <h2 className="text-3xl font-semibold text-gray-700">
-                ประวัติการจอง
-              </h2>
-              {/* <DayFilter
+            <div className="min-[460px]:px-4">
+              <div className="bg-white min-[460px]:my-4 max-[460px]:mt-1 py-6 min-[460px]:rounded-3xl min-[460px]:shadow-lg">
+                <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between mb-7 px-9 gap-4">
+                  <h2 className="text-3xl font-semibold text-gray-700">
+                    ประวัติการจอง
+                  </h2>
+                  {/* <DayFilter
                 dayFilter={dayFilter}
                 setdayFilter={setdayFilter}
                 selectedDate={selectedDate}
@@ -250,178 +252,187 @@ function HistoryPage() {
                 bookings={bookings}
                 dayList={dayList}
               /> */}
-            </div>
+                </div>
 
-            {/* Status Tabs */}
-            <StatusTabs
-              statusFilter={statusFilter}
-              setStatusFilter={setStatusFilter}
-              thStatus={thStatus}
-              statusList={statusList}
-              // dayFilter={dayFilter}
-              bookings={bookings}
-              bookingsLoading={bookingsLoading}
-              // dayFilterFuction={dayFilterFuction}
-            />
+                {/* Status Tabs */}
+                <StatusTabs
+                  statusFilter={statusFilter}
+                  setStatusFilter={setStatusFilter}
+                  thStatus={thStatus}
+                  statusList={statusList}
+                  // dayFilter={dayFilter}
+                  bookings={bookings}
+                  bookingsLoading={bookingsLoading}
+                  // dayFilterFuction={dayFilterFuction}
+                />
 
-            <div className="flex flex-col max-[500px]:flex-col-reverse items-center justify-center">
-              {/* Select Page */}
-              <PageSelector
-                selectedPage={selectedPage}
-                setSelectedPage={setSelectedPage}
-                totalPages={totalPages}
-                totalBookings={totalBookings}
-                bookingsLoading={bookingsLoading}
-              />
-              <div className="mt-3 mb-6 max-[500px]:mb-0 px-4 relative w-full">
-                <div className="overflow-y-hidden w-full border border-gray-300 custom-scroll p-0 h-[314px] rounded-lg shadow-lg relative bg-white">
-                  <table className="w-full text-center">
-                    <thead className="bg-gray-200 text-gray-600 text-lg border-b border-gray-300">
-                      <tr>
-                        <th className="py-3 px-4 whitespace-nowrap font-medium">
-                          วัน
-                        </th>
-                        <th className="py-3 px-4 whitespace-nowrap font-medium">
-                          คาบ
-                        </th>
-                        <th className="py-3 px-4 whitespace-nowrap font-medium max-md:hidden">
-                          เวลา
-                        </th>
-                        <th className="py-3 px-4 whitespace-nowrap font-medium">
-                          ห้อง
-                        </th>
-                        <th className="py-3 px-4 whitespace-nowrap font-medium">
-                          การใช้งาน
-                        </th>
-                        <th className="py-3 px-4 whitespace-nowrap font-medium">
-                          สถานะ
-                        </th>
-                        <th className="py-3 px-4 whitespace-nowrap font-medium sticky z-2 right-0 bg-gray-200">
-                          <div className="flex justify-center items-center">
-                            {/* <Settings className="w-5 h-5" /> */}
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-gray-500 text-base">
-                      {bookingsLoading ? (
-                        <>
-                          {[...Array(5)].map((_, index) => (
-                            <tr
-                              key={index}
-                              className="relative even:bg-gray-100 bg-white"
-                            >
-                              <td className="py-4 px-6 whitespace-nowrap">
-                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
-                              </td>
-                              <td className="py-4 px-6 whitespace-nowrap">
-                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
-                              </td>
-                              <td className="py-4 px-6 whitespace-nowrap max-md:hidden">
-                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
-                              </td>
-                              <td className="py-4 px-6 whitespace-nowrap">
-                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
-                              </td>
-                              <td className="py-4 px-6 whitespace-nowrap">
-                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
-                              </td>
-                              <td className="py-4 px-6 whitespace-nowrap">
-                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
-                              </td>
-                              <td className="py-4 px-6 whitespace-nowrap">
-                                <div className="rounded-full bg-gray-300 animate-pulse h-5"></div>
-                              </td>
-                            </tr>
-                          ))}
-                        </>
-                      ) : (
-                        <>
-                          {bookings
-                            // .filter((booking) => dayFilterFuction(booking))
-                            .filter(
-                              (booking) =>
-                                statusFilter === "all" ||
-                                booking.status === statusFilter
-                            )
-                            .sort((a, b) => {
-                              const dayA = dayList.indexOf(a.day);
-                              const dayB = dayList.indexOf(b.day);
-                              if (dayA == dayB) return a.period - b.period;
-                              return dayA - dayB;
-                            })
-                            .slice(
-                              selectedPage * 5 - 5,
-                              Math.min(selectedPage * 5, totalBookings)
-                            )
-                            .map((booking, index) => (
-                              <tr
-                                key={booking.booking_id}
-                                className="relative even:bg-gray-100 bg-white"
-                              >
-                                <td className="py-2.5 px-4 whitespace-nowrap">
-                                  {dayEnToThai[booking.day].slice(3)}
-                                </td>
-                                <td className="py-2.5 px-4 whitespace-nowrap">
-                                  {booking.period}
-                                </td>
-                                <td className="py-2.5 px-4 whitespace-nowrap max-md:hidden">
-                                  {timeSlots[booking.period].from} -{" "}
-                                  {timeSlots[booking.period].to}
-                                </td>
-                                <td className="py-2.5 px-4 whitespace-nowrap">
-                                  {booking.room}
-                                </td>
-                                <td className="py-2.5 px-4 whitespace-nowrap">
-                                  {booking.type === "activity"
-                                    ? "กิจกรรม"
-                                    : "เรียน"}
-                                </td>
-                                <td className="py-2.5 whitespace-nowrap flex items-center justify-center">
-                                  <p
-                                    className={`w-25 py-1 rounded-lg
-                              ${
-                                booking.status === "confirmed" &&
-                                "text-green-500 bg-green-300/20"
-                              }
-                              ${
-                                booking.status === "pending" &&
-                                "text-yellow-500 bg-yellow-200/20"
-                              }
-                              ${
-                                booking.status === "cancelled" &&
-                                "text-red-500 bg-red-200/20"
-                              }
-                              `}
-                                  >
-                                    {thStatus[booking.status]}
-                                  </p>
-                                </td>
-                                <td
-                                  className={`py-2 px-4 text-center sticky z-2 right-0 ${
-                                    index % 2 ? "bg-gray-100" : "bg-white"
-                                  }`}
+                <div className="flex flex-col max-[520px]:flex-col-reverse items-center justify-center">
+                  {/* Select Page */}
+                  <PageSelector
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                    totalPages={totalPages}
+                    totalBookings={totalBookings}
+                    bookingsLoading={bookingsLoading}
+                  />
+                  <div className="mt-3 max-[520px]:mb-0 px-4 relative w-full">
+                    <div className="overflow-y-hidden w-full border border-gray-300 custom-scroll p-0 h-[314px] rounded-lg shadow-lg relative bg-white">
+                      <table className="w-full text-center">
+                        <thead className="bg-gray-200 text-gray-600 text-lg border-b border-gray-300">
+                          <tr>
+                            <th className="py-3 px-4 whitespace-nowrap font-medium">
+                              วัน
+                            </th>
+                            <th className="py-3 px-4 whitespace-nowrap font-medium">
+                              คาบ
+                            </th>
+                            <th className="py-3 px-4 whitespace-nowrap font-medium max-md:hidden">
+                              เวลา
+                            </th>
+                            <th className="py-3 px-4 whitespace-nowrap font-medium">
+                              ห้อง
+                            </th>
+                            <th className="py-3 px-4 whitespace-nowrap font-medium">
+                              การใช้งาน
+                            </th>
+                            <th className="py-3 px-4 whitespace-nowrap font-medium">
+                              สถานะ
+                            </th>
+                            <th className="py-3 px-4 whitespace-nowrap font-medium sticky z-2 right-0 bg-gray-200">
+                              <div className="flex justify-center items-center">
+                                {/* <Settings className="w-5 h-5" /> */}
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-gray-500 text-base">
+                          {bookingsLoading ? (
+                            <>
+                              {[...Array(5)].map((_, index) => (
+                                <tr
+                                  key={index}
+                                  className="relative even:bg-gray-100 bg-white"
                                 >
-                                  <div className="flex items-center justify-center">
-                                    <OptionButton
-                                      booking={booking}
-                                      cancelBooking={cancelBooking}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                          {totalBookings === 0 && (
-                            <tr>
-                              <td colSpan="7" className="py-4 text-gray-500">
-                                ไม่มีรายการจอง
-                              </td>
-                            </tr>
+                                  <td className="py-2.5 px-4 whitespace-nowrap">
+                                    <div className="rounded-full text-gray-300 bg-gray-300 animate-pulse">จันทร์</div>
+                                  </td>
+                                  <td className="py-2.5 px-4 whitespace-nowrap">
+                                    <div className="rounded-full text-gray-300 bg-gray-300 animate-pulse">1</div>
+                                  </td>
+                                  <td className="py-2.5 px-4 whitespace-nowrap max-md:hidden">
+                                    <div className="rounded-full text-gray-300 bg-gray-300 animate-pulse">08.30 - 09.20</div>
+                                  </td>
+                                  <td className="py-2.5 px-4 whitespace-nowrap">
+                                    <div className="rounded-full text-gray-300 bg-gray-300 animate-pulse">1404</div>
+                                  </td>
+                                  <td className="py-2.5 px-4 whitespace-nowrap">
+                                    <div className="rounded-full text-gray-300 bg-gray-300 animate-pulse">กิจกรรม</div>
+                                  </td>
+                                  <td className="py-2.5 whitespace-nowrap flex items-center justify-center">
+                                      <p
+                                        className={`w-25 py-1 rounded-lg text-gray-300 bg-gray-300 animate-pulse`}
+                                      >
+                                        จองแล้ว
+                                      </p>
+                                    </td>
+                                  <td className="py-2.5 px-4 whitespace-nowrap">
+                                    <div className="rounded-full text-gray-300 bg-gray-300 animate-pulse"></div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </>
+                          ) : (
+                            <>
+                              {bookings
+                                // .filter((booking) => dayFilterFuction(booking))
+                                .filter(
+                                  (booking) =>
+                                    statusFilter === "all" ||
+                                    booking.status === statusFilter
+                                )
+                                .sort((a, b) => {
+                                  const dayA = dayList.indexOf(a.day);
+                                  const dayB = dayList.indexOf(b.day);
+                                  if (dayA == dayB) return a.period - b.period;
+                                  return dayA - dayB;
+                                })
+                                .slice(
+                                  selectedPage * 5 - 5,
+                                  Math.min(selectedPage * 5, totalBookings)
+                                )
+                                .map((booking, index) => (
+                                  <tr
+                                    key={booking.booking_id}
+                                    className="relative even:bg-gray-100 bg-white"
+                                  >
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {dayEnToThai[booking.day].slice(3)}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {booking.period}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap max-md:hidden">
+                                      {timeSlots[booking.period].from} -{" "}
+                                      {timeSlots[booking.period].to}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {booking.room}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {booking.type === "activity"
+                                        ? "กิจกรรม"
+                                        : "เรียน"}
+                                    </td>
+                                    <td className="py-2.5 whitespace-nowrap flex items-center justify-center">
+                                      <p
+                                        className={`w-25 py-1 rounded-lg
+                                        ${
+                                          booking.status === "confirmed" &&
+                                          "text-green-500 bg-green-300/20"
+                                        }
+                                        ${
+                                          booking.status === "pending" &&
+                                          "text-yellow-500 bg-yellow-200/20"
+                                        }
+                                        ${
+                                          booking.status === "cancelled" &&
+                                          "text-red-500 bg-red-200/20"
+                                        }
+                                        `}
+                                      >
+                                        {thStatus[booking.status]}
+                                      </p>
+                                    </td>
+                                    <td
+                                      className={`py-2 px-4 text-center sticky z-2 right-0 ${
+                                        index % 2 ? "bg-gray-100" : "bg-white"
+                                      }`}
+                                    >
+                                      <div className="flex items-center justify-center">
+                                        <OptionButton
+                                          booking={booking}
+                                          cancelBooking={cancelBooking}
+                                        />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                ))}
+                              {totalBookings === 0 && (
+                                <tr>
+                                  <td
+                                    colSpan="7"
+                                    className="py-4 text-gray-500"
+                                  >
+                                    ไม่มีรายการจอง
+                                  </td>
+                                </tr>
+                              )}
+                            </>
                           )}
-                        </>
-                      )}
-                    </tbody>
-                  </table>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -438,7 +449,7 @@ function HistoryPage() {
           color="red"
         />
       )}
-    </div>
+    </section>
   );
 }
 
