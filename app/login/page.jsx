@@ -73,7 +73,7 @@ function login() {
         </div>
 
         {/* Form */}
-        <div className="px-15 max-[460px]:px-10 flex-[1_1_300px] pt-8 pb-8 w-full md:w-[200px] flex flex-col md:justify-center">
+        <div className="px-15 max-[460px]:px-10 flex-[1_1_300px] pt-8 min-[460px]:pb-8 w-full md:w-[200px] flex flex-col md:justify-center">
           {/* <div className="flex justify-center">
             <Image
               src={logo}
@@ -82,7 +82,7 @@ function login() {
               height={60}
             />
           </div> */}
-          <h2 className="text-3xl font-semibold  text-gray-700 text-center">
+          <h2 className="text-4xl font-semibold  text-gray-700 text-center">
             เข้าสู่ระบบ
           </h2>
           <p className="mt-2 text-center text-sm text-slate-gray ">ใช้อีเมลโรงเรียนของคุณเพื่อเข้าสู่ระบบ</p>
