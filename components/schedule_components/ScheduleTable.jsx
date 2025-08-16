@@ -60,7 +60,7 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
                 if (cellStatus === "available") {
                   bgColor =
                     "bg-green-300 hover:bg-green-400 active:bg-green-500 cursor-pointer hover:scale-105 active:scale-95 transition duration-150";
-                } else if (cellStatus === "pending-now") {
+                } else if (cellStatus === "pending") {
                   bgColor = "bg-yellow-300"; // เหลือง
                 } else if (cellStatus === "booked") {
                   bgColor = "bg-red-300"; // แดง
@@ -68,7 +68,7 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
               } else {
                 if (cellStatus === "available") {
                   bgColor = "bg-green-300/50";
-                } else if (cellStatus === "pending-now") {
+                } else if (cellStatus === "pending") {
                   bgColor = "bg-yellow-300/50"; // เหลือง
                 } else if (cellStatus === "booked") {
                   bgColor = "bg-red-300/50"; // แดง
