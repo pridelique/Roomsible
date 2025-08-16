@@ -142,13 +142,14 @@ export default function HomePage() {
 
   return (
     <section className="flex-1 flex flex-col px-2 max-container w-full pt-4">
-      {/* {loading && <Loading />} */}
-      <h2 className="text-center text-[24px] md:text-[26px] lg:text-3xl text-gray-700 font-semibold">
-        แผนผังโรงเรียนสตรีวิทยา
-      </h2>
-      <p className="text-center text-slate-gray mt-[2px] text-sm md:text-base mb-4">
-        เลือกตึกที่ต้องการดูแผนผังอาคาร
-      </p>
+      <header className="w-full max-w-5xl flex flex-col items-center mb-4 mx-auto">
+        <h2 className="max-[460px]:text-[26px] text-3xl md:text-4xl font-bold text-gray-700 mb-2">
+          แผนผังโรงเรียนสตรีวิทยา
+        </h2>
+        <p className="text-gray-500 text-base md:text-lg">
+          เลือกตึกที่ต้องการดูแผนผังอาคาร
+        </p>
+      </header>
       <div className={`relative w-full h-full flex-1 ${loading && 'opacity-0'}`} ref={outestRef}>
         <TransformWrapper>
           <div
