@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import "@app/globals.css";
-import { statusColors, timeSlots } from "@data";
+import { schedule, statusColors, timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifyWaring } from "@utils/notify";
@@ -16,6 +16,13 @@ import { isInTomorrow } from "@utils/isInTomorrow";
 import ScheduleTable from "@components/schedule_components/scheduleTable";
 
 const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+const mapDay = {
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
+};
 
 const filteredTimeSlots = timeSlots.filter(
   (slot) => slot.label >= 1 && slot.label <= 10
@@ -84,20 +91,23 @@ function Schedule() {
           const bookingStatus = bookedMap[key];
 
           if (!bookingStatus) {
-            newStatus[`${day}-${period.label}`] = "available";
+            if (schedule[room][mapDay[day]][Number(period.label)] === "In-Use") {
+              newStatus[`${day}-${period.label}`] = "booked";
+            } else {
+              newStatus[`${day}-${period.label}`] = "available";
+            }
           } else if (
             bookingStatus === "pending" &&
             day === currentDay &&
             period.label === currentPeriod
           ) {
-            newStatus[`${day}-${period.label}`] = "pending-now";
+            newStatus[`${day}-${period.label}`] = "pending";
           } else {
             newStatus[`${day}-${period.label}`] = "booked";
           }
         });
-        setLoading(false);
       });
-
+      setLoading(false);
       setStatus(newStatus);
     };
 
