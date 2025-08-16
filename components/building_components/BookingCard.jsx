@@ -5,7 +5,13 @@ import { getDate } from "@node_modules/date-fns/getDate";
 import { getDay } from "@node_modules/date-fns/getDay";
 import { getMonth } from "@node_modules/date-fns/getMonth";
 import { getYear } from "@node_modules/date-fns/getYear";
-import { BookOpen, CalendarDays, Clock, MapPin, Users } from "@node_modules/lucide-react";
+import {
+  BookOpen,
+  CalendarDays,
+  Clock,
+  MapPin,
+  Users,
+} from "@node_modules/lucide-react";
 import { SessionContext } from "@provider/SessionProvider";
 import { InfoIcon, Schedule } from "@public/assets/icons";
 import { isBookable } from "@utils/isBookable";
@@ -195,7 +201,7 @@ function BookingCard({
                 <span className="text-lg font-semibold">
                   {dayEnToThai[day]}
                 </span>
-                
+
                 <span className="text-md text-gray-600">
                   {getDate(selectedDate)} {thaiMonth[getMonth(selectedDate)]}{" "}
                   {getYear(selectedDate) + 543}{" "}
@@ -212,9 +218,7 @@ function BookingCard({
                 {/* <span className="text-md text-gray-500">
                   คาบและเวลา
                 </span> */}
-                <span className="text-lg font-semibold">
-                  คาบที่ {period}
-                </span>
+                <span className="text-lg font-semibold">คาบที่ {period}</span>
                 <span className="text-md text-gray-600">
                   {timeSlots[period].from} - {timeSlots[period].to} น.
                 </span>
@@ -253,7 +257,9 @@ function BookingCard({
                     <BookOpen className="w-6 h-6" />
                     จองห้องนี้
                   </>
-                  ) : "ไม่สามารถจองได้"}
+                ) : (
+                  "ไม่สามารถจองได้"
+                )}
                 {!bookable && (
                   <span
                     className="absolute right-4 flex items-center"
@@ -266,11 +272,16 @@ function BookingCard({
                     <span className="ml-1 text-gray-400 hover:text-gray-500 focus:text-gray-600 focus:outline-none cursor-pointer">
                       <InfoIcon className="w-6 h-6 " />
                     </span>
-                    {showTooltip && (
-                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white border border-gray-200 rounded-lg shadow px-4 py-2 text-sm text-gray-600 z-50 whitespace-nowrap">
-                        {tooltipContent || "ไม่สามารถจองได้"}
-                      </div>
-                    )}
+                    <div
+                      className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white border border-gray-200 rounded-lg shadow px-4 py-2 text-sm text-gray-600 z-50 whitespace-nowrap transition-all duration-300 origin-bottom 
+                      ${
+                        showTooltip
+                          ? "scale-100 opacity-100"
+                          : "scale-90 opacity-0 pointer-events-none"
+                      }`}
+                    >
+                      {tooltipContent || "ไม่สามารถจองได้"}
+                    </div>
                   </span>
                 )}
               </button>
