@@ -1,19 +1,19 @@
 'use client'
+import { getTooltipContent } from "@data/getTooltipContent";
 import { isBookable } from "@utils/isBookable";
-import { isInTomorrow } from "@utils/isInTomorrow";
-import { isPast } from "@utils/isPast";
 import { dayEnToThai } from "@utils/translateDay";
 import { useEffect, useRef, useState } from "react";
 
 function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTimeSlots }) {
-
-  const [tooltip, setTooltip] = useState(null);
-  const tooltipRef = useRef(null);
+  const [selected, setSelected] = useState(null);
+  const tooltipRef = useRef({});
+  const selectedRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
-        setTooltip(null);
+    const handleClickOutside = (event) => {      
+      if (selectedRef.current && tooltipRef.current && !tooltipRef.current[selectedRef.current]?.contains(event.target) && selectedRef.current !== event.target.id) {
+        setSelected(null);
+        selectedRef.current = null;
       }
     }
 
@@ -21,7 +21,7 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [])
+  }, []);
 
   return (
     <div className="overflow-x-auto custom-scroll pb-1.5">
@@ -49,12 +49,7 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
             {filteredTimeSlots.map((period) => {
               const key = `${day}-${period.label}`;
               const cellStatus = status[key];
-              let tooltipContent = "ไม่สามารถจองห้องได้";
-              if (isPast(day, period.label)) {
-                tooltipContent = "ไม่สามารถจองห้องในอดีต";
-              } else if (!isInTomorrow(day)) {
-                tooltipContent = "ไม่สามารถจองห้องล่วงหน้าเกิน 2 วัน";
-              }
+              const tooltipContent = getTooltipContent(day, period.label, cellStatus, user);
               let bgColor = "bg-white";
               if (isBookable(day, period.label, user?.app_metadata?.role)) {
                 if (cellStatus === "available") {
@@ -82,7 +77,6 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
                     className={`bg-gray-200 animate-pulse w-25 h-13 rounded-lg`}
                   ></div>
                 );
-              console.log(day, String(period.label), user?.app_metadata?.role);
 
               return (
                 <div
@@ -92,9 +86,9 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
                   onClick={
                     !isBookable(day, period.label, user?.app_metadata?.role)
                       ? () => {
-                          setTooltip(key);
-                          console.log("Tooltip set for:", key);
-                        }
+                        setSelected(key);
+                        selectedRef.current = key;
+                      }
                       : undefined
                   }
                 >
@@ -106,8 +100,8 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
                     //     user?.app_metadata?.role
                     //   )
                     // }
-                    className={`rounded-lg w-25 h-13
-                        ${bgColor} cursor-pointer`}
+                    id={key}
+                    className={`rounded-lg w-25 h-13 ${bgColor} cursor-pointer`}
                     onClick={
                       cellStatus == "available" &&
                       isBookable(day, period.label, user?.app_metadata?.role)
@@ -115,11 +109,9 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
                         : undefined
                     }
                   />
-                  {tooltip === key && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-white border border-gray-200 rounded-lg shadow px-4 py-2 text-sm text-gray-600 z-10 whitespace-nowrap" ref={tooltipRef}>
+                    <div id={key} className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-white border border-gray-200 rounded-lg shadow px-4 py-2 text-sm text-gray-600 whitespace-nowrap transition-all duration-300 origin-bottom z-3 ${selected === key ? 'opacity-100 scale-100' : 'opacity-0 scale-0'} `} ref={el => tooltipRef.current[key] = el}>
                       {tooltipContent}
                     </div>
-                  )}
                 </div>
               );
             })}

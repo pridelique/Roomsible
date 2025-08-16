@@ -1,5 +1,6 @@
 "use client";
 import { buildings, timeSlots } from "@data";
+import { getTooltipContent } from "@data/getTooltipContent";
 import { addDays } from "@node_modules/date-fns/addDays";
 import { getDate } from "@node_modules/date-fns/getDate";
 import { getDay } from "@node_modules/date-fns/getDay";
@@ -15,8 +16,6 @@ import {
 import { SessionContext } from "@provider/SessionProvider";
 import { InfoIcon, Schedule } from "@public/assets/icons";
 import { isBookable } from "@utils/isBookable";
-import { isInTomorrow } from "@utils/isInTomorrow";
-import { isPast } from "@utils/isPast";
 import { dayEnToThai } from "@utils/translateDay";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
@@ -113,32 +112,7 @@ function BookingCard({
       setBookable(false);
     }
 
-    if (status === "booked") {
-      setTooltipContent("ห้องนี้ถูกจองแล้ว");
-      return;
-    }
-    if (status === "pending") {
-      setTooltipContent("หากไม่เช็คอินภายใน 10 นาที จะถูกยกเลิก");
-      return;
-    }
-    if (status === "mybooking") {
-      setTooltipContent(
-        "คุณจองห้องนี้แล้ว หากไม่เช็คอินภายใน 10 นาที จะถูกยกเลิก"
-      );
-      return;
-    }
-    if (!user) {
-      setTooltipContent("กรุณาเข้าสู่ระบบเพื่อจองห้อง");
-      return;
-    }
-    if (isPast(day, period)) {
-      setTooltipContent("ไม่สามารถจองห้องในอดีตได้");
-      return;
-    }
-    if (!isInTomorrow(day)) {
-      setTooltipContent("สามารถจองล่วงหน้าไม่เกิน 1 วัน");
-      return;
-    }
+    setTooltipContent(getTooltipContent(day, period, status, user));
   }, [room, day, period, status]);
 
   useEffect(
