@@ -200,7 +200,7 @@ function BuildingPage({ params }) {
   return (
     <section className="flex flex-col flex-1 w-full">
       <div className="bg-white flex-1 px-2">
-        <h2 className="text-center max-[500px]:text-[26px] text-[28px] md:text-3xl text-gray-700 font-semibold mt-5 ">
+        <h2 className="text-center max-[500px]:text-[26px] text-[28px] md:text-3xl text-gray-700 font-semibold mt-5 drop-shadow">
           อาคาร {id} {buildings[id]?.name}
         </h2>
         <p className="text-center text-slate-gray md:mt-[2px] text-sm md:text-base">

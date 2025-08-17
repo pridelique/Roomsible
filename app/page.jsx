@@ -166,7 +166,7 @@ export default function HomePage() {
   return (
     <section className="flex-1 flex flex-col w-full bg-white py-5 px-2">
       <header className="w-full max-w-5xl flex flex-col items-center mt-1 mb-5 mx-auto text-center">
-        <h2 className="max-[460px]:text-[26px] text-3xl md:text-4xl font-bold text-gray-700 mb-1">
+        <h2 className="max-[460px]:text-[26px] text-3xl md:text-4xl font-bold text-gray-700 mb-1 drop-shadow">
           แผนผังโรงเรียนสตรีวิทยา
         </h2>
         <p className="text-gray-500 text-base md:text-lg">
@@ -337,7 +337,7 @@ export default function HomePage() {
                         <div className="mt-40 flex items-center justify-center gap-20 text-gray-600">
                           <div className="flex flex-col justify-end items-end font-semibold">
                             {day ? (
-                              <h2 className="text-[93px]">
+                              <h2 className="text-[93px] drop-shadow-md">
                                 {dayEnToThai[day]}
                               </h2>
                             ) : (
@@ -346,7 +346,7 @@ export default function HomePage() {
                               ></div>
                             )}
                             {period ? (
-                              <h3 className="text-7xl mt-7">คาบที่ {period}</h3>
+                              <h3 className="text-7xl mt-7 drop-shadow-md">คาบที่ {period}</h3>
                             ) : (
                               <div
                                 className={`w-50 h-18 rounded-full animate-pulse bg-gray-300 mt-7`}
@@ -354,7 +354,7 @@ export default function HomePage() {
                             )}
                           </div>
                           <span className="border-2 border-gray-500 h-56 mt-5"></span>
-                          <div className="flex flex-col justify-center items-start">
+                          <div className="flex flex-col justify-center items-start drop-shadow-sm">
                             {day ? (
                               <p className="text-6xl mt-1">
                                 {getDate(selectedDate)}{" "}
@@ -367,7 +367,7 @@ export default function HomePage() {
                               ></div>
                             )}
                             {period ? (
-                              <p className="text-6xl mt-8">
+                              <p className="text-6xl mt-8 drop-shadow-sm">
                                 ({timeSlots[period].from} -{" "}
                                 {timeSlots[period].to} น.)
                               </p>
@@ -402,7 +402,7 @@ export default function HomePage() {
                               className="size-4 rounded-sm shadow-lg"
                               style={{ backgroundColor: item.color }}
                             ></div>
-                            <span>{item.statusThai}</span>
+                            <span className="drop-shadow-sm">{item.statusThai}</span>
                           </div>
                         ))}
                       </div>
