@@ -140,7 +140,7 @@ function BookingCard({
       <div className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-all duration-200" />
       <div className="relative z-5 w-full h-full">
         <div
-          className={`absolute min-[460px]:top-1/2 min-[460px]:left-1/2 min-[460px]:-translate-x-1/2 min-[460px]:-translate-y-1/2 min-[460px]:rounded-3xl rounded-t-3xl min-[460px]:shadow-2xl w-full bg-white backdrop-blur-xl px-10 py-8 min-[460px]:max-w-[420px] mx-auto flex flex-col  transition-all duration-200 hover:shadow-2xl focus:outline-none top-full ${showBookingCard ? "min-[460px]:scale-100 min-[460px]:opacity-100 max-[460px]:-translate-y-full" : "min-[460px]:scale-90 min-[460px]:opacity-0 "}`}
+          className={`absolute min-[460px]:top-1/2 min-[460px]:left-1/2 min-[460px]:-translate-x-1/2 min-[460px]:-translate-y-1/2 min-[460px]:rounded-3xl rounded-t-3xl min-[460px]:shadow-2xl w-full bg-white backdrop-blur-xl px-10 py-8 min-[460px]:max-w-[420px] mx-auto flex flex-col  transition-all duration-200 max-[460px]:duration-300 max-[460px]:ease-out hover:shadow-2xl focus:outline-none top-full ${showBookingCard ? "min-[460px]:scale-100 min-[460px]:opacity-100 max-[460px]:-translate-y-full" : "min-[460px]:scale-90 min-[460px]:opacity-0 "}`}
           tabIndex={0}
           ref={cardRef}
         >
