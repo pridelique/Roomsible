@@ -84,7 +84,7 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
                   className="relative w-25 h-13"
                   tabIndex={1}
                   onClick={
-                    !isBookable(day, period.label, user?.app_metadata?.role)
+                    !isBookable(day, period.label, user?.app_metadata?.role) || cellStatus !== 'available'
                       ? () => {
                         setSelected(key);
                         selectedRef.current = key;
