@@ -5,7 +5,7 @@ import {
   useSearchParams,
 } from "@node_modules/next/navigation";
 import { timeSlots } from "@data";
-import { warning, Warning } from "@public/assets/icons";
+import {  Warning } from "@public/assets/icons";
 import { teacherOptions, subjectOptions, roomOptions } from "@data";
 import "@app/globals.css";
 import ErrorBox from "@components/ErrorBox";
@@ -169,7 +169,7 @@ function BookingForm() {
           {loading && <Loading />}
           {error && (
             <ErrorBox
-              src={warning}
+              Svg={Warning}
               handleOnclick={() =>
                 router.push(`/building/${buildingId}/schedule?room=${room}`)
               }
