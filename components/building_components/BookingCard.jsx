@@ -164,7 +164,7 @@ function BookingCard({
               : "ชื่อห้อง"}
           </div>
 
-          <span className="border border-gray-300 w-full mx-auto my-5"></span>
+          <span className="border-b-1 rounded-full border-gray-200 w-full mx-auto my-5"></span>
 
           {/* Content Section with details */}
           <div className="flex flex-col space-y-5 bg-gray-00 w-full">
@@ -190,8 +190,8 @@ function BookingCard({
 
             {/* Period and Time */}
             <div className="flex items-center space-x-4 text-gray-700">
-              <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
-                <Clock className="h-6 w-6 text-red-500" />
+              <div className="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-lg shadow-inner">
+                <Clock className="h-6 w-6 text-blue-500" />
               </div>
               <div className="flex flex-col">
                 {/* <span className="text-md text-gray-500">
@@ -206,8 +206,8 @@ function BookingCard({
 
             {/* Room Details */}
             <div className="flex items-center space-x-4 text-gray-700">
-              <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
-                <MapPin className="h-6 w-6 text-red-500" />
+              <div className="w-10 h-10 flex items-center justify-center bg-green-100 rounded-lg shadow-inner">
+                <MapPin className="h-6 w-6 text-green-500" />
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-semibold">
