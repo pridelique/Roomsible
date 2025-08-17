@@ -39,7 +39,7 @@ function QRCodeErrorMessage({ error, startScaning }) {
         Svg={X_Mark}
         alt="x_mark"
         header="ไม่มีการจองห้อง"
-        message={`คุณไม่ได้จองห้อง ${error.room} ${(error.period === 'before-school' || error.period === 'after-school') ? 'ในขณะนี้': `${indexToDay[error.day]} คาบ ${error.period}`} กรุณาลองใหม่อีกครั้ง`}
+        message={`คุณไม่ได้จอง${error.room.startsWith('ห้อง') ? error.room : `ห้อง ${error.room}`} ${(error.period === 'before-school' || error.period === 'after-school') ? 'ในขณะนี้': `${indexToDay[error.day]} คาบ ${error.period}`} กรุณาลองใหม่อีกครั้ง`}
         buttonText="ตกลง"
         handleOnclick={startScaning}
         color="red"

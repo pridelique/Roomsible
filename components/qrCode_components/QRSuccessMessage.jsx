@@ -25,7 +25,7 @@ function QRSuccessMessage({ success }) {
           เช็คอินสำเร็จ
         </h3>
         <p className="leading-6 mt-2 text-slate-gray px-3">
-          คุณได้ทำการเช็คอินห้อง {success.room}
+          คุณได้ทำการเช็คอิน{success.room.startsWith('ห้อง') ? success.room : `ห้อง ${success.room}`}
           <br />
           {indexToDay[success.day]} คาบ {success.period}{" "} เรียบร้อยแล้ว
         </p>
