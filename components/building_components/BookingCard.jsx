@@ -78,6 +78,8 @@ function BookingCard({
   setBookingCard,
   handleFormClick,
   handleScheduleClick,
+  showBookingCard,
+  setShowBookingCard,
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
@@ -92,7 +94,10 @@ function BookingCard({
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cardRef.current && !cardRef.current.contains(event.target)) {
-        setBookingCard(null);
+        setShowBookingCard(false);
+        setTimeout(() => {
+          setBookingCard(null);
+        }, 200);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -133,21 +138,21 @@ function BookingCard({
   return (
     <div className="absolute inset-0 z-4 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-all duration-200" />
-      <div className="relative z-5">
+      <div className="relative z-5 w-full h-full">
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-2xl bg-white backdrop-blur-xl px-10 py-8 max-w-md mx-auto flex flex-col min-w-[420px] border border-gray-100 transition-transform duration-200 hover:shadow-2xl focus:outline-none"
+          className={`absolute min-[460px]:top-1/2 min-[460px]:left-1/2 min-[460px]:-translate-x-1/2 min-[460px]:-translate-y-1/2 min-[460px]:rounded-3xl rounded-t-3xl min-[460px]:shadow-2xl w-full bg-white backdrop-blur-xl px-10 py-8 min-[460px]:max-w-[420px] mx-auto flex flex-col  transition-all duration-200 hover:shadow-2xl focus:outline-none top-full ${showBookingCard ? "min-[460px]:scale-100 min-[460px]:opacity-100 max-[460px]:-translate-y-full" : "min-[460px]:scale-90 min-[460px]:opacity-0 "}`}
           tabIndex={0}
           ref={cardRef}
         >
           <div className="absolute top-8 right-6">
             <div
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full inset-shadow-xs ${statusStyle.bg} transition-colors duration-200`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full inset-shadow-xs ${statusStyle?.bg} transition-colors duration-200`}
             >
               <span
-                className={`w-2 h-2 rounded-full ${statusStyle.dot} shadow`}
+                className={`w-2 h-2 rounded-full ${statusStyle?.dot} shadow`}
               />
-              <span className={`text-sm font-semibold ${statusStyle.text}`}>
-                {statusStyle.label}
+              <span className={`text-sm font-semibold ${statusStyle?.text}`}>
+                {statusStyle?.label}
               </span>
             </div>
           </div>
@@ -194,7 +199,7 @@ function BookingCard({
                 </span> */}
                 <span className="text-lg font-semibold">คาบที่ {period}</span>
                 <span className="text-md text-gray-600">
-                  {timeSlots[period].from} - {timeSlots[period].to} น.
+                  {timeSlots[period]?.from} - {timeSlots[period]?.to} น.
                 </span>
               </div>
             </div>
@@ -262,7 +267,8 @@ function BookingCard({
             </div>
             <button
               type="button"
-              className="w-11 h-11 flex items-center justify-center rounded-full bg-white/70 hover:bg-gray-100 active:bg-gray-200 shadow-md duration-150 scale-105 hover:scale-110 active:scale-95 cursor-pointer"
+              className="w-11 h-11 flex items-center justify-center rounded-full bg-white/70 hover:bg-gray-100 active:bg-gray-200
+              shadow-lg duration-150 scale-105 hover:scale-110 active:scale-95 cursor-pointer"
               title="ดูตารางห้อง"
               onClick={() => handleScheduleClick(room)}
             >

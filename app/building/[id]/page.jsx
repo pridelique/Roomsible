@@ -15,6 +15,13 @@ import ErrorBox from "@components/ErrorBox";
 import BookingCard from "@components/building_components/BookingCard";
 import { InfoIcon } from "@public/assets/icons";
 
+const bookingCardTempt = {
+  room: 1404,
+  day: "monday",
+  period: 1,
+  status: "available",
+};
+
 function BuildingPage({ params }) {
   const { id } = React.use(params);
   const { day, period } = useContext(DateTimeContext);
@@ -44,10 +51,12 @@ function BuildingPage({ params }) {
     justifyContent: "center",
   });
   const [bookingCard, setBookingCard] = useState(null);
+  const [showBookingCard, setShowBookingCard] = useState(false);
   const { user } = useContext(SessionContext);
 
   const handleOnClick = (room, status) => {
     setBookingCard({ room, day, period, status });
+    setTimeout(() => setShowBookingCard(true), 10);
   };
 
   const handleFormClick = (room) => {
@@ -347,6 +356,8 @@ function BuildingPage({ params }) {
           handleScheduleClick={handleScheduleClick}
           buildingId={id}
           setBookingCard={setBookingCard}
+          showBookingCard={showBookingCard}
+          setShowBookingCard={setShowBookingCard}
         />
       )}
     </section>
