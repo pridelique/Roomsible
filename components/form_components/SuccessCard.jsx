@@ -46,6 +46,15 @@ const thaiMonth = [
 
 function SuccessCard({ room, day, period, buildingId }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if (room) {
+      setTimeout(() => {
+        setShowSuccess(true);
+      }, 10);
+    }
+  }, [room]);
 
   useEffect(
     (date = new Date()) => {
@@ -63,7 +72,7 @@ function SuccessCard({ room, day, period, buildingId }) {
   );
 
   return (
-    <div className="sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full h-fit min-[380px]:px-4 min-[380px]:max-[460px]:pt-4 flex justify-center min-[380px]:mb-4">
+    <div className={`sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full h-fit min-[380px]:px-4 min-[380px]:max-[460px]:pt-4 flex justify-center min-[380px]:mb-4 transition-all duration-200 ${showSuccess ? "opacity-100 scale-100" : "opacity-0 scale-90"} transition-opacity duration-500`}>
       <div className="bg-white min-[380px]:rounded-3xl min-[380px]:shadow-xl w-full max-w-sm sm:max-w-2xl h-full flex flex-col sm:flex-row overflow-hidden">
         {/* Image Container */}
         <div className="flex-[1_1_200px] min-h-[300px] relative">

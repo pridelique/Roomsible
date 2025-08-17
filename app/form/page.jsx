@@ -164,7 +164,7 @@ function BookingForm() {
 
   return (
     <section className="flex max-container w-full pt-4 max-[460px]:pt-0 flex-1 max-[380px]:bg-white">
-      {isSubmiting || true ? (
+      {isSubmiting ? (
         <>
           {loading && <Loading />}
           {error && (
@@ -177,15 +177,14 @@ function BookingForm() {
             />
           )}
 
-          {success ||
-            (true && (
+          {success && (
               <SuccessCard
                 room={room}
                 day={day}
                 period={period}
                 buildingId={buildingId}
               />
-            ))}
+            )}
         </>
       ) : (
         <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-xl w-full max-w-md mx-auto flex flex-col items-center max-[460px]:border-none max-[460px]:shadow-none max-[460px]:rounded-none min-[460px]:h-fit max-[460px]:flex-1 ">
