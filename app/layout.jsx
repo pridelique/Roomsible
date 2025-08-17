@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="th">
       <head>
+        <link rel="icon" href='/logo.png' />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
