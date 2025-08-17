@@ -4,7 +4,7 @@ import StatusLabel from "./StatusLabel";
 
 function StatusTable() {
   return (
-    <div className="flex flex-col lg:flex-row max-w-xl w-fit gap-2 gap-x-6 mb-4">
+    <div className="flex flex-row max-w-xl w-fit gap-2 gap-x-6">
       <div className="flex gap-6 justify-center items-center">
         {status.slice(0, 3).map((item) => (
           <StatusLabel {...item} key={item.statusEng} />
