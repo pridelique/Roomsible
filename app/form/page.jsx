@@ -188,7 +188,7 @@ function BookingForm() {
         </>
       ) : (
         <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-xl w-full max-w-md mx-auto flex flex-col items-center max-[460px]:border-none max-[460px]:shadow-none max-[460px]:rounded-none min-[460px]:h-fit max-[460px]:flex-1 ">
-          <h2 className="text-3xl font-semibold text-center mb-2 text-gray-700">
+          <h2 className="text-4xl font-semibold text-center mb-2 text-gray-700">
             {room.startsWith("ห้อง") ? room : `ห้อง ${room}`}
           </h2>
           <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
@@ -293,7 +293,7 @@ function BookingForm() {
                 )}
                 <button
                   type="submit"
-                  className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9"
+                  className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:scale-105 active:scale-95 transition-all duration-150 focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9"
                 >
                   ยืนยันการจอง
                 </button>
