@@ -203,7 +203,7 @@ function BookingForm() {
                       การจองสำเร็จ
                     </div>
                     <p className="text-gray-600 mt-2 text-center sm:text-left">
-                      คุณได้จองห้อง {room} {dayEnToThai[day]} คาบ {period}{" "}
+                      คุณได้จอง{room.startsWith('ห้อง') ? room : `ห้อง ${room}`} {dayEnToThai[day]} คาบ {period}{" "}
                       เรียบร้อยแล้ว
                       กรุณาตรวจสอบรายละเอียดการจองอีกครั้งในหน้าประวัติ
                     </p>
