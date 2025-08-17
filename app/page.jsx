@@ -4,13 +4,22 @@ import { buildings, status } from "@data";
 import { useRouter } from "@node_modules/next/navigation";
 import { useRef, useEffect, useState, useContext, use } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { addDays, format, getDate, getDay, getMonth, getYear, set } from "date-fns";
+import {
+  addDays,
+  format,
+  getDate,
+  getDay,
+  getMonth,
+  getYear,
+  set,
+} from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
 import StatusLabel from "@components/building_components/StatusLabel";
 import Loading from "@components/Loading";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 import { dayEnToThai } from "@utils/translateDay";
+import { InfoIcon } from "@public/assets/icons";
 const mapDay = {
   monday: 0,
   tuesday: 1,
@@ -19,7 +28,20 @@ const mapDay = {
   friday: 4,
 };
 
-const thaiMonth = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+const thaiMonth = [
+  "ม.ค.",
+  "ก.พ.",
+  "มี.ค.",
+  "เม.ย.",
+  "พ.ค.",
+  "มิ.ย.",
+  "ก.ค.",
+  "ส.ค.",
+  "ก.ย.",
+  "ต.ค.",
+  "พ.ย.",
+  "ธ.ค.",
+];
 
 export default function HomePage() {
   const { currentDay, currentPeriod } = useContext(DateTimeContext);
@@ -32,6 +54,8 @@ export default function HomePage() {
   const building5Ref = useRef(null);
   const building6Ref = useRef(null);
   const resizeRef = useRef(null);
+  const tooltipRef = useRef(null);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [scale, setScale] = useState(1);
   const [monday, setMonday] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -106,7 +130,7 @@ export default function HomePage() {
       if (!outest || !outer || !inner) return;
       const scaleX = outer.clientWidth / inner.offsetWidth;
       const scaleY = outer.clientHeight / inner.offsetHeight;
-      setScreenHeight(outest.clientHeight);
+      setScreenHeight(window.innerHeight - 220);
       setScale(Math.min(1, scaleX, scaleY));
 
       if (Math.min(1, scaleX) === 1) {
@@ -127,7 +151,6 @@ export default function HomePage() {
     }, 0);
     setTimeout(() => {
       setLoading(false);
-      
     }, 10);
     window.addEventListener("resize", resize);
     if (resizeRef.current) clearInterval(resizeRef.current);
@@ -141,23 +164,56 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section className="flex-1 flex flex-col px-2 max-container w-full pt-4">
-      <header className="w-full max-w-5xl flex flex-col items-center mb-4 mx-auto">
-        <h2 className="max-[460px]:text-[26px] text-3xl md:text-4xl font-bold text-gray-700 mb-2">
+    <section className="flex-1 flex flex-col w-full bg-white py-5 px-2">
+      <header className="w-full max-w-5xl flex flex-col items-center mt-1 mb-5 mx-auto text-center">
+        <h2 className="max-[460px]:text-[26px] text-3xl md:text-4xl font-bold text-gray-700 mb-1">
           แผนผังโรงเรียนสตรีวิทยา
         </h2>
         <p className="text-gray-500 text-base md:text-lg">
           เลือกตึกที่ต้องการดูแผนผังอาคาร
         </p>
       </header>
-      <div className={`relative w-full h-full flex-1 ${loading && 'opacity-0'}`} ref={outestRef}>
+      <div
+        className={`relative w-full h-full flex-1 ${loading && "opacity-0"}`}
+        ref={outestRef}
+      >
         <TransformWrapper>
           <div
             className="w-full h-full flex-1"
             ref={outerRef}
-            style={{ height: Math.max(screenHeight - 30, 250) }}
+            style={{ height: Math.max(screenHeight, 250) }}
           >
-            <div className="bg-white flex justify-center items-start rounded-lg overflow-hidden shadow-[0_1.5px_6px_0_rgba(0,0,0,0.06),0_6px_18px_0_rgba(0,0,0,0.12),-2px_2px_8px_0_rgba(0,0,0,0.06),2px_2px_8px_0_rgba(0,0,0,0.06)] w-fit h-fit mx-auto">
+            <div className="bg-neutral-50 rounded-xl mx-auto mb-3 relative shadow-inner w-fit">
+              <div
+                className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3"
+                onClick={(e) => {
+                  setShowTooltip(!showTooltip);
+                }}
+                ref={tooltipRef}
+              >
+                <span
+                  tabIndex={1}
+                  className="text-gray-500 hover:text-gray-600 hover:bg-gray-100 hover:scale-110 active:text-gray-700 active:bg-gray-200 active:scale-90 cursor-pointer bg-white transition duration-150 shadow-lg rounded-full p-1.5"
+                >
+                  <InfoIcon className="w-7 h-7" />
+                </span>
+                {/* {showTooltip && ( */}
+                <div
+                  className={`absolute left-0 top-12 bg-white border border-gray-200 rounded-lg shadow px-4 py-3 text-sm text-gray-600 z-50 whitespace-nowrap transition-all duration-300 origin-top-left ${
+                    showTooltip
+                      ? "scale-100 opacity-100"
+                      : "scale-90 opacity-0 pointer-events-none"
+                  }`}
+                >
+                  <p className="font-semibold mb-2">วิธีใช้งาน</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>คลิกที่ตึกเพื่อดูรายละเอียด</li>
+                    <li>สีของห้องแสดงสถานะการใช้งาน</li>
+                    <li>สามารถเลื่อนและซูมแผนผังได้</li>
+                  </ul>
+                </div>
+                {/* )} */}
+              </div>
               <TransformComponent>
                 <div
                   className="cursor-grab active:cursor-grabbing w-fit h-fit mx-auto"
@@ -177,7 +233,7 @@ export default function HomePage() {
                     >
                       {/* ตึก 5 */}
                       <div
-                        className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale]"
+                        className="hover:scale-105 active:scale-95 duration-300 ease-in-out transition-[scale]"
                         style={{
                           width: building5Size.width,
                           height: building5Size.height,
@@ -200,7 +256,7 @@ export default function HomePage() {
                       <div className="ml-16 flex flex-col justify-start items-end">
                         {/* ตึก 4 */}
                         <div
-                          className="relative top-0 text-center cursor-pointer mr-35 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale] flex flex-col justify-center items-center"
+                          className="relative top-0 text-center cursor-pointer mr-35 hover:scale-105 active:scale-95 duration-300 ease-in-out transition-[scale] flex flex-col justify-center items-center"
                           onClick={() => handleOnClick(4)}
                         >
                           <Building id={4} showName={false} />
@@ -211,7 +267,7 @@ export default function HomePage() {
                         </div>
                         {/* ตึก 6 */}
                         <div
-                          className="hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale]"
+                          className="hover:scale-105 active:scale-95 duration-300 ease-in-out transition-[scale]"
                           style={{
                             width: building6Size.width,
                             height: building6Size.height,
@@ -237,7 +293,7 @@ export default function HomePage() {
                         <div className="flex gap-20">
                           {/* ตึก 3 */}
                           <div
-                            className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale]"
+                            className="relative text-center cursor-pointer hover:scale-105 active:scale-95 duration-300 ease-in-out transition-[scale]"
                             onClick={() => handleOnClick(3)}
                           >
                             <div className="px-4">
@@ -253,7 +309,7 @@ export default function HomePage() {
                           <div className="flex gap-1 items-end bottom-0 hover:mr-0 mr-4 transition-all duration-300">
                             {/* ตึก 2 */}
                             <div
-                              className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all hover:mr-4"
+                              className="relative text-center cursor-pointer hover:scale-105 active:scale-95 duration-300 ease-in-out transition-all hover:mr-4"
                               onClick={() => handleOnClick(2)}
                             >
                               <Building id={2} showName={false} />
@@ -266,7 +322,7 @@ export default function HomePage() {
 
                             {/* ตึก 1 */}
                             <div
-                              className="relative text-center cursor-pointer hover:scale-105 active:scale-105 duration-300 ease-in-out transition-all  hover:ml-4"
+                              className="relative text-center cursor-pointer hover:scale-105 active:scale-95 duration-300 ease-in-out transition-all  hover:ml-4"
                               onClick={() => handleOnClick(1)}
                             >
                               <Building id={1} showName={false} />
@@ -303,7 +359,7 @@ export default function HomePage() {
                               <p className="text-6xl mt-1">
                                 {getDate(selectedDate)}{" "}
                                 {thaiMonth[getMonth(selectedDate)]}{" "}
-                                {getYear(selectedDate)+543}{" "}
+                                {getYear(selectedDate) + 543}{" "}
                               </p>
                             ) : (
                               <div
@@ -324,7 +380,7 @@ export default function HomePage() {
                         </div>
                         {/* ตึก 7 */}
                         <div
-                          className="relative text-center cursor-pointer mt-60 hover:scale-105 active:scale-105 duration-300 ease-in-out transition-[scale] w-fit ml-10"
+                          className="relative text-center cursor-pointer mt-60 hover:scale-105 active:scale-95 duration-300 ease-in-out transition-[scale] w-fit ml-10"
                           onClick={() => handleOnClick(7)}
                         >
                           <Building id={7} showName={false} />
@@ -338,7 +394,10 @@ export default function HomePage() {
                       {/* Status */}
                       <div className="absolute bottom-35 left-30 flex flex-col items-start gap-4 mt-4 mb-2 scale-350 origin-bottom-left">
                         {status.map((item) => (
-                          <div key={item.statusEng} className="flex gap-2 justify-start items-center text-slate-gray text-base">
+                          <div
+                            key={item.statusEng}
+                            className="flex gap-2 justify-start items-center text-slate-gray text-base"
+                          >
                             <div
                               className="size-4 rounded-sm shadow-lg"
                               style={{ backgroundColor: item.color }}
