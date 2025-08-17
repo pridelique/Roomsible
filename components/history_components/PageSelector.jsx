@@ -8,7 +8,7 @@ function PageSelector({
   bookingsLoading,
 }) {
   return (
-    <div className="pt-4 px-8 text-slate-gray/80 flex items-center justify-between max-[500px]:mb-6 max-[500px]:flex-col max-[500px]:gap-0 gap-2 w-full">
+    <div className="pt-4 px-8 text-slate-gray/80 flex items-center justify-between max-[520px]:flex-col max-[520px]:gap-0 gap-2 w-full">
       {bookingsLoading ? (
         <p className="h-8 items-center flex">กำลังโหลดประวัติการจอง...</p>
       ) : (
