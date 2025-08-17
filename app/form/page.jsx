@@ -222,7 +222,7 @@ function BookingForm() {
             )}
           </>
         ) : (
-          <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-md w-full max-w-md mx-auto border border-gray-300 flex flex-col items-center max-[460px]:border-none max-[460px]:shadow-none max-[460px]:rounded-none min-[460px]:h-fit max-[460px]:flex-1 ">
+          <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-xl w-full max-w-md mx-auto flex flex-col items-center max-[460px]:border-none max-[460px]:shadow-none max-[460px]:rounded-none min-[460px]:h-fit max-[460px]:flex-1 ">
             <h2 className="text-3xl font-semibold text-center mb-2 text-gray-700">
               { room.startsWith('ห้อง') ? room : `ห้อง ${room}`}
             </h2>
