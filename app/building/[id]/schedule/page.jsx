@@ -13,7 +13,7 @@ import { isBookable } from "@utils/isBookable";
 import { CalendarPlus } from "@node_modules/lucide-react";
 import { isPast } from "@utils/isPast";
 import { isInTomorrow } from "@utils/isInTomorrow";
-import ScheduleTable from "@components/schedule_components/scheduleTable";
+import ScheduleTable from "@components/schedule_components/ScheduleTable";
 
 const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 const mapDay = {
