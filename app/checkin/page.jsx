@@ -3,23 +3,13 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { BrowserQRCodeReader } from "@zxing/browser";
 import QRCodeFrame from "@components/qrCode_components/QRFrame";
 import QRCodeErrorMessage from "@components/qrCode_components/QRErrorMessage";
-import QRSuccessMessage from "@components/qrCode_components/QRSuccessMessage";
 import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
 import { Warning } from "@public/assets/icons";
 import { useRouter } from "@node_modules/next/navigation";
 import Loading from "@components/Loading";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
-
-const dayList = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
+import SuccessCard from "@components/SuccessCard";
 
 export default function FullScreenQRScanner() {
   const videoRef = useRef(null);
@@ -37,7 +27,7 @@ export default function FullScreenQRScanner() {
 
   const handleCheckin = async (token) => {
     setLoading(true);
-    const currentDay = getCurrentDay();
+    const currentDay = getCurrentDay('eng');
     const currentPeriod = getCurrentPeriod();
     try {
       const res = await fetch("/api/bookings", {
@@ -47,7 +37,7 @@ export default function FullScreenQRScanner() {
         },
         body: JSON.stringify({
           token: token,
-          day: dayList[currentDay],
+          day: currentDay,
           period: currentPeriod,
         }),
       });
@@ -55,7 +45,7 @@ export default function FullScreenQRScanner() {
       // console.log(data);
       if (res.ok || data.message === "Booking already confirmed") {
         setSuccess({
-          buildingId: data?.building,
+          buildingId: Number(data?.building),
           room: data?.room,
           day: currentDay,
           period: currentPeriod,
@@ -132,12 +122,13 @@ export default function FullScreenQRScanner() {
       }
       isScanning.current = false; // Reset scanning state
     }
+    
 
     // setSuccess({
-    //   buildingId: 2 ,
-    //   room: 1212,
-    //   day: 3,
-    //   period: 5,
+    //   room: "1212",
+    //   day: "wednesday",
+    //   period: "5",
+    //   buildingId: "1",
     // });
     // setError({
     //   type: "no-booking",
@@ -150,11 +141,11 @@ export default function FullScreenQRScanner() {
   useEffect(() => {
     const resize = () => {
       setInnerHeight(window.innerHeight);
-    }
+    };
     resize();
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
-  }, [])
+  }, []);
 
   if (user === "loading") return <Loading />;
 
@@ -173,33 +164,6 @@ export default function FullScreenQRScanner() {
 
   return (
     <>
-      <div
-        className="w-full h-full relative p-0 m-0 z-1"
-        ref={innerRef}
-        style={{ height: innerHeight - 74.4 }}
-      >
-        {/* กล้องเต็มหน้าจอ */}
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover flex items-start justify-center"
-          muted
-          autoPlay
-          playsInline
-        />
-        {/* QR Code Element */}
-        <div className={`${isStop && "hidden"}`}>
-          <div className="absolute inset-0 flex flex-col items-center opacity-70 text-white h-full justify-between z-3">
-            <p className="absolute top-11 text-2xl md:text-3xl lg:text-4xl font-semibold">
-              สแกน QR Code เพื่อเช็คอิน
-            </p>
-            <p className="absolute bottom-5 text-sm md:text-base lg:text-lg">
-              วาง QR Code ให้อยู่ในกรอบเพื่อเริ่มเช็คอิน
-            </p>
-          </div>
-
-          <QRCodeFrame />
-        </div>
-      </div>
       {/* Loading... */}
       {loading && (
         <div className="absolute top-1/2 left-1/2 -translate-1/2 p-10 rounded-full border-6 border-t-6 border-transparent border-t-red-400 animate-spin z-4"></div>
@@ -216,7 +180,39 @@ export default function FullScreenQRScanner() {
         <QRCodeErrorMessage error={error} startScaning={startScaning} />
       )}
       {/* ข้อความสำเร็จ */}
-      {success && <QRSuccessMessage success={success} />}
+      {success ? (
+        <section className="flex max-container w-full pt-4 max-[460px]:pt-0 flex-1 max-[380px]:bg-white">
+          <SuccessCard {...success} type="checkin" />
+        </section>
+      ) : (
+        <div
+          className="w-full h-full relative p-0 m-0 z-1"
+          ref={innerRef}
+          style={{ height: innerHeight - 74.4 }}
+        >
+          {/* กล้องเต็มหน้าจอ */}
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover flex items-start justify-center"
+            muted
+            autoPlay
+            playsInline
+          />
+          {/* QR Code Element */}
+          <div className={`${isStop && "hidden"}`}>
+            <div className="absolute inset-0 flex flex-col items-center opacity-70 text-white h-full justify-between z-3">
+              <p className="absolute top-11 text-2xl md:text-3xl lg:text-4xl font-semibold">
+                สแกน QR Code เพื่อเช็คอิน
+              </p>
+              <p className="absolute bottom-5 text-sm md:text-base lg:text-lg">
+                วาง QR Code ให้อยู่ในกรอบเพื่อเริ่มเช็คอิน
+              </p>
+            </div>
+
+            <QRCodeFrame />
+          </div>
+        </div>
+      )}
     </>
   );
 }

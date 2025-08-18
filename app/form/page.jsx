@@ -16,7 +16,7 @@ import { SessionContext } from "@provider/SessionProvider";
 import { bookingError } from "@data/bookingError";
 import { dayEnToThai } from "@utils/translateDay";
 import { isBookable } from "@utils/isBookable";
-import SuccessCard from "@components/form_components/SuccessCard";
+import SuccessCard from "@components/SuccessCard";
 const customStyles = {
   option: (provided, state) => ({
     ...provided,
@@ -183,6 +183,7 @@ function BookingForm() {
                 day={day}
                 period={period}
                 buildingId={buildingId}
+                type='booking'
               />
             )}
         </>

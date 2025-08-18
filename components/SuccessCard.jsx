@@ -44,7 +44,7 @@ const thaiMonth = [
   "ธ.ค.",
 ];
 
-function SuccessCard({ room, day, period, buildingId }) {
+function SuccessCard({ room, day, period, buildingId, type }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -55,6 +55,9 @@ function SuccessCard({ room, day, period, buildingId }) {
       }, 10);
     }
   }, [room]);
+
+  console.log(room, day, period, buildingId );
+  console.log(buildingImages[Number(buildingId)]);
 
   useEffect(
     (date = new Date()) => {
@@ -77,7 +80,7 @@ function SuccessCard({ room, day, period, buildingId }) {
         {/* Image Container */}
         <div className="flex-[1_1_200px] min-h-[300px] relative">
           <Image
-            src={buildingImages[buildingId]}
+            src={buildingImages[String(buildingId)]}
             alt="Building"
             width={448}
             height={300}
@@ -86,10 +89,10 @@ function SuccessCard({ room, day, period, buildingId }) {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center inset-0 bg-black/65 backdrop-blur-[1px] w-full h-full flex flex-col justify-center items-center p-6">
             <CheckCircle className="w-25 h-25 mx-auto text-[#39e75f] drop-shadow-lg " />
             <h1 className="text-4xl font-semibold text-[#39e75f] text-center mt-2 drop-shadow-lg">
-              จองสำเร็จ!
+              {type === 'booking' ? 'จองสำเร็จ!' : 'เช็คอินสำเร็จ!'}
             </h1>
             <p className="text-gray-200 text-center text-sm mt-1 drop-shadow-lg">
-              การจองของคุณได้รับการยืนยันเรียบร้อยแล้ว
+              {type === 'booking' ? 'การจองของคุณได้รับการยืนยันเรียบร้อยแล้ว' : 'การเช็คอินของคุณได้รับการยืนยันเรียบร้อยแล้ว'}
             </p>
           </div>
         </div>
@@ -104,7 +107,7 @@ function SuccessCard({ room, day, period, buildingId }) {
                   ห้องเรียน
                 </span>
                 <p className="font-semibold text-lg text-gray-900">
-                  {room.startsWith("ห้อง") ? room : `ห้อง ${room}`}
+                  {String(room).startsWith("ห้อง") ? room : `ห้อง ${room}`}
                 </p>
               </div>
             </div>
@@ -126,7 +129,7 @@ function SuccessCard({ room, day, period, buildingId }) {
               <div>
                 <span className="text-sm font-medium text-gray-500">เวลา</span>
                 <p className="font-semibold text-lg text-gray-900">
-                  คาบที่ {period} ({timeSlots[period]?.from} - {timeSlots[period]?.to} น.)
+                  คาบที่ {period} ({timeSlots[Number(period)]?.from} - {timeSlots[Number(period)]?.to} น.)
                 </p>
               </div>
             </div>
@@ -140,7 +143,7 @@ function SuccessCard({ room, day, period, buildingId }) {
             </div>
           </div>
           <p className="text-slate-gray text-center text-sm mt-4">
-            คุณสามารถตรวจสอบการจองที่หน้าประวัติ
+            {type === 'booking' ? 'คุณสามารถตรวจสอบการจองที่หน้าประวัติ' : 'ขอบคุณที่ใช้บริการ ขอให้มีวันที่ดีนะคะ 😊'}
           </p>
           <Link
             href="/"
