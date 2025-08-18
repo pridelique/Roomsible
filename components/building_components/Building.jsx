@@ -1,7 +1,7 @@
 "use client";
 import buildings from "@data/buildings";
 import Room from "./Room";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import { schedule } from "@data";
@@ -16,12 +16,21 @@ const mapDay = {
   friday: 4,
 };
 
-function Building({ id, handleOnClick, handleScheduleClick, showName = true }) {
+function Building({
+  id,
+  handleOnClick,
+  handleScheduleClick,
+  showName = true,
+  refresh,
+  setRefresh,
+}) {
   // const [currentDay, setCurrentDay] = useState(mapDay[0]);
   // const [currentPeriod, setCurrentPeriod] = useState(0);
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
-  const { day, period, currentDay, currentPeriod } = useContext(DateTimeContext);
+  const refreshTimeout = useRef(null);
+  const { day, period, currentDay, currentPeriod } =
+    useContext(DateTimeContext);
   const { user } = useContext(SessionContext);
 
   // console.log(currentDay, day, currentPeriod, period);
@@ -36,38 +45,54 @@ function Building({ id, handleOnClick, handleScheduleClick, showName = true }) {
   // console.log(`period ${period} \ncurrent period ${currentPeriod}`)
 
   // get building data
-  useEffect(() => {
-    if (!id || !day || !period) return;
-    console.log("Fetching bookings for building:", id);
-
-    const getBookings = async () => {
-      setLoading(true);
-      try {
-        const startTime = performance.now();
-        const { data, error } = await supabase
-          .from("bookings")
-          .select("room, status, user_id")
-          .eq("building", id)
-          .eq("day", day)
-          .eq("period", period);
-        if (error) {
-          console.error("Error fetching bookings:", error);
-          setLoading(false);
-          return;
-        }
-        const endTime = performance.now();
-        console.log(`Bookings fetched in ${endTime - startTime} ms`);
-        console.log(data);
-        setBookings(data);
-      } catch (error) {
+  const getBookings = async () => {
+    setLoading(true);
+    try {
+      const startTime = performance.now();
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("room, status, user_id")
+        .eq("building", id)
+        .eq("day", day)
+        .eq("period", period);
+      if (error) {
         console.error("Error fetching bookings:", error);
         setLoading(false);
         return;
       }
+      const endTime = performance.now();
+      console.log(`Bookings fetched in ${endTime - startTime} ms`);
+      console.log(data);
+      setBookings(data);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
       setLoading(false);
-    };
+      return;
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!id || !day || !period) return;
     getBookings();
+    console.log(`Fetched bookings for building: ${id}`);
   }, [day, period, id]);
+
+  // handle refresh
+
+  useEffect(() => {
+    if (!id || !day || !period) return;
+    clearTimeout(refreshTimeout.current);
+    if (refresh) {
+      getBookings();
+      console.log(`Fetched bookings for building: ${id}`);
+    }
+    if (setRefresh) {
+      refreshTimeout.current = setTimeout(() => {
+        setRefresh(false);
+      }, 1000);
+    }
+  }, [refresh]);
 
   function checkStatus(roomName) {
     if (!day || !period) return "unavailable";
@@ -78,17 +103,16 @@ function Building({ id, handleOnClick, handleScheduleClick, showName = true }) {
     }
     const booking = bookings.find((b) => b.room === roomName);
     // console.log(booking)
-    
+
     if (!booking) return "available";
-    
+
     if (booking.status === "cancelled") {
-      return "available"
+      return "available";
     }
 
     if (user?.id === booking.user_id) {
       return "mybooking";
     }
-    
 
     // Pending room
     if (booking.status === "pending") {
@@ -148,7 +172,7 @@ function Building({ id, handleOnClick, handleScheduleClick, showName = true }) {
                 <Room
                   key={`${rowIndex}-${colIndex}`}
                   {...room}
-                  status={room.name === 'ไม่มีห้อง' ? "none" : status}
+                  status={room.name === "ไม่มีห้อง" ? "none" : status}
                   handleOnClick={handleOnClick}
                   // handleScheduleClick={handleScheduleClick}
                   showName={showName}

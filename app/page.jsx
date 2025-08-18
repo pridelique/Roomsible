@@ -4,22 +4,14 @@ import { buildings, status } from "@data";
 import { useRouter } from "@node_modules/next/navigation";
 import { useRef, useEffect, useState, useContext, use } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import {
-  addDays,
-  format,
-  getDate,
-  getDay,
-  getMonth,
-  getYear,
-  set,
-} from "date-fns";
+import { addDays, getDate, getDay, getMonth, getYear } from "date-fns";
 import { DateTimeContext } from "../provider/DateTimeProvider";
 import { timeSlots } from "@data";
-import StatusLabel from "@components/building_components/StatusLabel";
-import Loading from "@components/Loading";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
 import { dayEnToThai } from "@utils/translateDay";
 import { InfoIcon } from "@public/assets/icons";
+import { RefreshCcw, RefreshCw } from "@node_modules/lucide-react";
+import RefreshButton from "@components/building_components/RefreshButton";
 const mapDay = {
   monday: 0,
   tuesday: 1,
@@ -67,6 +59,7 @@ export default function HomePage() {
     justifyContent: "center",
   });
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [building5Size, setBuilding5Size] = useState({ width: 0, height: 0 });
   const [building6Size, setBuilding6Size] = useState({ width: 0, height: 0 });
 
@@ -168,12 +161,12 @@ export default function HomePage() {
       if (tooltipRef.current && !event.target.contains(tooltipRef.current)) {
         setShowTooltip(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <section className="flex-1 flex flex-col w-full bg-white py-5 px-2">
@@ -196,6 +189,7 @@ export default function HomePage() {
             style={{ height: Math.max(screenHeight, 250) }}
           >
             <div className="bg-neutral-50 rounded-xl mx-auto mb-3 relative shadow-inner w-fit">
+              {/* Tooltip */}
               <div
                 className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3"
                 onClick={(e) => {
@@ -224,8 +218,10 @@ export default function HomePage() {
                     <li>สามารถเลื่อนและซูมแผนผังได้</li>
                   </ul>
                 </div>
-                {/* )} */}
               </div>
+
+              {/* Refresh button */}
+              <RefreshButton refresh={refresh} setRefresh={setRefresh} />
               <TransformComponent>
                 <div
                   className="cursor-grab active:cursor-grabbing w-fit h-fit mx-auto"
@@ -256,7 +252,12 @@ export default function HomePage() {
                           onClick={() => handleOnClick(5)}
                           ref={building5Ref}
                         >
-                          <Building id={5} showName={false} />
+                          <Building
+                            refresh={refresh}
+                            setRefresh={setRefresh}
+                            id={5}
+                            showName={false}
+                          />
                           <div className="absolute w-full h-full top-0 z-2"></div>
                         </div>
                         <h2 className="mt-124 text-[40px] leading-13 text-slate-gray w-fit text-center ml-10">
@@ -271,7 +272,12 @@ export default function HomePage() {
                           className="relative top-0 text-center cursor-pointer mr-35 hover:scale-105 active:scale-95 duration-300 ease-in-out transition-[scale] flex flex-col justify-center items-center"
                           onClick={() => handleOnClick(4)}
                         >
-                          <Building id={4} showName={false} />
+                          <Building
+                            refresh={refresh}
+                            setRefresh={setRefresh}
+                            id={4}
+                            showName={false}
+                          />
                           <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
                             อาคาร 4 <br /> {buildings[4].name}
                           </h2>
@@ -290,7 +296,12 @@ export default function HomePage() {
                             onClick={() => handleOnClick(6)}
                             ref={building6Ref}
                           >
-                            <Building id={6} showName={false} />
+                            <Building
+                              refresh={refresh}
+                              setRefresh={setRefresh}
+                              id={6}
+                              showName={false}
+                            />
                             <div className="absolute w-full h-full top-0 z-2"></div>
                           </div>
                           <h2 className="mt-154 text-[40px] leading-13 text-slate-gray w-fit text-center ml-22">
@@ -309,7 +320,12 @@ export default function HomePage() {
                             onClick={() => handleOnClick(3)}
                           >
                             <div className="px-4">
-                              <Building id={3} showName={false} />
+                              <Building
+                                refresh={refresh}
+                                setRefresh={setRefresh}
+                                id={3}
+                                showName={false}
+                              />
                             </div>
                             <h2 className="mt-4 text-[40px] leading-13 text-slate-gray text-lg">
                               อาคาร 3 {buildings[3].name}
@@ -324,7 +340,12 @@ export default function HomePage() {
                               className="relative text-center cursor-pointer hover:scale-105 active:scale-95 duration-300 ease-in-out transition-all hover:mr-4"
                               onClick={() => handleOnClick(2)}
                             >
-                              <Building id={2} showName={false} />
+                              <Building
+                                refresh={refresh}
+                                setRefresh={setRefresh}
+                                id={2}
+                                showName={false}
+                              />
                               <h2 className="mt-4 text-[36px] leading-13 text-slate-gray">
                                 อาคาร 2 <br />
                                 {buildings[2].name}
@@ -337,7 +358,12 @@ export default function HomePage() {
                               className="relative text-center cursor-pointer hover:scale-105 active:scale-95 duration-300 ease-in-out transition-all  hover:ml-4"
                               onClick={() => handleOnClick(1)}
                             >
-                              <Building id={1} showName={false} />
+                              <Building
+                                refresh={refresh}
+                                setRefresh={setRefresh}
+                                id={1}
+                                showName={false}
+                              />
                               <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
                                 อาคาร 1 <br /> {buildings[1].name}
                               </h2>
@@ -358,7 +384,9 @@ export default function HomePage() {
                               ></div>
                             )}
                             {period ? (
-                              <h3 className="text-7xl mt-7 drop-shadow-md">คาบที่ {period}</h3>
+                              <h3 className="text-7xl mt-7 drop-shadow-md">
+                                คาบที่ {period}
+                              </h3>
                             ) : (
                               <div
                                 className={`w-50 h-18 rounded-full animate-pulse bg-gray-300 mt-7`}
@@ -395,7 +423,12 @@ export default function HomePage() {
                           className="relative text-center cursor-pointer mt-60 hover:scale-105 active:scale-95 duration-300 ease-in-out transition-[scale] w-fit ml-10"
                           onClick={() => handleOnClick(7)}
                         >
-                          <Building id={7} showName={false} />
+                          <Building
+                            refresh={refresh}
+                            setRefresh={setRefresh}
+                            id={7}
+                            showName={false}
+                          />
                           <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
                             อาคาร 7 {buildings[7].name}
                           </h2>
@@ -414,7 +447,9 @@ export default function HomePage() {
                               className="size-4 rounded-sm shadow-lg"
                               style={{ backgroundColor: item.color }}
                             ></div>
-                            <span className="drop-shadow-sm">{item.statusThai}</span>
+                            <span className="drop-shadow-sm">
+                              {item.statusThai}
+                            </span>
                           </div>
                         ))}
                       </div>

@@ -14,6 +14,8 @@ import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
 import BookingCard from "@components/building_components/BookingCard";
 import { InfoIcon } from "@public/assets/icons";
+import { RefreshCcw } from "@node_modules/lucide-react";
+import RefreshButton from "@components/building_components/RefreshButton";
 
 const bookingCardTempt = {
   room: 1404,
@@ -52,6 +54,7 @@ function BuildingPage({ params }) {
   });
   const [bookingCard, setBookingCard] = useState(null);
   const [showBookingCard, setShowBookingCard] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const { user } = useContext(SessionContext);
 
   const handleOnClick = (room, status) => {
@@ -111,7 +114,7 @@ function BuildingPage({ params }) {
     const resize = () => {
       const outer = outerRef.current;
       const inner = innerRef.current;
-      const status = statusRef.current; 
+      const status = statusRef.current;
       if (!outer || !inner || !status) return;
       const scaleX = outer.clientWidth / inner.offsetWidth;
       const statusScale = outer.clientWidth / status.offsetWidth;
@@ -239,6 +242,7 @@ function BuildingPage({ params }) {
                     <ZoomPanAnimation animationState={animationState} />
                     )} */}
 
+                      {/* Tooltip */}
                       <div
                         className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3"
                         onClick={(e) => {
@@ -252,23 +256,27 @@ function BuildingPage({ params }) {
                         >
                           <InfoIcon className="w-7 h-7" />
                         </span>
-                        {/* {showTooltip && ( */}
-                          <div
-                            className={`absolute left-0 top-12 bg-white border border-gray-200 rounded-lg shadow px-4 py-3 text-sm text-gray-600 z-50 whitespace-nowrap transition-all duration-300 origin-top-left ${
-                              showTooltip
-                                ? "scale-100 opacity-100"
-                                : "scale-90 opacity-0 pointer-events-none"
-                            }`}
-                          >
-                            <p className="font-semibold mb-2">วิธีใช้งาน</p>
-                            <ul className="list-disc list-inside space-y-1">
-                              <li>คลิกที่ห้องเพื่อดูรายละเอียด</li>
-                              <li>สีของห้องแสดงสถานะการใช้งาน</li>
-                              <li>สามารถเลื่อนและซูมแผนผังได้</li>
-                            </ul>
-                          </div>
-                        {/* )} */}
+                        <div
+                          className={`absolute left-0 top-12 bg-white border border-gray-200 rounded-lg shadow px-4 py-3 text-sm text-gray-600 z-50 whitespace-nowrap transition-all duration-300 origin-top-left ${
+                            showTooltip
+                              ? "scale-100 opacity-100"
+                              : "scale-90 opacity-0 pointer-events-none"
+                          }`}
+                        >
+                          <p className="font-semibold mb-2">วิธีใช้งาน</p>
+                          <ul className="list-disc list-inside space-y-1">
+                            <li>คลิกที่ห้องเพื่อดูรายละเอียด</li>
+                            <li>สีของห้องแสดงสถานะการใช้งาน</li>
+                            <li>สามารถเลื่อนและซูมแผนผังได้</li>
+                          </ul>
+                        </div>
+
+                        {/* Refresh Button */}
                       </div>
+                      <RefreshButton
+                        refresh={refresh}
+                        setRefresh={setRefresh}
+                      />
 
                       <TransformComponent>
                         <div
@@ -283,6 +291,8 @@ function BuildingPage({ params }) {
                             <Building
                               id={id}
                               handleOnClick={handleOnClick}
+                              refresh={refresh}
+                              setRefresh={setRefresh}
                               // handleOnClick={handleFormClick}
                               // handleScheduleClick={handleScheduleClick}
                             />
@@ -319,7 +329,11 @@ function BuildingPage({ params }) {
         <StatusTable />
           </div>
       </div> */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 flex justify-center mx-auto py-4 bg-white w-fit px-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full origin-bottom" style={{ scale: statusScale }} ref={statusRef}>
+      <div
+        className="fixed bottom-3 left-1/2 -translate-x-1/2 flex justify-center mx-auto py-4 bg-white w-fit px-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full origin-bottom"
+        style={{ scale: statusScale }}
+        ref={statusRef}
+      >
         <StatusTable />
       </div>
       {showError && (

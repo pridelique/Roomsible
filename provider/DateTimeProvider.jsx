@@ -39,19 +39,19 @@ function DateTimeProvider({ children }) {
     }
   }, [])
 
-  useEffect(() => {
-    if (!day || !period) return;    
-    sessionStorage.setItem("day_period", JSON.stringify({ day, period }));
-  }, [day, period]);
+  // useEffect(() => {
+  //   if (!day || !period) return;    
+  //   sessionStorage.setItem("day_period", JSON.stringify({ day, period }));
+  // }, [day, period]);
 
   useEffect(() => {
-    const data = JSON.parse(sessionStorage.getItem("day_period"));
-    console.log(data);
-    if (data?.day && data?.period) {
-      setDay(data.day);
-      setPeriod(data.period);
-      return;
-    }
+    // const data = JSON.parse(sessionStorage.getItem("day_period"));
+    // console.log(data);
+    // if (data?.day && data?.period) {
+    //   setDay(data.day);
+    //   setPeriod(data.period);
+    //   return;
+    // }
 
     const currentDay = getCurrentDay();
     const currentPeriod = getCurrentPeriod();
