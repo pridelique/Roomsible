@@ -163,6 +163,18 @@ export default function HomePage() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !event.target.contains(tooltipRef.current)) {
+        setShowTooltip(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
   return (
     <section className="flex-1 flex flex-col w-full bg-white py-5 px-2">
       <header className="w-full max-w-5xl flex flex-col items-center mt-1 mb-5 mx-auto text-center">
