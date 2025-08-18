@@ -30,7 +30,7 @@ function RefreshButton({ refresh, setRefresh }) {
     };
 
     return (
-        <div className="absolute top-0 right-0 p-3 flex justify-center items-center z-10">
+        <div className="absolute top-0 right-0 p-3 flex justify-center items-center z-10 scale-100 max-[460px]:scale-80 max-[380px]:scale-70 origin-top-right">
             <button
                 onClick={handleRefresh}
                 className="flex items-center gap-3 bg-white/60 hover:bg-gray-100/60 hover:scale-105 active:bg-gray-200/60 active:scale-95 transition-all duration-150 backdrop-blur-lg rounded-full px-4 py-2 shadow-lg cursor-pointer"

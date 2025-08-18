@@ -244,7 +244,7 @@ function BuildingPage({ params }) {
 
                       {/* Tooltip */}
                       <div
-                        className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3"
+                        className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3 max-[460px]:scale-80 origin-top-left"
                         onClick={(e) => {
                           setShowTooltip(!showTooltip);
                         }}
@@ -329,13 +329,22 @@ function BuildingPage({ params }) {
         <StatusTable />
           </div>
       </div> */}
-      <div
+      <div className="fixed inset-x-0 bottom-4 z-10 flex justify-center pointer-events-none">
+        <div 
+          className="flex justify-center bg-white/70 backdrop-blur-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full px-5 p-3 border border-white/20 pointer-events-auto transition-transform duration-300"
+          style={{ transform: `scale(${statusScale})` }}
+          ref={statusRef}
+        >
+          <StatusTable />
+        </div>
+      </div>
+      {/* <div
         className="fixed bottom-3 left-1/2 -translate-x-1/2 flex justify-center mx-auto py-4 bg-white w-fit px-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full origin-bottom"
         style={{ scale: statusScale }}
         ref={statusRef}
       >
         <StatusTable />
-      </div>
+      </div> */}
       {showError && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-8">
           <div className="absolute top-1/2 left-1/2 -translate-1/2 px-3 w-full">
