@@ -1,11 +1,8 @@
 "use client";
 import { useContext, useEffect, useState, Suspense } from "react";
-import {
-  useRouter,
-  useSearchParams,
-} from "@node_modules/next/navigation";
+import { useRouter, useSearchParams } from "@node_modules/next/navigation";
 import { timeSlots } from "@data";
-import {  Warning } from "@public/assets/icons";
+import { Warning } from "@public/assets/icons";
 import { teacherOptions, subjectOptions, roomOptions } from "@data";
 import "@app/globals.css";
 import ErrorBox from "@components/ErrorBox";
@@ -17,31 +14,52 @@ import { bookingError } from "@data/bookingError";
 import { dayEnToThai } from "@utils/translateDay";
 import { isBookable } from "@utils/isBookable";
 import SuccessCard from "@components/SuccessCard";
+import { ArrowRight, CalendarDays, Clock } from "@node_modules/lucide-react";
+
 const customStyles = {
+  container: (provided) => ({
+    // <-- เพิ่มส่วนนี้เข้ามา
+    ...provided,
+    boxShadow: "none",
+  }),
+  control: (provided, state) => ({
+    ...provided,
+    backgroundColor: "#f8fafc",
+    border: state.isFocused ? "2px solid #3b82f6" : "2px solid #e2e8f0",
+    borderRadius: "0.75rem",
+    padding: "0.3rem",
+    boxShadow: "none",
+    "&:hover": {
+      borderColor: state.isFocused ? "#3b82f6" : "#cbd5e1",
+    },
+  }),
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isSelected
-      ? "#2563eb"
+      ? "#3b82f6"
       : state.isFocused
-      ? "#e0e7ff"
-      : "#fff",
-    color: state.isSelected ? "#fff" : "#6d6d6d",
-    padding: "9px 15px 9px 15px",
+      ? "#eff6ff"
+      : "white",
+    color: state.isSelected ? "white" : "#1f2937",
+    padding: "12px 18px",
+    borderRadius: "0.5rem",
+    margin: "4px",
+    width: "calc(100% - 8px)",
+    cursor: "pointer",
   }),
   menu: (provided) => ({
     ...provided,
-    zIndex: 2,
-    overflow: "hidden",
+    zIndex: 10,
+    boxShadow: "none",
+    borderRadius: "0.75rem",
+    padding: "4px",
+    border: "1px solid #f3f4f6",
   }),
-  menuList: (provided) => ({
-    ...provided,
-    paddingTop: 0, // ลบ padding-top
-    paddingBottom: 0,
-  }),
+  menuList: (provided) => ({ ...provided, paddingTop: 0, paddingBottom: 0 }),
   singleValue: (provided) => ({
     ...provided,
-    color: "#4a5565",
-    fontWeight: 600,
+    color: "#1f2937",
+    fontWeight: 500,
   }),
 };
 
@@ -178,27 +196,39 @@ function BookingForm() {
           )}
 
           {success && (
-              <SuccessCard
-                room={room}
-                day={day}
-                period={period}
-                buildingId={buildingId}
-                type='booking'
-              />
-            )}
+            <SuccessCard
+              room={room}
+              day={day}
+              period={period}
+              buildingId={buildingId}
+              type="booking"
+            />
+          )}
         </>
       ) : (
-        <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-xl w-full max-w-md mx-auto flex flex-col items-center max-[460px]:border-none max-[460px]:shadow-none max-[460px]:rounded-none min-[460px]:h-fit max-[460px]:flex-1 ">
-          <h2 className="text-4xl font-semibold text-center mb-2 text-gray-700">
-            {room.startsWith("ห้อง") ? room : `ห้อง ${room}`}
-          </h2>
-          <div className="text-center mb-7 text-gray-600 text-lg flex flex-row max-[450px]:flex-col justify-center items-center gap-x-2">
-            <p>
-              {dayEnToThai[day]} คาบ {period}
-            </p>
-            <p>
-              ({timeSlots[period].from} - {timeSlots[period].to} น.)
-            </p>
+        <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-xl w-full max-w-md mx-auto flex flex-col items-center max-[460px]:border-none max-[460px]:shadow-none max-[460px]:rounded-none min-[460px]:h-fit max-[460px]:flex-1 min-[460px]:my-auto">
+          {/* Header */}
+          <div className="w-full flex flex-col items-center mb-5 text-center">
+            {/* Room Name */}
+            <h2 className="text-[2.5rem] font-bold text-gray-800">
+              {room.startsWith("ห้อง") ? room : `ห้อง ${room}`}
+            </h2>
+            {/* Info Row */}
+            <div className="flex items-center justify-center gap-2 sm:gap-5 text-gray-500 relative w-full mt-2">
+              <span className="flex items-center gap-2 w-fit">
+                <CalendarDays className="w-5 h-5 text-red-400" />
+                <span className="text-base font-medium">
+                  {dayEnToThai[day]}
+                </span>
+              </span>
+              <span className=" block text-gray-300 text-xl select-none w-fit">
+                |
+              </span>
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-red-400" />
+                <span className="text-base font-medium">คาบที่ {period}</span>
+              </div>
+            </div>
           </div>
           {pageLoading || false ? (
             <>
@@ -221,13 +251,18 @@ function BookingForm() {
               {/* Form */}
               <div className=" mx-auto block mt-2 w-full">
                 <div className="w-25 h-6 bg-gray-300/80 animate-pulse rounded-full mb-1"></div>
-                <div className="w-full h-10 bg-gray-300/80 animate-pulse rounded-full"></div>
+                <div className="w-full h-[41.5px] bg-gray-300/80 animate-pulse rounded-full"></div>
               </div>
 
               {/* button */}
-              <div className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9">
-                ยืนยันการจอง
-              </div>
+              <button
+                type="submit"
+                disabled={loading} // 2. Add disabled attribute
+                className="group relative w-full flex justify-center items-center text-lg text-white bg-gradient-to-r from-red-500 to-red-600 hover:bg-gradient-to-br focus:outline-none shadow-lg shadow-red-500/50 text-center cursor-pointer py-3 rounded-2xl mx-auto mt-6 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <span>ยืนยันการจอง</span>
+                <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
             </>
           ) : (
             <>
@@ -269,17 +304,18 @@ function BookingForm() {
                     </div>
                   </div>
                 ) : (
-                  <div className=" mx-auto block mt-2">
-                    <label className="block font-semibold mb-1 text-gray-700">
-                      รายละเอียด
+                  <div>
+                    <label className="block font-semibold mb-2 text-gray-700">
+                      รายละเอียดกิจกรรม
                     </label>
                     <input
                       type="text"
-                      className="focus:outline-none focus:border-gray-400 block w-full text-gray-600 border border-gray-300 shadow-md px-3 py-2 rounded-sm"
-                      placeholder="ประเภทกิจกรรมที่จะทำ..."
+                      className="block w-full text-gray-800 border-2 border-slate-200 bg-slate-50 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 ring-gray-200 transition disabled:opacity-50"
+                      placeholder="เช่น ประชุมเชียร์, ซ้อมการแสดง..."
                       value={activityDetail}
                       maxLength={100}
                       onChange={(e) => setActivityDetail(e.target.value)}
+                      disabled={loading}
                     />
                   </div>
                 )}
@@ -294,9 +330,11 @@ function BookingForm() {
                 )}
                 <button
                   type="submit"
-                  className="text-lg text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:scale-105 active:scale-95 transition-all duration-150 focus:outline-none shadow-green-500/50 text-center shadow-sm cursor-pointer py-2 w-full rounded-2xl mx-auto mt-9"
+                  disabled={loading} // 2. Add disabled attribute
+                  className="group relative w-full flex justify-center items-center text-lg text-white bg-gradient-to-r from-red-500 to-red-600 hover:bg-gradient-to-br focus:outline-none shadow-lg shadow-red-500/50 text-center cursor-pointer py-3 rounded-2xl mx-auto mt-6 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  ยืนยันการจอง
+                  <span>ยืนยันการจอง</span>
+                  <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </form>
             </>

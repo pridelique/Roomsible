@@ -10,7 +10,7 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
           disabled={disabledClass}
           className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap  ${
             mode === "class"
-              ? "text-[#466AB0] font-semibold"
+              ? "text-red-400 font-semibold"
               : "text-gray-500"
           }`}
           onClick={() => setMode("class")}
@@ -21,7 +21,7 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
           disabled={disabledActivity}
           className={`cursor-pointer px-3 pb-1 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap ${
             mode === "activity"
-              ? "text-[#466AB0] font-semibold"
+              ? "text-red-400 font-semibold"
               : "text-gray-500"
           }`}
           onClick={() => setMode("activity")}
@@ -30,12 +30,12 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
         </button>
 
         {/* underline */}
-         <span className={`absolute border left-0 -bottom-0.5 border-[#466AB0] rounded-full transition-all duration-300 ${mode === 'activity' ? 'w-[78px] translate-x-[172px]' : 'w-[146px]'}`}></span>
+         <span className={`absolute border left-0 -bottom-0.5 border-red-400 rounded-full transition-all duration-300 ${mode === 'activity' ? 'w-[78px] translate-x-[172px]' : 'w-[146px]'}`}></span>
         </div>
 
         {/* mobile */}
       <div
-        className="w-50 relative pb-1.5 text-[#466AB0] font-semibold cursor-pointer hidden overflow-hidden  group mb-4"
+        className="w-50 relative pb-1.5 text-red-400 font-semibold cursor-pointer hidden overflow-hidden  group mb-4"
         onClick={() => {
           if (disabledActivity || disabledClass) return;
           setMode(`${mode === "activity" ? "class" : "activity"}`)
@@ -89,7 +89,7 @@ function ModeSelection({ mode, setMode, role, disabledClass, disabledActivity })
           </div>
         </div>
         <span
-          className={`border absolute bottom-0 left-1/2 -translate-x-1/2 border-[#466AB0] rounded-full transition-all duration-300 ${
+          className={`border absolute bottom-0 left-1/2 -translate-x-1/2 border-red-400 rounded-full transition-all duration-300 ${
             mode === "class" ? "w-40" : "w-24"
           }`}
         ></span>
