@@ -140,7 +140,7 @@ function BookingCard({
       <div className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-all duration-200" />
       <div className="relative z-5 w-full h-full">
         <div
-          className={`absolute min-[460px]:top-1/2 min-[460px]:left-1/2 min-[460px]:-translate-x-1/2 min-[460px]:-translate-y-1/2 min-[460px]:rounded-3xl rounded-t-3xl min-[460px]:shadow-2xl w-full bg-white backdrop-blur-xl px-10 py-8 min-[460px]:max-w-[420px] mx-auto flex flex-col  transition-all duration-200 max-[460px]:duration-300 max-[460px]:ease-out hover:shadow-2xl focus:outline-none top-full ${showBookingCard ? "min-[460px]:scale-100 min-[460px]:opacity-100 max-[460px]:-translate-y-full" : "min-[460px]:scale-90 min-[460px]:opacity-0 "}`}
+          className={`absolute min-[460px]:top-1/2 min-[460px]:left-1/2 min-[460px]:-translate-x-1/2 min-[460px]:-translate-y-1/2 min-[460px]:rounded-3xl rounded-t-3xl min-[460px]:shadow-2xl w-full bg-white backdrop-blur-xl px-10 max-[400px]:px-7 py-7 min-[460px]:max-w-[420px] mx-auto flex flex-col  transition-all duration-200 max-[460px]:duration-300 max-[460px]:ease-out hover:shadow-2xl focus:outline-none top-full ${showBookingCard ? "min-[460px]:scale-100 min-[460px]:opacity-100 max-[460px]:-translate-y-full" : "min-[460px]:scale-90 min-[460px]:opacity-0 "}`}
           tabIndex={0}
           ref={cardRef}
         >
@@ -156,18 +156,28 @@ function BookingCard({
               </span>
             </div>
           </div>
-          <div className="text-4xl font-semibold text-gray-800 tracking-wide drop-shadow-sm text-start">
+          <div className="text-4xl max-[400px]:text-[33px] font-semibold text-gray-800 tracking-wide drop-shadow-sm text-start">
             {room
               ? String(room).startsWith("ห้อง")
-                ? room
-                : `ห้อง ${room}`
+                ? (
+                  <>
+                    <span className="max-[400px]:hidden">{room}</span>
+                    <span className="max-[400px]:block hidden">{room.replace('ห้อง','')}</span>
+                  </>
+                )
+                : (
+                  <>
+                    <span className="max-[400px]:hidden">ห้อง {room}</span>
+                    <span className="max-[400px]:block hidden">{room}</span>
+                  </>
+                )
               : "ชื่อห้อง"}
           </div>
 
-          <span className="border-b-1 rounded-full border-gray-200 w-full mx-auto my-5"></span>
+          {/* <span className="border-b-5 rounded-full border-gray-200 w-9/12 mx-auto my-5"></span> */}
 
           {/* Content Section with details */}
-          <div className="flex flex-col space-y-5 bg-gray-00 w-full">
+          <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4 text-left shadow-inner mt-7">
             {/* Day and Date */}
             <div className="flex items-center space-x-4 text-gray-700">
               <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-lg shadow-inner">
@@ -220,10 +230,10 @@ function BookingCard({
             </div>
           </div>
 
-          <div className="flex items-center gap-3 mt-6">
+          <div className="flex items-center gap-3 mt-4">
             <div className="relative flex-1">
               <button
-                className={`w-full font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150 flex items-center justify-center gap-2 text-lg ${
+                className={`w-full h-11 font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150 flex items-center justify-center gap-2 text-lg ${
                   bookable
                     ? "bg-gradient-to-bl hover:bg-gradient-to-tr from-green-500 via-green-400 to-emerald-400 text-white hover:scale-105 active:scale-95 cursor-pointer"
                     : "bg-gray-300/80 text-gray-500/80"
@@ -237,7 +247,7 @@ function BookingCard({
                     จองห้องนี้
                   </>
                 ) : (
-                  "ไม่สามารถจองได้"
+                  <span className="max-[400px]:text-base max-[350px]:text-sm">ไม่สามารถจองได้</span>
                 )}
                 {!bookable && (
                   <span
@@ -267,8 +277,8 @@ function BookingCard({
             </div>
             <button
               type="button"
-              className="w-11 h-11 flex items-center justify-center rounded-full bg-white/70 hover:bg-gray-100 active:bg-gray-200
-              shadow-lg duration-150 scale-105 hover:scale-110 active:scale-95 cursor-pointer"
+              className="size-[42px] flex items-center justify-center rounded-full bg-white/70 hover:bg-gray-100 active:bg-gray-200
+              shadow-[0_3px_8px_rgb(0,0,0,0.1)] duration-150 scale-105 hover:scale-110 active:scale-95 cursor-pointer"
               title="ดูตารางห้อง"
               onClick={() => handleScheduleClick(room)}
             >
