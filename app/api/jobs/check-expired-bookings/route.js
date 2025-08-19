@@ -18,8 +18,6 @@ export const GET = async (req) => {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
-  return NextResponse.json({ message: process.env.NEXT_PUBLIC_SUPABASE_URL, process: process.env.SUPABASE_SERVICE_ROLE_KEY }, { status: 200 });
-
   try {
     const { data, error } = await supabaseAdmin
       .from("bookings")
