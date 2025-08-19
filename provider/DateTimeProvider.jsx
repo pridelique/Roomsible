@@ -72,24 +72,28 @@ function DateTimeProvider({ children }) {
     }
   }, []);
 
-  // const intervalRef = useRef(null);
+  // const jobsIntervalRef = useRef(null);
 
   // useEffect(() => {
-  //   if (intervalRef.current) {
+  //   if (jobsIntervalRef.current) {
   //     return;
   //   }
 
   //   const jobs = async () => {
   //     const res = await fetch("/api/jobs/check-expired-bookings",{
   //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ThisIsASecretToken`
+  //       }
   //     });
   //     const data = await res.json();
   //     console.log(data);
   //   }
   //   jobs();
-    // intervalRef.current = setInterval(() => jobs(), 1000 * 60); // Update every minute
+  //   jobsIntervalRef.current = setInterval(() => jobs(), 1000 * 60); // Update every minute
 
-  //   return () => clearInterval(intervalRef.current);
+  //   return () => clearInterval(jobsIntervalRef.current);
   // }, [])
 
   return (

@@ -23,7 +23,7 @@ export const GET = async (req) => {
       .from("bookings")
       .update({ status: "cancelled" })
       .eq("status", "pending")
-      .lte("expired_at", toZonedTime(new Date(), "Asia/Bangkok"))
+      .lte("expired_at", (toZonedTime(new Date(), "Asia/Bangkok").toISOString()))
       .select("room, user_id");
     if (error) {
       console.error("Error updating bookings:", error);
@@ -34,7 +34,7 @@ export const GET = async (req) => {
     }
     // console.log(data);
 
-    const updateUserDate = [];
+    const updateUser = [];
     const affectedUserIds = [...new Set(data.map((bookings) => bookings.user_id))];
 
     for (const user_id of affectedUserIds) {
@@ -46,13 +46,14 @@ export const GET = async (req) => {
 
       if (userError || !user) {
         console.error("Error fetching user data:", userError);
-        updateUserDate.push({ user_id, error: userError.message });
+        updateUser.push({ user_id, error: userError.message });
         continue;
       }
       const { auto_cancel_count } = user;
       const newAutoCancelCount = auto_cancel_count + 1;
-      const BannedUntil = toZonedTime(new Date(), "Asia/Bangkok");;
+      const BannedUntil = toZonedTime(new Date(), "Asia/Bangkok");
       // Set to the start of the week (Monday)
+      
       BannedUntil.setDate(BannedUntil.getDate() - (BannedUntil.getDay() - 1));
       BannedUntil.setHours(0, 0, 0, 0);
       // Add 6 days to the end of the this week
@@ -64,24 +65,25 @@ export const GET = async (req) => {
       else if (newAutoCancelCount >= 3)
         BannedUntil.setDate(BannedUntil.getDate() + 7);
 
+
       const { error: userUpdateError } = await supabaseAdmin
         .from("users")
         .update({
           auto_cancel_count: newAutoCancelCount,
-          banned_until: auto_cancel_count >= 2 ? BannedUntil.toISOString(): null,
+          banned_until: newAutoCancelCount >= 3 ? BannedUntil.toISOString(): null,
         })
         .eq("user_id", user_id);
 
       if (userUpdateError) {
         console.error("Error updating user data:", userUpdateError);
-        updateUserDate.push({ user_id, error: userUpdateError.message });
+        updateUser.push({ user_id, error: userUpdateError.message });
         continue;
       }
 
-      updateUserDate.push({ user_id, message: `updated successfully` });
+      updateUser.push({ user_id, message: `updated successfully` });
     }
     return NextResponse.json(
-      { message: "Expired bookings checked successfully", data, updateUserDate },
+      { message: "Expired bookings checked successfully", data, updateUser },
       { status: 200 }
     );
   } catch (error) {
