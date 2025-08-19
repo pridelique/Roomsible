@@ -116,8 +116,8 @@ function BuildingPage({ params }) {
       const inner = innerRef.current;
       const status = statusRef.current;
       if (!outer || !inner || !status) return;
-      const scaleX = outer.clientWidth / inner.offsetWidth;
-      const statusScale = outer.clientWidth / status.offsetWidth;
+      const scaleX = Math.min(576, outer.clientWidth) / inner.offsetWidth;
+      const statusScale = (Math.min(576, outer.clientWidth)-20) / status.offsetWidth;
       const maxHeight = Math.max(
         inner.offsetHeight * scaleX,
         window.innerHeight - 270
@@ -131,7 +131,7 @@ function BuildingPage({ params }) {
       setMaxScale(Math.max(1, scaleY));
       if (Math.min(1, scaleX) === 1)
         setcontainerStyle({
-          width: outer.clientWidth,
+          width: Math.min(576, outer.clientWidth),
           justifyContent: "center",
           maxHeight: maxHeight,
         });
@@ -236,7 +236,7 @@ function BuildingPage({ params }) {
               centerViewRef.current = centerView;
               return (
                 <>
-                  <div className="bg-neutral-50 rounded-xl max-w-xl mx-auto mb-3 relative shadow-inner">
+                  <div className="bg-neutral-50 rounded-xl mx-auto mb-3 relative shadow-inner w-full max-w-3xl">
                     <div className="relative overflow-hidden" ref={outerRef}>
                       {/* {!zooming && maxScale !== 1 && (
                     <ZoomPanAnimation animationState={animationState} />
@@ -278,13 +278,16 @@ function BuildingPage({ params }) {
                         setRefresh={setRefresh}
                       />
 
-                      <TransformComponent>
+                      <TransformComponent
+                        wrapperClass="!w-full !h-full"
+                        contentClass="!w-full !h-full flex justify-center items-center"
+                      >
                         <div
                           className="flex cursor-grab active:cursor-grabbing max-h-[500px] justify-center items-center"
                           style={containerStyle}
                         >
                           <div
-                            className="origin-left p-10 h-fit"
+                            className="origin-left p-10 h-fit pb-20"
                             ref={innerRef}
                             style={{ transform: `scale(${scale})` }}
                           >
@@ -299,7 +302,7 @@ function BuildingPage({ params }) {
                           </div>
                         </div>
                       </TransformComponent>
-                      <button
+                      {/* <button
                         className={`absolute bottom-0 right-0 rounded-full hover:bg-gray-300 active:bg-gray-400 opacity-40 p-2 m-2 object-cover cursor-pointer justify-center items-center ${
                           maxScale === 1 ? "hidden" : "flex"
                         } `}
@@ -314,7 +317,16 @@ function BuildingPage({ params }) {
                           draggable={false}
                           className="select-none"
                         />
-                      </button>
+                      </button> */}
+                      <div className="absolute inset-x-0 bottom-3 z-3 flex justify-center pointer-events-none">
+                        <div
+                          className="flex justify-center bg-white/50 backdrop-blur-lg shadow-md rounded-full px-5 p-3 border border-white/20 pointer-events-auto transition-transform duration-300 origin-bottom"
+                          style={{ transform: `scale(${statusScale})` }}
+                          ref={statusRef}
+                        >
+                          <StatusTable />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -329,15 +341,15 @@ function BuildingPage({ params }) {
         <StatusTable />
           </div>
       </div> */}
-      <div className="fixed inset-x-0 bottom-4 z-3 flex justify-center pointer-events-none">
-        <div 
+      {/* <div className="fixed inset-x-0 bottom-6 z-3 flex justify-center pointer-events-none">
+        <div
           className="flex justify-center bg-white/70 backdrop-blur-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full px-5 p-3 border border-white/20 pointer-events-auto transition-transform duration-300"
           style={{ transform: `scale(${statusScale})` }}
           ref={statusRef}
         >
           <StatusTable />
         </div>
-      </div>
+      </div> */}
       {showError && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-8">
           <div className="absolute top-1/2 left-1/2 -translate-1/2 px-3 w-full">
