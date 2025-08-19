@@ -79,8 +79,11 @@ export const GET = async (req) => {
         updateUser.push({ user_id, error: userUpdateError.message });
         continue;
       }
-
-      updateUser.push({ user_id, message: `updated successfully` });
+      if (newAutoCancelCount >= 3) {
+        updateUser.push({ user_id, message: `banned until ${BannedUntil.toISOString()}` });
+      } else {
+        updateUser.push({ user_id, message: `updated successfully` });
+      }
     }
     return NextResponse.json(
       { message: "Expired bookings checked successfully", data, updateUser },
