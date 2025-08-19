@@ -241,7 +241,7 @@ function HistoryPage() {
           </div>
 
           {/* History Content */}
-          <div className="max-[928px]:px-4">
+          <div className="max-[928px]:min-[460px]:px-4">
             <div className="bg-white min-[460px]:my-4 max-[460px]:mt-1 py-6 min-[460px]:rounded-3xl min-[460px]:shadow-lg px-4">
               <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between mb-7 px-9 gap-4">
                 <h2 className="text-3xl font-semibold text-gray-700">
@@ -269,7 +269,7 @@ function HistoryPage() {
                 // dayFilterFuction={dayFilterFuction}
               />
 
-              <div className="flex flex-col max-[520px]:flex-col-reverse items-center justify-center">
+              <div className="flex flex-col max-[550px]:flex-col-reverse items-center justify-center">
                 {/* Select Page */}
                 <PageSelector
                   selectedPage={selectedPage}
@@ -278,7 +278,7 @@ function HistoryPage() {
                   totalBookings={totalBookings}
                   bookingsLoading={bookingsLoading}
                 />
-                <div className="mt-3 max-[520px]:mb-0 relative w-full">
+                <div className="mt-3 max-[550px]:mb-0 relative w-full">
                   <div className="overflow-y-hidden w-full border border-gray-300 custom-scroll p-0 h-[314px] rounded-lg shadow-lg relative bg-white">
                     <table className="w-full text-center">
                       <thead className="bg-gray-200 text-gray-600 text-lg border-b border-gray-300">
