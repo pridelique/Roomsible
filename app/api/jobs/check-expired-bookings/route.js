@@ -2,8 +2,17 @@ import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { toZonedTime } from "date-fns-tz";
 
+export const GET = async (req) => {
 
-export const GET = async () => {
+  const authHeader = req.headers.get("Authorization");
+
+  if (authHeader !== "Bearer ThisIsASecretToken") {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -46,8 +55,8 @@ export const GET = async () => {
       // Set to the start of the week (Monday)
       BannedUntil.setDate(BannedUntil.getDate() - (BannedUntil.getDay() - 1));
       BannedUntil.setHours(0, 0, 0, 0);
-      // Add 7 days to the start of the next week
-      BannedUntil.setDate(BannedUntil.getDate() + 7);
+      // Add 6 days to the end of the this week
+      BannedUntil.setDate(BannedUntil.getDate() + 6);
       if (newAutoCancelCount >= 7)
         BannedUntil.setDate(BannedUntil.getDate() + 28);
       else if (newAutoCancelCount >= 5)
