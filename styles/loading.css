@@ -8,10 +8,11 @@
     border-radius: 50% 50% 50% 0;
     background: #d32f2f; /* เปลี่ยนเป็นสีแดง */
     position: absolute;
-    transform: rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
     left: 50%;
     top: 50%;
-    margin: -20px 0 0 -20px;
+    
+    margin: -16px 0 0 0;
 }
 .pin:after {
     content: '';
@@ -30,8 +31,8 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    margin: 11px 0px 0px -12px;
-    transform: rotateX(55deg);
+    transform: translate(-50%, -50%) rotateX(55deg);
+    margin: 11px 0px 0px 0px;
     z-index: -2;
 }
 .pulse:after {
