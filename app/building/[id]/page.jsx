@@ -252,7 +252,7 @@ function BuildingPage({ params }) {
                       >
                         <span
                           tabIndex={1}
-                          className="text-gray-500 hover:text-gray-600 hover:bg-gray-100 hover:scale-110 active:text-gray-700 active:bg-gray-200 active:scale-90 cursor-pointer bg-white transition duration-150 shadow-lg rounded-full p-1.5"
+                          className="text-gray-500 hover:text-gray-600 hover:bg-gray-100 hover:scale-110 active:text-gray-700 active:bg-gray-200 active:scale-90 cursor-pointer bg-white transition duration-150 shadow-md rounded-full p-1.5"
                         >
                           <InfoIcon className="w-7 h-7" />
                         </span>
