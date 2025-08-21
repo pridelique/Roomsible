@@ -34,7 +34,7 @@ export const GET = async (req) => {
     }
     // console.log(data);
 
-    const updateUser = [];
+    const updateUser = {};
     const affectedUserIds = [...new Set(data.map((bookings) => bookings.user_id))];
 
     for (const user_id of affectedUserIds) {
@@ -46,7 +46,7 @@ export const GET = async (req) => {
 
       if (userError || !user) {
         console.error("Error fetching user data:", userError);
-        updateUser.push({ user_id, error: userError.message });
+        updateUser[user_id] = userError.message;
         continue;
       }
       const { auto_cancel_count } = user;
@@ -76,14 +76,32 @@ export const GET = async (req) => {
 
       if (userUpdateError) {
         console.error("Error updating user data:", userUpdateError);
-        updateUser.push({ user_id, error: userUpdateError.message });
+        updateUser[user_id] = userUpdateError.message;
         continue;
       }
       if (newAutoCancelCount >= 3) {
-        updateUser.push({ user_id, message: `banned until ${BannedUntil.toISOString()}` });
+        updateUser[user_id] = `banned until ${BannedUntil.toISOString()}`;
       } else {
-        updateUser.push({ user_id, message: `updated successfully` });
+        updateUser[user_id] = `updated successfully`;
       }
+    }
+    if (Object.keys(updateUser).length !== 0) {
+      const { error }  = await supabaseAdmin
+        .from('logs')
+        .insert({
+          execution: updateUser
+        });
+      if (error) {
+        console.error("Error inserting logs:", error);
+        return NextResponse.json(
+          { error: "Failed to insert logs", data, updateUser },
+          { status: 500 }
+        );
+      }
+      return NextResponse.json(
+        { message: "Logs updated successfully", data: updateUser },
+        { status: 200 }
+      );
     }
     return NextResponse.json(
       { message: "Expired bookings checked successfully", data, updateUser },
