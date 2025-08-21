@@ -1,6 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { toZonedTime } from "date-fns-tz";
+import { endOfWeek } from "@node_modules/date-fns/endOfWeek";
+import { addDays } from "@node_modules/date-fns/addDays";
 
 export const GET = async (req) => {
 
@@ -19,11 +21,14 @@ export const GET = async (req) => {
   );
 
   try {
+    const now = new Date()
+    now.setUTCHours(now.getUTCHours() + 7);
+
     const { data, error } = await supabaseAdmin
       .from("bookings")
       .update({ status: "cancelled" })
       .eq("status", "pending")
-      .lte("expired_at", (toZonedTime(new Date(), "Asia/Bangkok").toISOString()))
+      .lte("expired_at", now.toISOString())
       .select("room, user_id");
     if (error) {
       console.error("Error updating bookings:", error);
@@ -51,20 +56,17 @@ export const GET = async (req) => {
       }
       const { auto_cancel_count } = user;
       const newAutoCancelCount = auto_cancel_count + 1;
-      const BannedUntil = toZonedTime(new Date(), "Asia/Bangkok");
-      // Set to the start of the week (Monday)
+      let BannedUntil = endOfWeek(now, { weekStartsOn: 1 });
+      BannedUntil.setUTCHours(23, 59, 59, 999);
+      console.log(now.toISOString(), BannedUntil.toISOString());
       
-      BannedUntil.setDate(BannedUntil.getDate() - (BannedUntil.getDay() - 1));
-      BannedUntil.setHours(0, 0, 0, 0);
       // Add 6 days to the end of the this week
-      BannedUntil.setDate(BannedUntil.getDate() + 6);
       if (newAutoCancelCount >= 7)
-        BannedUntil.setDate(BannedUntil.getDate() + 28);
+        BannedUntil = addDays(BannedUntil, 28);
       else if (newAutoCancelCount >= 5)
-        BannedUntil.setDate(BannedUntil.getDate() + 14);
+        BannedUntil = addDays(BannedUntil, 14);
       else if (newAutoCancelCount >= 3)
-        BannedUntil.setDate(BannedUntil.getDate() + 7);
-
+        BannedUntil = addDays(BannedUntil, 7);
 
       const { error: userUpdateError } = await supabaseAdmin
         .from("users")
@@ -99,7 +101,7 @@ export const GET = async (req) => {
         );
       }
       return NextResponse.json(
-        { message: "Logs updated successfully", data: updateUser },
+        { message: "Logs updated successfully", data, updateUser },
         { status: 200 }
       );
     }
