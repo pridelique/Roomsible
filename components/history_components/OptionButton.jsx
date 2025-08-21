@@ -36,7 +36,7 @@ function OptionButton({ booking, cancelBooking }) {
       ) {
         return false;
       }
-    } else if (booking.status === "confirmed") return false;
+    } else if (booking.status === "confirmed" || booking.status === "cancelled") return false;
     return true;
   };
   // isCancelable()

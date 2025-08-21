@@ -17,12 +17,15 @@ import { supabase } from "@utils/supabase";
 import { dayEnToThai } from "@utils/translateDay";
 import { useState, useEffect, useRef, useContext } from "react";
 import { toZonedTime } from "date-fns-tz";
+import { getDate } from "@node_modules/date-fns/getDate";
+import { getMonth } from "@node_modules/date-fns/getMonth";
+import { getYear } from "@node_modules/date-fns/getYear";
 
 const thStatus = {
   all: "ทั้งหมด",
   pending: "จองแล้ว",
   confirmed: "ยืนยันแล้ว",
-  // cancelled: "ยกเลิก",
+  cancelled: "ยกเลิก",
 };
 
 const dayList = ["monday", "tuesday", "wednesday", "thursday", "friday"];
@@ -31,6 +34,21 @@ const statusList = [
   "confirmed",
   "pending",
   // "cancelled"
+];
+
+const thaiMonth = [
+  'ม.ค.',
+  'ก.พ.',
+  'มี.ค.',
+  'เม.ย.',
+  'พ.ค.',
+  'มิ.ย.',
+  'ก.ค.',
+  'ส.ค.',
+  'ก.ย.',
+  'ต.ค.',
+  'พ.ย.',
+  'ธ.ค.'
 ];
 
 function HistoryPage() {
@@ -104,18 +122,20 @@ function HistoryPage() {
   useEffect(() => {
     if (!user) return;
     const role = user?.app_metadata?.role;
-    if (role === "student" || role === "leader") {
+
+    
+    if (role === "teacher" || role === "admin") {
       setBookingQuota(
         Math.max(
           0,
-          1 - bookings.filter((item) => item.type === "activity").length
+          999 - allBookings.filter((item) => item.type === "activity").length
         )
       );
     } else {
       setBookingQuota(
         Math.max(
           0,
-          999 - bookings.filter((item) => item.type === "activity").length
+          1 - allBookings.filter((item) => item.type === "activity").length
         )
       );
     }
@@ -131,7 +151,7 @@ function HistoryPage() {
 
       const { data, error } = await supabase
         .from("users")
-        .select("firstname, lastname, classroom, no, banned_until")
+        .select("firstname, lastname, banned_until")
         .eq("user_id", user?.id)
         .single();
       if (error) {
@@ -140,18 +160,21 @@ function HistoryPage() {
       }
       setUserDetails(data);
 
-      const now = toZonedTime(new Date(), "Asia/Bangkok");
-
-      // reset banned_until if it is in the past
-      if (data.banned_until && new Date(data.banned_until) < now) {
-        const { error: updateError } = await supabase
-          .from("users")
-          .update({ banned_until: null })
-          .eq("user_id", user.id);
-        if (updateError) {
-          console.log("Error updating banned_until:", updateError);
+      const now = new Date();
+      if (data.banned_until) {
+        const bannedUntil = new Date(data.banned_until);
+        bannedUntil.setUTCHours(bannedUntil.getUTCHours() - 7);
+        setUserDetails((prev) => ({ ...prev, banned_until: bannedUntil }));
+        if (bannedUntil.getTime() < now.getTime()) {
+          const { error: updateError } = await supabase
+            .from("users")
+            .update({ banned_until: null })
+            .eq("user_id", user.id);
+          if (updateError) {
+            console.log("Error updating banned_until:", updateError);
+          }
+          setUserDetails((prev) => ({ ...prev, banned_until: null }));
         }
-        setUserDetails((prev) => ({ ...prev, banned_until: null }));
       }
     };
 
@@ -168,7 +191,8 @@ function HistoryPage() {
         console.log("Error fetching bookings:", error);
       } else {
         console.log(bookings);
-        setBookings(bookings.filter((item) => item.status != "cancelled"));
+        // setBookings(bookings.filter((item) => item.status != "cancelled"));
+        setBookings(bookings);
         setAllBookings(bookings);
       }
       setBookingsLoading(false);
@@ -178,7 +202,8 @@ function HistoryPage() {
   }, [user]);
 
   // if (user === "loading") return <Loading />;
-
+  console.log(bookingQuota);
+  
   return (
     <section>
       {user ? (
@@ -196,18 +221,19 @@ function HistoryPage() {
 
           <div className="relative max-w-4xl mx-auto flex flex-col">
             <div className="flex pt-20 md:pt-7 justify-center md:justify-start bg-white p-3 shadow-md max-[400px]:text-base text-lg md:text-2xl md:h-30 text-gray-700">
-              <div className="text-center md:text-start md:ml-75 leading-10">
+              <div className="text-center md:text-start md:ml-75 leading-8">
                 {userDetails ? (
                   <>
                     <p>
                       {userDetails?.firstname} {userDetails?.lastname}
                     </p>
-                    <div className="sm:text-base text-sm text-gray-500">
-                      {userDetails?.classroom} เลขที่ {userDetails?.no}
+                    <div className="sm:text-base text-sm text-gray-500 text-center md:text-start">
+                      {/* {userDetails?.classroom} เลขที่ {userDetails?.no} */}
                       {userDetails?.banned_until ? (
-                        <span className="ml-10 text-[13px] text-red-500">
-                          คุณถูกระงับสิทธิ์จนถึงวันที่{" "}
-                          {format(userDetails?.banned_until, "dd/MM/yyyy")}
+                        <span className="text-[13px] text-red-500 text-center md:text-start">
+                          คุณถูกระงับสิทธิ์จนถึงวันที่ {getDate(userDetails?.banned_until)}{" "}
+                          {thaiMonth[getMonth(userDetails?.banned_until)]}{" "}
+                          {getYear(userDetails?.banned_until) + 543}{" "}
                         </span>
                       ) : (
                         <>
@@ -216,11 +242,11 @@ function HistoryPage() {
                           ) : (
                             <>
                               {bookingQuota > 0 ? (
-                                <span className="ml-10 text-[13px] text-green-500">
+                                <span className="text-[13px] text-green-500">
                                   สิทธิ์คงเหลือ {bookingQuota} ห้อง
                                 </span>
                               ) : (
-                                <span className="ml-10 text-[13px] text-red-500">
+                                <span className="text-[13px] text-red-500">
                                   หมดสิทธิ์การจองห้อง
                                 </span>
                               )}
