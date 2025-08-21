@@ -1,5 +1,5 @@
 import timeSlots from "@data/timeSlots";
-import { toZonedTime } from "date-fns-tz";
+import { addDays } from "@node_modules/date-fns/addDays";
 const DAYS_MAP = {
   monday: 1,
   tuesday: 2,
@@ -11,21 +11,20 @@ const DAYS_MAP = {
 export const getStartTime = (day, period) => {
   period = Number(period);
 
-  const now = toZonedTime(new Date(), "Asia/Bangkok");
+  const now = new Date();
+  now.setUTCHours(now.getUTCHours() + 7);
   const targetDayOfWeek = DAYS_MAP[day];
-  const currentDayOfWeek = now.getDay(); // 0=Sunday, 1=Monday...
+  const currentDayOfWeek = now.getUTCDay(); // 0=Sunday, 1=Monday...
 
   // หาจำนวนวันห่าง
   let daysToAdd = targetDayOfWeek - currentDayOfWeek;
   if (daysToAdd < 0) daysToAdd += 7;
 
-  const bookingDate = new Date(now);
-  bookingDate.setDate(now.getDate() + daysToAdd);
-
+  const bookingDate = addDays(now, daysToAdd);
   // กำหนดเวลาเริ่มคาบ
   const periodStartTime = timeSlots[period].from;
   const [hours, minutes] = periodStartTime.split(".").map(Number);
 
-  bookingDate.setHours(hours, minutes, 0, 0);
+  bookingDate.setUTCHours(hours-7, minutes, 0, 0);
   return bookingDate;
 };

@@ -66,8 +66,8 @@ export const POST = async (req) => {
     }
     const user_id = user.id;
     const { role } = user.app_metadata || {};
-    const now = toZonedTime(new Date(), "Asia/Bangkok");
-    
+    const now = new Date();
+    now.setUTCHours(now.getUTCHours() + 7); // Adjust to Thailand time
     
     // check banned
     const {
@@ -138,7 +138,7 @@ export const POST = async (req) => {
     }
 
     // get expired time
-    const nowPlus10 = new Date(now.getTime() + 10 * 60 * 1000);
+    const nowPlus10 = new Date((new Date()).getTime() + 10 * 60 * 1000);
 
     // สมมติ bookingStart คือเวลาเริ่มคาบ
     const bookingStart = getStartTime(day, period);
@@ -146,7 +146,7 @@ export const POST = async (req) => {
 
     const maxTime = Math.max(bookingStart.getTime(), nowPlus10.getTime());
     const expired_at = new Date(maxTime);
-
+    expired_at.setUTCHours(expired_at.getUTCHours() + 7);
     // Check if the room is already booked for the given day and period
     const { data: existingBookings, error: existingBookingsError } =
       await supabase
@@ -185,6 +185,7 @@ export const POST = async (req) => {
       user_id,
       status: type === "class" ? "confirmed" : "pending",
       expired_at: expired_at.toISOString(),
+      created_at: now.toISOString(),
     });
     if (bookingError) {
       console.error("Error during booking:", bookingError);
