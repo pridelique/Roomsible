@@ -40,7 +40,6 @@ export default function HomePage() {
   const setDay = getCurrentDay();
   const setPeriod = getCurrentPeriod();
   const router = useRouter();
-  const outestRef = useRef(null);
   const outerRef = useRef(null);
   const innerRef = useRef(null);
   const building5Ref = useRef(null);
@@ -53,7 +52,7 @@ export default function HomePage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   // const [zooming, setZooming] = useState(false);
   const { day, period } = useContext(DateTimeContext);
-  const [screenHeight, setScreenHeight] = useState("100");
+  const [screenHeight, setScreenHeight] = useState(0);
   const [containerStyle, setContainerStyle] = useState({
     width: "100%",
     justifyContent: "center",
@@ -117,13 +116,15 @@ export default function HomePage() {
 
   useEffect(() => {
     const resize = () => {
-      const outest = outestRef.current;
       const outer = outerRef.current;
       const inner = innerRef.current;
-      if (!outest || !outer || !inner) return;
-      const scaleX = outer.clientWidth / inner.offsetWidth;
-      const scaleY = outer.clientHeight / inner.offsetHeight;
-      setScreenHeight(window.innerHeight - 220);
+
+      if (!outer || !inner) return;
+      const screenHeight = window.innerHeight - 220;
+      const scaleX = Math.min(outer.clientWidth, 896) / inner.offsetWidth;
+      const scaleY = Math.max(screenHeight, outer.clientHeight) / inner.offsetHeight;
+      // const scaleY = outer.clientHeight / inner.offsetHeight;
+      setScreenHeight(screenHeight);
       setScale(Math.min(1, scaleX, scaleY));
 
       if (Math.min(1, scaleX) === 1) {
@@ -141,10 +142,10 @@ export default function HomePage() {
     resize();
     setTimeout(() => {
       resize();
-    }, 0);
+    }, 10);
     setTimeout(() => {
       setLoading(false);
-    }, 10);
+    }, 20);
     window.addEventListener("resize", resize);
     if (resizeRef.current) clearInterval(resizeRef.current);
     resizeRef.current = setInterval(() => {
@@ -180,11 +181,10 @@ export default function HomePage() {
       </header>
       <div
         className={`relative w-full h-full flex-1 ${loading && "opacity-0"}`}
-        ref={outestRef}
       >
         <TransformWrapper>
           <div
-            className="w-full h-full flex-1"
+            className={`w-full h-full overflow-hidden`}
             ref={outerRef}
             style={{ height: Math.max(screenHeight, 250) }}
           >
