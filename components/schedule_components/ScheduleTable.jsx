@@ -24,7 +24,7 @@ function ScheduleTable({ status, loading, handleOnClick, user, days, filteredTim
   }, []);
 
   return (
-    <div className="overflow-x-auto custom-scroll pb-1.5">
+    <div className="overflow-x-auto custom-scroll pb-1.5" onScroll={() => setSelected(null)}>
       <div className="absolute w-fit bg-white text-gray-700 space-y-1 z-2">
         <div className="pr-2 flex justify-center items-center h-15"></div>
         {days.map((day) => (
