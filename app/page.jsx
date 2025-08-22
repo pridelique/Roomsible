@@ -188,7 +188,7 @@ export default function HomePage() {
             ref={outerRef}
             style={{ height: Math.max(screenHeight, 250) }}
           >
-            <div className="bg-neutral-50 rounded-lg mx-auto mb-3 relative shadow-inner w-full max-w-4xl">
+            <div className="bg-neutral-50 rounded-lg mx-auto mb-3 relative shadow-inner w-full h-full max-w-4xl">
               {/* Tooltip */}
               <div
                 className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3 max-[460px]:scale-80 origin-top-left"
