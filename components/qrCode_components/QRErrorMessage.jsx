@@ -15,7 +15,7 @@ function QRCodeErrorMessage({ error, startScaning }) {
         header="เกิดข้อผิดพลาด"
         message={`ไม่สามารถเข้าถึงกล้องได้\nกรุณาอนุญาตการเข้าถึงกล้องในเบราว์เซอร์ของคุณ`}
         buttonText="ตกลง"
-        handleOnclick={() => router.push("/")}
+        handleOnclick={() => router.back()}
         color="red"
       />
     );

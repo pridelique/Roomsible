@@ -44,7 +44,7 @@ function login() {
         setButtonText("เข้าสู่ระบบสำเร็จ");
         notifySuccess("เข้าสู่ระบบสำเร็จ!");
         getUser();
-        router.push('/');
+        router.back();
       }
     } catch (error) {
       console.error(error);

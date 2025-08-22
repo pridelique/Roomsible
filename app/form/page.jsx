@@ -189,7 +189,7 @@ function BookingForm() {
             <ErrorBox
               Svg={Warning}
               handleOnclick={() =>
-                router.push(`/building/${buildingId}/schedule?room=${room}`)
+                router.back()
               }
               {...error}
             />
