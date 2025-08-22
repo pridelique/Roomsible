@@ -382,7 +382,7 @@ function HistoryPage() {
                           </>
                         ) : (
                           <>
-                            {bookings
+                            {Array.isArray(bookings) && bookings
                               // .filter((booking) => dayFilterFuction(booking))
                               .filter(
                                 (booking) =>
@@ -405,7 +405,7 @@ function HistoryPage() {
                                   className="relative even:bg-gray-100 bg-white"
                                 >
                                   <td className="py-2.5 px-4 whitespace-nowrap">
-                                    {dayEnToThai[booking.day].slice(3)}
+                                    {String(dayEnToThai[booking.day]).replace('วัน', '')}
                                   </td>
                                   <td className="py-2.5 px-4 whitespace-nowrap">
                                     {booking.period}
