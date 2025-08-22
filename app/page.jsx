@@ -159,7 +159,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (tooltipRef.current && !event.target.contains(tooltipRef.current)) {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
         setShowTooltip(false);
       }
     };
