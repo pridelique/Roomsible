@@ -213,15 +213,15 @@ function HistoryPage() {
             className="w-full h-64 object-cover"
           />
           <div className="flex items-center relative">
-            <div className="absolute left-1/2 -translate-x-1/2 md:left-50 bottom-4 md:-bottom-4 translate-y-1/2 w-49.5 h-49.5 rounded-full flex items-center justify-center text-slate-gray/50 z-3">
+            <div className="absolute left-1/2 -translate-x-1/2 md:left-40 bottom-4 md:-bottom-4 translate-y-1/2 w-49.5 h-49.5 rounded-full flex items-center justify-center text-slate-gray/50 z-3">
               <Guest_Profile className="w-49.5 h-49.5" />
             </div>
-            <div className="absolute left-1/2 -translate-x-1/2 md:left-50 bottom-4 md:-bottom-4 translate-y-1/2 w-40 h-40 bg-white rounded-full z-2 shadow-lg"></div>
+            <div className="absolute left-1/2 -translate-x-1/2 md:left-40 bottom-4 md:-bottom-4 translate-y-1/2 w-40 h-40 bg-white rounded-full z-2 shadow-lg"></div>
           </div>
 
           <div className="relative max-w-4xl mx-auto flex flex-col">
             <div className="flex pt-20 md:pt-7 justify-center md:justify-start bg-white p-3 shadow-md max-[400px]:text-base text-lg md:text-2xl md:h-30 text-gray-700">
-              <div className="text-center md:text-start md:ml-75 leading-8">
+              <div className="text-center md:text-start md:ml-65 leading-8">
                 {userDetails ? (
                   <>
                     <p>
