@@ -261,7 +261,7 @@ function BookingForm() {
                 className="group relative w-full flex justify-center items-center text-lg text-white bg-gradient-to-r from-red-500 to-red-600 hover:bg-gradient-to-br focus:outline-none shadow-lg shadow-red-500/50 text-center cursor-pointer py-3 rounded-2xl mx-auto mt-6 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <span>ยืนยันการจอง</span>
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-active:translate-x-1" />
               </button>
             </>
           ) : (
@@ -334,7 +334,7 @@ function BookingForm() {
                   className="group relative w-full flex justify-center items-center text-lg text-white bg-gradient-to-r from-red-500 to-red-600 hover:bg-gradient-to-br focus:outline-none shadow-lg shadow-red-500/50 text-center cursor-pointer py-3 rounded-2xl mx-auto mt-6 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <span>ยืนยันการจอง</span>
-                  <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1 group-active:translate-x-2" />
                 </button>
               </form>
             </>
