@@ -155,46 +155,40 @@ function Building({
     <div
       className="gap-1.5 grid"
       style={{
-        gridTemplateColumns: `repeat(${buildings[id]?.col}, 80px)`,
+        gridTemplateColumns: `${showName ? `repeat(${buildings[id]?.col}, 80px) 45px` : `repeat(${buildings[id]?.col}, 80px) `} `, // label อยู่ขวาสุด
         gridTemplateRows: `repeat(${buildings[id]?.row}, 100px)`,
       }}
     >
       {buildings[id]?.rooms.map((row, rowIndex) => (
         <React.Fragment key={rowIndex}>
-          {row.map(
-            (room, colIndex) => {
-              // if ()
-              // เชค status ของห้อง
-              // Booking status: Available, Pending, Booked, MyBooking.
-              // Can only book if available
-              // Pending if not in current time means booked
-              // Pending if in current time means Pending for Confirmation
-              // Confirmed status after verifying
-              // mapDay for accessing day etc. mapDay[0] for Monday
-              // for period i-th access at (i-1)th index etc. array[0] = Period 1
-
-              // console.log(`${room.name} ${bookableRoom.includes(room.name) ? checkStatus(room.name) : "unavailable"}`)
-
-              // const isBookable = bookableRoom.includes(room.name) && bookings;
-              // const status = isBookable
-              //   ? checkStatus(room.name)
-              //   : "unavailable";
-              // console.log(room.name, "status:", status);
-              return (
-                <Room
-                  key={`${rowIndex}-${colIndex}`}
-                  {...room}
-                  status={room.name === "ไม่มีห้อง" ? "none" : roomStatus[room.name]}
-                  handleOnClick={handleOnClick}
-                  // handleScheduleClick={handleScheduleClick}
-                  showName={showName}
-                  loading={loading}
-                />
-              );
-            }
-            // console.log(`${room.name} ${status}`)
-
-            // console.log(`${room.name} ${schedule[room.name] ? schedule[room.name][0] : schedule[room.name] F}`)
+          {/* ห้องแต่ละห้องใน row นี้ */}
+          {row.map((room, colIndex) => (
+            <Room
+              key={`${rowIndex}-${colIndex}`}
+              {...room}
+              status={
+                room.name === "ไม่มีห้อง" ? "none" : roomStatus[room.name]
+              }
+              handleOnClick={handleOnClick}
+              showName={showName}
+              loading={loading}
+            />
+          ))}
+          {/* Label ชั้น (อยู่ขวาสุดของแต่ละแถว) */}
+          {showName && (
+            <div
+              className="flex items-center justify-center rounded-xl font-semibold text-gray-500 text-base  ml-2 relative"
+              style={{
+                gridColumn: `${buildings[id]?.col + 1} / ${
+                  buildings[id]?.col + 2
+                }`,
+                gridRow: `${rowIndex + 1} / ${rowIndex + 2}`,
+              }}
+            >
+              <span className=" whitespace-nowrap">
+                ชั้น {buildings[id]?.row - rowIndex}
+              </span>
+            </div>
           )}
         </React.Fragment>
       ))}

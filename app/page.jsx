@@ -337,7 +337,7 @@ export default function HomePage() {
                           </div>
 
                           {/* ตึก 1 & ตึก 2 */}
-                          <div className="flex gap-1 items-end bottom-0 hover:mr-0 mr-4 transition-all duration-300">
+                          <div className="flex gap-1.5 items-end bottom-0 hover:mr-0 mr-4 transition-all duration-300">
                             {/* ตึก 2 */}
                             <div
                               className="relative text-center cursor-pointer hover:scale-105 active:scale-95 duration-300 ease-in-out transition-all hover:mr-4"
