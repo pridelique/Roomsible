@@ -320,7 +320,7 @@ function BuildingPage({ params }) {
                       </button> */}
                       <div className="absolute inset-x-0 bottom-3 z-3 flex justify-center pointer-events-none">
                         <div
-                          className="flex justify-center bg-white/50 backdrop-blur-lg shadow-md rounded-full px-5 p-3 border border-white/20 pointer-events-auto transition-transform duration-300 origin-bottom"
+                          className="flex justify-center bg-white/50 backdrop-blur-lg shadow-md rounded-full px-5 p-3 border border-white/20 pointer-events-auto origin-bottom"
                           style={{ transform: `scale(${statusScale})` }}
                           ref={statusRef}
                         >
