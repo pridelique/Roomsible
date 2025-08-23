@@ -2,17 +2,12 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import "@app/globals.css";
-import { schedule, statusColors, timeSlots } from "@data";
-import StatusLabel from "@components/building_components/StatusLabel";
+import { schedule, timeSlots } from "@data";
 import { SessionContext } from "@provider/SessionProvider";
 import { notifyWaring } from "@utils/notify";
 import { supabase } from "@/utils/supabase";
 import { getCurrentDay, getCurrentPeriod } from "@utils/currentDayPeriod";
-import { dayEnToThai, dayThaiToEn } from "@utils/translateDay";
-import { isBookable } from "@utils/isBookable";
 import { CalendarPlus } from "@node_modules/lucide-react";
-import { isPast } from "@utils/isPast";
-import { isInTomorrow } from "@utils/isInTomorrow";
 import ScheduleTable from "@components/schedule_components/ScheduleTable";
 
 const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
@@ -91,7 +86,9 @@ function Schedule() {
           const bookingStatus = bookedMap[key];
 
           if (!bookingStatus) {
-            if (schedule[room][mapDay[day]][Number(period.label)] === "In-Use") {
+            if (
+              schedule[room][mapDay[day]][Number(period.label)] === "In-Use"
+            ) {
               newStatus[`${day}-${period.label}`] = "booked";
             } else {
               newStatus[`${day}-${period.label}`] = "available";
@@ -114,28 +111,26 @@ function Schedule() {
     fetchStatus();
   }, [room]);
 
+  const legendItems = [
+    { text: "ว่าง", color: "bg-green-500", iconColor: "text-green-500" },
+    { text: "รออนุมัติ", color: "bg-yellow-500", iconColor: "text-yellow-500" },
+    { text: "ไม่ว่าง", color: "bg-red-500", iconColor: "text-red-500" },
+  ];
+
   console.log(status);
 
   return (
     <section className="min-[460px]:px-4 min-[460px]:py-4 max-container w-full flex-1 flex">
       <div className="bg-white min-[460px]:rounded-3xl min-[460px]:shadow-lg px-6 py-4 w-full min-[460px]:h-full mx-auto max-w-[1200px] max-[460px]:flex-1">
-        {/* <div className="text-center mb-4">
-          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600">
-            ตารางการใช้งานห้อง {room}
-          </h2>
-          <p className="text-slate-gray max-w-md mx-auto mt-2 text-sm md:text-base">
-            เลือกห้องที่ว่างเพื่อจองห้องเรียนในช่วงเวลาที่ต้องการ
-          </p>
-        </div> */}
 
-        <header className="relative p-6 rounded-3xl overflow-hidden shadow-xl bg-gradient-to-br z-3 from-red-500 via-rose-500 to-pink-500 mb-4">
+        <header className="relative p-6 rounded-3xl overflow-hidden shadow-xl bg-gradient-to-br z-3 from-red-500 via-rose-500 to-pink-500 mb-3">
           <div className="absolute -top-10 -left-10 w-48 h-48 bg-white opacity-10 rounded-full transform rotate-45"></div>
           <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white opacity-10 rounded-full transform -rotate-45"></div>
           <div className="relative z-10 flex flex-col items-center justify-center text-center">
             <div className="p-4 rounded-full bg-white/20 bg-opacity-20 backdrop-filter backdrop-blur-sm mb-2">
               <CalendarPlus className="w-9 h-9 text-white" />
             </div>
-            <h1 className="text-[33px] font-semibold text-white">
+            <h1 className="text-[33px] font-semibold text-white leading-10">
               {room
                 ? String(room).startsWith("ห้อง")
                   ? room
@@ -146,6 +141,21 @@ function Schedule() {
           </div>
         </header>
 
+        <div className="w-full bg-white flex items-center min-[400px]:justify-center justify-evenly min-[400px]:gap-x-6 mb-1">
+        
+        {/* Legend Section */}
+        {legendItems.map((item, index) => (
+          <div
+            key={index}
+            className={`flex items-center space-x-2 p-3 text-gray-700`}
+          >
+            <div className={`w-4 h-4 rounded-full ${item.color} shadow-sm`}></div>
+            <span className="text-sm font-medium whitespace-nowrap">{item.text}</span>
+          </div>
+        ))}
+        
+      </div>
+
         {/* table */}
         <ScheduleTable
           status={status}
@@ -155,14 +165,6 @@ function Schedule() {
           days={days}
           filteredTimeSlots={filteredTimeSlots}
         />
-
-        <div className="border border-gray-200 w-full mt-5 mb-4"></div>
-
-        <div className="flex max-w-xl w-fit mx-auto gap-6 md:gap-10 scale-110">
-          <StatusLabel statusThai={"ว่าง"} color={statusColors.available} />
-          <StatusLabel statusThai={"รออนุมัติ"} color={"#FACC15"} />
-          <StatusLabel statusThai={"ไม่ว่าง"} color={statusColors.booked} />
-        </div>
       </div>
     </section>
   );
