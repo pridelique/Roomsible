@@ -51,14 +51,17 @@ function OptionButton({ booking, cancelBooking }) {
       </button>
       {isOpenOption && (
         <ul
-          className={`absolute right-full w-36 bg-white border border-gray-300 rounded shadow-md text-sm z-3 ${
+          className={`absolute right-full w-36 bg-white border border-gray-300 rounded-lg shadow-md text-sm z-3 hover:bg-gray-50 active:bg-gray-100 ${
             isCancelable() ? "-top-[45px]" : "-top-[6px]"
           }`}
           ref={optionRef}
         >
           <li
-            onClick={() => setTimeout(() => setIsOpenDetail(!isOpenDetail), 0)}
-            className="px-4 py-2 hover:bg-gray-50 active:bg-gray-100 cursor-pointer"
+            onClick={() => setTimeout(() => {
+              setIsOpenDetail(!isOpenDetail)
+              setIsOpenOption(false)
+            }, 0)}
+            className="px-4 py-2  cursor-pointer"
           >
             รายละเอียด
           </li>
@@ -78,7 +81,7 @@ function OptionButton({ booking, cancelBooking }) {
       )}
       {isOpenDetail && (
         <div
-          className="z-4 absolute right-full -top-[50px] w-56 bg-white border rounded shadow-md text-sm p-4 border-gray-300"
+          className="z-4 absolute right-full -top-[50px] w-56 bg-white border rounded-lg shadow-md text-sm p-4 border-gray-300"
           ref={detailRef}
         >
           {/* <div className="font-medium mb-2">รายละเอียดการจอง</div> */}
@@ -89,7 +92,10 @@ function OptionButton({ booking, cancelBooking }) {
           </div>
           <div className="flex justify-end">
             <button
-              onClick={() => setTimeout(() => setIsOpenDetail(false), 0)}
+              onClick={() => setTimeout(() => {
+                setIsOpenDetail(false);
+                setIsOpenOption(true);
+              }, 0)}
               className="text-right text-blue-500 text-xs mt-3 cursor-pointer hover:text-blue-600 active:text-blue-700"
             >
               ปิด
