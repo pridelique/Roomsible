@@ -15,6 +15,7 @@ import { dayEnToThai } from "@utils/translateDay";
 import { isBookable } from "@utils/isBookable";
 import SuccessCard from "@components/SuccessCard";
 import { ArrowRight, CalendarDays, Clock } from "@node_modules/lucide-react";
+import { set } from "nprogress";
 
 const customStyles = {
   container: (provided) => ({
@@ -166,9 +167,12 @@ function BookingForm() {
 
   // ตรวจสอบสิทธิ์ของผู้ใช้
   useEffect(() => {
-    setTimeout(() => {
-      setPageLoading(false);
-    }, 200);
+    if (user && user != 'loading') {
+      setTimeout(() => {
+        setRole(user?.app_metadata?.role || "student");
+        setPageLoading(false);
+      }, 200);
+    }
   }, [user]);
 
   useEffect(() => {
