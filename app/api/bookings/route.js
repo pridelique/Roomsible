@@ -8,6 +8,7 @@ import { getStartTime } from "@utils/getStartTime";
 import { isBookable } from "@utils/isBookable";
 import { toZonedTime } from "date-fns-tz";
 import { schedule } from "@data/schedule";
+import getExpiredDate from "@utils/getExpiredDate";
 
 const mapDay = {
   monday: 0,
@@ -138,15 +139,7 @@ export const POST = async (req) => {
     }
 
     // get expired time
-    const nowPlus10 = new Date((new Date()).getTime() + 10 * 60 * 1000);
-
-    // สมมติ bookingStart คือเวลาเริ่มคาบ
-    const bookingStart = getStartTime(day, period);
-    bookingStart.setMinutes(bookingStart.getMinutes() + 10);
-
-    const maxTime = Math.max(bookingStart.getTime(), nowPlus10.getTime());
-    const expired_at = new Date(maxTime);
-    expired_at.setUTCHours(expired_at.getUTCHours() + 7);
+    const expired_at = getExpiredDate(day, period);
     // Check if the room is already booked for the given day and period
     const { data: existingBookings, error: existingBookingsError } =
       await supabase

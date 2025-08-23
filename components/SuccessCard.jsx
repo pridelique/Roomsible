@@ -18,6 +18,7 @@ import {
 import Image from "@node_modules/next/image";
 import Link from "@node_modules/next/link";
 import { buildingImages } from "@public/assets/images";
+import getExpiredDate from "@utils/getExpiredDate";
 import { dayEnToThai } from "@utils/translateDay";
 import React, { useEffect, useState } from "react";
 
@@ -47,7 +48,7 @@ const thaiMonth = [
 function SuccessCard({ room, day, period, buildingId, type }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showSuccess, setShowSuccess] = useState(false);
-
+  const [expiredAt, setExpiredAt] = useState(null);
   useEffect(() => {
     if (room) {
       setTimeout(() => {
@@ -56,8 +57,7 @@ function SuccessCard({ room, day, period, buildingId, type }) {
     }
   }, [room]);
 
-  console.log(room, day, period, buildingId);
-  console.log(buildingImages[Number(buildingId)]);
+  new Date().getUTCMinutes;
 
   useEffect(
     (date = new Date()) => {
@@ -73,6 +73,12 @@ function SuccessCard({ room, day, period, buildingId, type }) {
     },
     [day]
   );
+
+  useEffect(() => {
+    if (!day || !period) return;
+    const expiredDate = getExpiredDate(day, period);
+    setExpiredAt(expiredDate);
+  }, [day, period]);
 
   return (
       <div
@@ -160,7 +166,7 @@ function SuccessCard({ room, day, period, buildingId, type }) {
             </div>
             <p className="text-slate-gray text-center text-sm mt-4">
               {type === "booking"
-                ? "คุณสามารถตรวจสอบการจองที่หน้าประวัติ"
+                ?  `โปรดเช็คอินก่อน ${expiredAt?.getUTCHours().toString().padStart(2, "0")}:${expiredAt?.getUTCMinutes().toString().padStart(2, "0")} น. วันที่ ${getDate(expiredAt)} ${thaiMonth[getMonth(expiredAt)]} ${getYear(expiredAt) + 543}`
                 : "ขอบคุณที่ใช้บริการ ขอให้มีวันที่ดีนะคะ 😊"}
             </p>
             <Link
