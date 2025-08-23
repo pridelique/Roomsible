@@ -135,7 +135,7 @@ function login() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-8 w-full py-2 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:bg-gradient-to-br focus:outline-none shadow-red-500/50 font-medium text-[15px] text-center rounded-xl shadow-md cursor-pointer flex items-center justify-center transition-all duration-200 ease-in-out disabled:cursor-auto"
+              className="mt-8 w-full py-2 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:bg-gradient-to-br focus:outline-none hover:scale-105 active:scale-95 shadow-red-500/50 font-medium text-[15px] text-center rounded-xl shadow-md cursor-pointer flex items-center justify-center transition-all duration-200 ease-in-out disabled:cursor-auto"
             >
               {loading ? (
                 <div className="border-2 border-t-2 border-transparent border-t-white animate-spin size-[22px] rounded-full"></div>
