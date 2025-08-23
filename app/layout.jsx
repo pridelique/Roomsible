@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
       <NProgressProvider>
         <DateTimeProvider>
           <SessionProvider>
-            <body className="antialiased vsc-initialized min-w-screen min-h-screen flex flex-col">
+            <body className="antialiased vsc-initialized min-w-screen min-h-dvh flex flex-col">
               <Nav />
               <main className="relative flex flex-col flex-1 w-full h-full">
                 {children}
