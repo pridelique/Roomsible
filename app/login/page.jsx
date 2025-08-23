@@ -42,7 +42,11 @@ function login() {
         setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
       } else {
         setButtonText("เข้าสู่ระบบสำเร็จ");
-        notifySuccess("เข้าสู่ระบบสำเร็จ!");
+        if (window.innerWidth < 480) {
+          notifySuccess("เข้าสู่ระบบสำเร็จ!", 'top-center');
+        } else {
+          notifySuccess("เข้าสู่ระบบสำเร็จ!", 'top-right');
+        }
         getUser();
         router.back();
       }

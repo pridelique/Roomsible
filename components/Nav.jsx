@@ -14,7 +14,7 @@ import Time from "./nav_components/Time";
 import { DateTimeContext } from "@provider/DateTimeProvider";
 import { SessionContext } from "@provider/SessionProvider";
 import MenuIcon from "@public/assets/icons/menu.svg";
-import { notifySuccess } from "@utils/notify";
+import { notifyError, notifySuccess } from "@utils/notify";
 import Profile from "./nav_components/Profile";
 import { supabase } from "@utils/supabase";
 
@@ -50,16 +50,30 @@ function Nav() {
   const router = useRouter();
   const { user, setUser } = useContext(SessionContext);
   const dateRef = useRef(null);
-  const timeRef = useRef(null); 
+  const timeRef = useRef(null);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error("Logout error:", error.message);
-      notifySuccess("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
+      if (innerWidth < 480) {
+        notifyError(
+          "เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง",
+          "center"
+        );
+      } else {
+        notifyError(
+          "เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง",
+          "top-right"
+        );
+      }
       return;
     }
-    notifySuccess("คุณออกจากระบบเรียบร้อยแล้ว!");
+    if (innerWidth < 480) {
+      notifySuccess("คุณออกจากระบบเรียบร้อยแล้ว", "top-center");
+    } else {
+      notifySuccess("คุณออกจากระบบเรียบร้อยแล้ว", "top-right");
+    }
     setIsShow(false);
     router.push("/");
   };
@@ -85,15 +99,15 @@ function Nav() {
   useEffect(() => {
     if (isShowtime == null) return;
     // console.log("Setting nav mode:", isShowtime ? "time" : "building");
-    
+
     sessionStorage.setItem("nav_mode", isShowtime ? "time" : "building");
-  }, [isShowtime])
+  }, [isShowtime]);
 
   // Set initial nav mode from sessionStorage
   useEffect(() => {
     const data = sessionStorage.getItem("nav_mode");
     console.log(data);
-    
+
     if (pathname.startsWith("/building") || data === "time") {
       setIsShowTime(true);
     } else {
@@ -109,8 +123,7 @@ function Nav() {
   useEffect(() => {
     console.log(dateRef.current?.getBoundingClientRect()?.width);
     console.log(timeRef.current?.getBoundingClientRect()?.width);
-
-  },[day, period]);
+  }, [day, period]);
 
   return (
     <header className="z-10 relative w-full text-[17px] bg-white">

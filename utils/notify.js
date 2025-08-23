@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 
-const notifySuccess = (message) => {
+const notifySuccess = (message, position) => {
   toast.success(message, {
-    position: "top-right",
+    position: position || "top-right",
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -12,9 +12,9 @@ const notifySuccess = (message) => {
   });
 };
 
-const notifyError = (message) => {
+const notifyError = (message, position) => {
   toast.error(message, {
-    position: "top-right",
+    position: position || "top-right",
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -24,9 +24,9 @@ const notifyError = (message) => {
   });
 };
 
-const notifyWaring = (message) => {
+const notifyWaring = (message, position) => {
   toast.warning(message, {
-    position: "top-right",
+    position: position || "top-right",
     autoClose: 1000,
     hideProgressBar: false,
     closeOnClick: true,
