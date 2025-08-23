@@ -28,6 +28,7 @@ function Building({
   // const [currentPeriod, setCurrentPeriod] = useState(0);
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
+  const [roomStatus, setRoomStatus] = useState({});
   const refreshTimeout = useRef(null);
   const { day, period, currentDay, currentPeriod } =
     useContext(DateTimeContext);
@@ -61,9 +62,9 @@ function Building({
         return;
       }
       const endTime = performance.now();
-      console.log(`Bookings fetched in ${endTime - startTime} ms`);
-      console.log(data);
-      setBookings(data);
+      // console.log(`Bookings fetched in ${endTime - startTime} ms`);
+      // console.log(data);
+      setBookings(data.filter((booking) => booking.status !== "cancelled"));
     } catch (error) {
       console.error("Error fetching bookings:", error);
       setLoading(false);
@@ -71,6 +72,17 @@ function Building({
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    const status = {};
+    buildings[id]?.rooms.forEach((row) => {
+      row.forEach((room) => {
+        const isBookable = bookableRoom.includes(room.name) && bookings;
+        status[room.name] = isBookable ? checkStatus(room.name) : "unavailable";
+      });
+    });
+    setRoomStatus(status);
+  }, [bookings]);
 
   useEffect(() => {
     if (!id || !day || !period) return;
@@ -163,16 +175,16 @@ function Building({
 
               // console.log(`${room.name} ${bookableRoom.includes(room.name) ? checkStatus(room.name) : "unavailable"}`)
 
-              const isBookable = bookableRoom.includes(room.name) && bookings;
-              const status = isBookable
-                ? checkStatus(room.name)
-                : "unavailable";
+              // const isBookable = bookableRoom.includes(room.name) && bookings;
+              // const status = isBookable
+              //   ? checkStatus(room.name)
+              //   : "unavailable";
               // console.log(room.name, "status:", status);
               return (
                 <Room
                   key={`${rowIndex}-${colIndex}`}
                   {...room}
-                  status={room.name === "ไม่มีห้อง" ? "none" : status}
+                  status={room.name === "ไม่มีห้อง" ? "none" : roomStatus[room.name]}
                   handleOnClick={handleOnClick}
                   // handleScheduleClick={handleScheduleClick}
                   showName={showName}
