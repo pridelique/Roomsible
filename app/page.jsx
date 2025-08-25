@@ -114,6 +114,27 @@ export default function HomePage() {
     [day]
   );
 
+  // useEffect(() => {
+  //   const deleteBookings = async () => {
+  //     try {
+  //       const res = await fetch("/api/jobs/reset-weekly-logs", {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Authorization": "Bearer ThisIsASecretToken"
+  //         }
+  //       });
+  //       const data = await res.json();
+  //       console.log(data);
+        
+  //     } catch (error) {
+  //       console.error("Error deleting bookings:", error);
+
+  //     }
+  //   }
+
+  //   deleteBookings();
+  // }, [])
+
   useEffect(() => {
     const resize = () => {
       const outer = outerRef.current;
