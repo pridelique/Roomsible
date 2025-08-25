@@ -166,7 +166,7 @@ export default function FullScreenQRScanner() {
     <>
       {/* Loading... */}
       {loading && (
-        <div className="absolute top-1/2 left-1/2 -translate-1/2 p-10 rounded-full border-6 border-t-6 border-transparent border-t-red-400 animate-spin z-4"></div>
+        <Loading/>
       )}
       {/* Overlay สำหรับแสดงผลลัพธ์ */}
       {/* {result && (

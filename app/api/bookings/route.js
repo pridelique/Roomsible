@@ -288,6 +288,7 @@ export const PATCH = async (req) => {
       .eq("day", day)
       .eq("period", period)
       .eq("user_id", user_id)
+      .eq("status", "pending")
       .limit(1);
 
     if (bookingError) {
