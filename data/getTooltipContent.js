@@ -5,7 +5,7 @@ export const getTooltipContent = (day, period, status, user) => {
     if (status === "booked") {
         return "ห้องนี้ถูกจองแล้ว";
     } else if (status === "pending") {
-        return "มีการจองแล้ว รอเช็คอิน";
+        return "ห้องนี้ถูกจองแล้ว รอเช็คอิน";
     } else if (status === "mybooking") {
         return "คุณมีการจองห้องนี้";
     } else if (!user) {
