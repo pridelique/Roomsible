@@ -14,8 +14,9 @@ import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
 import BookingCard from "@components/building_components/BookingCard";
 import { InfoIcon } from "@public/assets/icons";
-import { RefreshCcw } from "@node_modules/lucide-react";
+import { CalendarDays, Clock, RefreshCcw } from "@node_modules/lucide-react";
 import RefreshButton from "@components/building_components/RefreshButton";
+import { dayEnToThai } from "@utils/translateDay";
 
 const bookingCardTempt = {
   room: 1404,
@@ -117,7 +118,8 @@ function BuildingPage({ params }) {
       const status = statusRef.current;
       if (!outer || !inner || !status) return;
       const scaleX = Math.min(576, outer.clientWidth) / inner.offsetWidth;
-      const statusScale = (Math.min(576, outer.clientWidth)-20) / status.offsetWidth;
+      const statusScale =
+        (Math.min(576, outer.clientWidth) - 20) / status.offsetWidth;
       const maxHeight = Math.max(
         inner.offsetHeight * scaleX,
         window.innerHeight - 270
@@ -203,12 +205,24 @@ function BuildingPage({ params }) {
   return (
     <section className="flex flex-col flex-1 w-full">
       <div className="bg-white flex-1 px-2">
-        <h2 className="text-center max-[500px]:text-[26px] text-[28px] md:text-3xl text-gray-700 font-semibold mt-5 drop-shadow">
+        <h2 className="text-center max-[500px]:text-[26px] text-[28px] md:text-3xl text-gray-700 font-semibold mt-6 drop-shadow">
           อาคาร {id} {buildings[id]?.name}
         </h2>
-        <p className="text-center text-slate-gray md:mt-[2px] text-sm md:text-base">
-          เลือกห้องเพื่อดำเนินการ
-        </p>
+        {day && period && (
+          <div className="flex items-center justify-center gap-2 sm:gap-4 text-gray-500 relative w-full mt-2">
+            <span className="flex items-center gap-2">
+              <CalendarDays className="w-4 h-4 text-red-400 mb-0.5" />
+              <span className="text-sm font-medium">{dayEnToThai[day]}</span>
+            </span>
+            <span className="block text-gray-300 text-xl select-none w-fit">
+              |
+            </span>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-red-400 mb-0.5" />
+              <span className="text-sm font-medium">คาบที่ {period}</span>
+            </div>
+          </div>
+        )}
         <div
           className={`relative mt-5 w-full mx-auto ${loading && "opacity-0"}`}
         >
