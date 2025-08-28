@@ -1,9 +1,8 @@
 "use client";
 import { useContext, useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "@node_modules/next/navigation";
-import { timeSlots } from "@data";
 import { Warning } from "@public/assets/icons";
-import { teacherOptions, subjectOptions, roomOptions } from "@data";
+import { subjectOptions, roomOptions } from "@data";
 import "@app/globals.css";
 import ErrorBox from "@components/ErrorBox";
 import OptionInput from "@components/form_components/OptionInput";
@@ -15,54 +14,8 @@ import { dayEnToThai } from "@utils/translateDay";
 import { isBookable } from "@utils/isBookable";
 import SuccessCard from "@components/SuccessCard";
 import { ArrowRight, CalendarDays, Clock } from "@node_modules/lucide-react";
-import { set } from "nprogress";
+import { customStyles } from "@data/form";
 
-const customStyles = {
-  container: (provided) => ({
-    // <-- เพิ่มส่วนนี้เข้ามา
-    ...provided,
-    boxShadow: "none",
-  }),
-  control: (provided, state) => ({
-    ...provided,
-    backgroundColor: "#f8fafc",
-    border: state.isFocused ? "2px solid #3b82f6" : "2px solid #e2e8f0",
-    borderRadius: "0.75rem",
-    padding: "0.3rem",
-    boxShadow: "none",
-    "&:hover": {
-      borderColor: state.isFocused ? "#3b82f6" : "#cbd5e1",
-    },
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected
-      ? "#3b82f6"
-      : state.isFocused
-      ? "#eff6ff"
-      : "white",
-    color: state.isSelected ? "white" : "#1f2937",
-    padding: "12px 18px",
-    borderRadius: "0.5rem",
-    margin: "4px",
-    width: "calc(100% - 8px)",
-    cursor: "pointer",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    zIndex: 10,
-    boxShadow: "none",
-    borderRadius: "0.75rem",
-    padding: "4px",
-    border: "1px solid #f3f4f6",
-  }),
-  menuList: (provided) => ({ ...provided, paddingTop: 0, paddingBottom: 0 }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "#1f2937",
-    fontWeight: 500,
-  }),
-};
 
 function BookingForm() {
   const [mode, setMode] = useState("");
@@ -167,7 +120,7 @@ function BookingForm() {
 
   // ตรวจสอบสิทธิ์ของผู้ใช้
   useEffect(() => {
-    if (user && user != 'loading') {
+    if (user && user != "loading") {
       setTimeout(() => {
         setRole(user?.app_metadata?.role || "student");
         setPageLoading(false);
@@ -192,9 +145,7 @@ function BookingForm() {
           {error && (
             <ErrorBox
               Svg={Warning}
-              handleOnclick={() =>
-                router.back()
-              }
+              handleOnclick={() => router.back()}
               {...error}
             />
           )}
@@ -206,6 +157,7 @@ function BookingForm() {
               period={period}
               buildingId={buildingId}
               type="booking"
+              mode={mode}
             />
           )}
         </>
@@ -280,13 +232,20 @@ function BookingForm() {
               <form onSubmit={(e) => handleSubmit(e)} className="w-full">
                 {mode === "class" ? (
                   <div className="space-y-4  mx-auto block mt-2">
-                    <OptionInput
-                      title="ครูผู้สอน"
-                      options={teacherOptions}
-                      customStyles={customStyles}
-                      setValue={setTeacher}
-                      value={teacher}
-                    />
+                    <div>
+                      <label className="block font-semibold mb-2 text-gray-700">
+                        ครูผู้สอน
+                      </label>
+                      <input
+                        type="text"
+                        className="block w-full border-2 border-slate-200 bg-slate-50 rounded-xl px-4 py-[10.8px] focus:outline-none focus:ring-1 ring-gray-200 transition disabled:opacity-50 text-base font-[500] text-[#1f2937]"
+                        placeholder="เช่น อ.สมชาย ใจดี"
+                        value={teacher}
+                        maxLength={50}
+                        onChange={(e) => setTeacher(e.target.value)}
+                        disabled={loading}
+                      />
+                    </div>
                     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                       {/* รายวิชา */}
                       <OptionInput
@@ -314,7 +273,7 @@ function BookingForm() {
                     </label>
                     <input
                       type="text"
-                      className="block w-full text-gray-800 border-2 border-slate-200 bg-slate-50 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 ring-gray-200 transition disabled:opacity-50"
+                      className="block w-full border-2 border-slate-200 bg-slate-50 rounded-xl px-4 py-[10.8px] focus:outline-none focus:ring-1 ring-gray-200 transition disabled:opacity-50 text-base font-[500] text-[#1f2937]"
                       placeholder="เช่น ประชุมเชียร์, ซ้อมการแสดง..."
                       value={activityDetail}
                       maxLength={100}
