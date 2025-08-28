@@ -4,13 +4,13 @@ import { arrow_down, arrow_down_selected } from "@public/assets/icons";
 function NavBuilding({ item, navDropdown, setNavDropdown, checkPath }) {
   return (
     <button
-      className="cursor-pointer px-4 py-2 flex gap-2 items-center md:mx-3 lg:mx-6 hover:bg-gray-100 active:bg-gray-200 rounded-lg"
+      className="cursor-pointer pl-4 pr-3 py-2 flex gap-0.5 items-center hover:bg-gray-100 active:bg-gray-200 rounded-lg"
       onClick={() => setTimeout(() => setNavDropdown(!navDropdown), 0)}
     >
       <p className={` ${checkPath(item) ? "text-red-400" : "text-slate-gray"}`}>
         {item.label}
       </p>
-      <div className="flex items-center justify-center relative top-[1.5px] w-[20px] h-[20px]">
+      <div className="flex items-center justify-center relative top-[1.5px] ">
         <Image
           src={checkPath(item) ? arrow_down_selected : arrow_down}
           alt="arrow_down"
