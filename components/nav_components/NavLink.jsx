@@ -48,7 +48,7 @@ function NavLink({ navLink, session, checkPath, handleToggleTime }) {
             );
           return (
             <React.Fragment key={item.label}>
-              <li key={item.label} className="relative">
+              <li key={item.label} className="relative h-full flex justify-center items-center">
                 <NavBuilding
                   item={item}
                   setNavDropdown={setNavDropdown}
