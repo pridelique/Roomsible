@@ -28,10 +28,13 @@ function OptionButton({ booking, cancelBooking }) {
     // if (booking.type === 'class' && isPast(booking.day, booking.period)) {
     //   return false;
     // } else
+    if (booking.type === 'class' && !isPast(booking.day, booking.period)) {
+      return true
+    }
     if (booking.status === "pending") {
       if (
-        booking.day == getCurrentDay("eng") &&
-        booking.period == getCurrentPeriod() ||
+        (booking.day == getCurrentDay("eng") &&
+        booking.period == getCurrentPeriod()) ||
         isPast(booking.day, booking.period)
       ) {
         return false;
