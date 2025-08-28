@@ -45,7 +45,7 @@ const thaiMonth = [
   "ธ.ค.",
 ];
 
-function SuccessCard({ room, day, period, buildingId, type }) {
+function SuccessCard({ room, day, period, buildingId, type, mode }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showSuccess, setShowSuccess] = useState(false);
   const [expiredAt, setExpiredAt] = useState(null);
@@ -166,7 +166,8 @@ function SuccessCard({ room, day, period, buildingId, type }) {
             </div>
             <p className="text-slate-gray text-center text-sm mt-4">
               {type === "booking"
-                ?  `โปรดเช็คอินก่อน ${expiredAt?.getUTCHours().toString().padStart(2, "0")}:${expiredAt?.getUTCMinutes().toString().padStart(2, "0")} น. วันที่ ${getDate(expiredAt)} ${thaiMonth[getMonth(expiredAt)]} ${getYear(expiredAt) + 543}`
+                ? mode === 'activity' ? `โปรดเช็คอินก่อน ${expiredAt?.getUTCHours().toString().padStart(2, "0")}:${expiredAt?.getUTCMinutes().toString().padStart(2, "0")} น. วันที่ ${getDate(expiredAt)} ${thaiMonth[getMonth(expiredAt)]} ${getYear(expiredAt) + 543}`
+                : 'ไม่จำเป็นต้องเช็คอินสำหรับการจองนี้'
                 : "ขอบคุณที่ใช้บริการ ขอให้มีวันที่ดีนะคะ 😊"}
             </p>
             <Link
