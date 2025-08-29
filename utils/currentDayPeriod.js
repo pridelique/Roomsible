@@ -8,8 +8,8 @@ const dayTh = ['วันอาทิตย์', 'วันจันทร์', 
 
 export const getCurrentDay = (type = 'index') => {
   const today = toZonedTime(new Date(), "Asia/Bangkok");
-  // const day = today.getDay();
-  const day = 3;
+  const day = today.getDay();
+  // const day = 3;
   if (type === 'index') return day;
   else if (type === 'eng') return dayEn[day];
   return dayTh[day];
@@ -17,10 +17,10 @@ export const getCurrentDay = (type = 'index') => {
 
 export const getCurrentPeriod = () => {
   const today = toZonedTime(new Date(), "Asia/Bangkok");
-  // const hours = today.getHours();
-  // const minutes = today.getMinutes();
-  const hours = 9;
-  const minutes = 30;
+  const hours = today.getHours();
+  const minutes = today.getMinutes();
+  // const hours = 9;
+  // const minutes = 30;
   const currentTime = hours * 60 + minutes;
   const [startSchoolHour, startSchoolMinute] = timeSlots[1].from
     .split(".")
