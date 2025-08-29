@@ -269,7 +269,7 @@ function HistoryPage() {
 
           {/* History Content */}
           <div className="max-[928px]:min-[460px]:px-4">
-            <div className="bg-white min-[460px]:my-4 max-[460px]:mt-1 py-6 min-[460px]:rounded-3xl min-[460px]:shadow-lg px-4">
+            <div className="bg-white min-[460px]:my-4 max-[460px]:mt-1 py-6 min-[460px]:rounded-3xl min-[460px]:shadow-lg px-4 relative">
               <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between mb-7 px-9 gap-4">
                 <h2 className="text-3xl font-semibold text-gray-700">
                   ประวัติการจอง
