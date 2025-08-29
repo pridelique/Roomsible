@@ -14,7 +14,7 @@ import { SessionContext } from "@provider/SessionProvider";
 import ErrorBox from "@components/ErrorBox";
 import BookingCard from "@components/building_components/BookingCard";
 import { InfoIcon } from "@public/assets/icons";
-import { CalendarDays, Clock, RefreshCcw } from "@node_modules/lucide-react";
+import { CalendarClockIcon, CalendarDays, Clock, RefreshCcw } from "@node_modules/lucide-react";
 import RefreshButton from "@components/building_components/RefreshButton";
 import { dayEnToThai } from "@utils/translateDay";
 
@@ -204,12 +204,15 @@ function BuildingPage({ params }) {
 
   return (
     <section className="flex flex-col flex-1 w-full">
-      <div className="bg-white flex-1 px-2">
+      <div className="bg-white flex-1 px-2 text-center">
         <h2 className="text-center max-[500px]:text-[26px] text-[28px] md:text-3xl text-gray-700 font-semibold mt-6 drop-shadow">
           อาคาร {id} {buildings[id]?.name}
         </h2>
+        <p className="text-gray-500 text-base md:text-lg">
+            คลิกที่ห้องเพื่อดำเนินการจองห้อง
+        </p>
         {day && period && (
-          <div className="flex items-center justify-center gap-2 sm:gap-4 text-gray-500 relative w-full mt-2">
+          <div className="flex items-center justify-center gap-4 text-gray-500 relative w-full mt-2">
             <span className="flex items-center gap-2">
               <CalendarDays className="w-4 h-4 text-red-400 mb-0.5" />
               <span className="text-sm font-medium">{dayEnToThai[day]}</span>
@@ -227,17 +230,17 @@ function BuildingPage({ params }) {
           className={`relative mt-5 w-full mx-auto ${loading && "opacity-0"}`}
         >
           <TransformWrapper
-            panning={{
-              lockAxisY: true,
-            }}
-            maxScale={maxScale}
+            // panning={{
+            //   lockAxisY: true,
+            // }}
+            maxScale={maxScale + 1}
             centerZoomedOut={true}
             centerOnInit={true}
             onZoom={(ref) => {
               ref.centerView();
-              setZooming(true);
-              if (ref.state.scale === maxScale) setFullscreen(true);
-              if (ref.state.scale === 1) setFullscreen(false);
+              // setZooming(true);
+              // if (ref.state.scale === maxScale) setFullscreen(true);
+              // if (ref.state.scale === 1) setFullscreen(false);
             }}
             onInit={(ref) => {
               zoomPanRef.current = ref;
@@ -258,7 +261,7 @@ function BuildingPage({ params }) {
 
                       {/* Tooltip */}
                       <div
-                        className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start z-3 max-[460px]:scale-80 origin-top-left"
+                        className="absolute top-3 left-3 w-fit h-fit flex justify-center items-start text-start z-3 max-[460px]:scale-80 origin-top-left"
                         onClick={(e) => {
                           setShowTooltip(!showTooltip);
                         }}
@@ -279,7 +282,8 @@ function BuildingPage({ params }) {
                         >
                           <p className="font-semibold mb-2">วิธีใช้งาน</p>
                           <ul className="list-disc list-inside space-y-1">
-                            <li>คลิกที่ห้องเพื่อดูรายละเอียด</li>
+                            <li>คลิกที่ห้องเพื่อดำเนินการจองห้อง</li>
+                            <li>คลิกที่ <span className="inline-block "><CalendarClockIcon className="w-3 h-3"/></span> เพื่อเลือกเวลาที่ต้องการจอง</li>
                             <li>สีของห้องแสดงสถานะการใช้งาน</li>
                             <li>สามารถเลื่อนและซูมแผนผังได้</li>
                           </ul>
