@@ -3,7 +3,7 @@ import buildingNames from "./buildingNames";
 import buildings from "./buildings";
 import { statusColors ,status } from "./status";
 import timeSlots from "./timeSlots";
-import { teacherList, teacherOptions, subjectList, subjectOptions, roomList, roomOptions} from "./form";
+import { subjectList, subjectOptions, roomList, roomOptions } from "./form";
 import { schedule } from "./schedule";
 import { bookableRoom } from "./bookableRoom";
 export { 
@@ -13,8 +13,6 @@ export {
     statusColors,
     status,
     timeSlots,
-    teacherList,
-    teacherOptions,
     subjectList,
     subjectOptions,
     roomList,

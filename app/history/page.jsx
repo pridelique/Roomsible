@@ -20,6 +20,7 @@ import { toZonedTime } from "date-fns-tz";
 import { getDate } from "@node_modules/date-fns/getDate";
 import { getMonth } from "@node_modules/date-fns/getMonth";
 import { getYear } from "@node_modules/date-fns/getYear";
+import HistoryTooltip from "@components/history_components/historyTooltip";
 
 const thStatus = {
   all: "ทั้งหมด",
@@ -37,18 +38,18 @@ const statusList = [
 ];
 
 const thaiMonth = [
-  'ม.ค.',
-  'ก.พ.',
-  'มี.ค.',
-  'เม.ย.',
-  'พ.ค.',
-  'มิ.ย.',
-  'ก.ค.',
-  'ส.ค.',
-  'ก.ย.',
-  'ต.ค.',
-  'พ.ย.',
-  'ธ.ค.'
+  "ม.ค.",
+  "ก.พ.",
+  "มี.ค.",
+  "เม.ย.",
+  "พ.ค.",
+  "มิ.ย.",
+  "ก.ค.",
+  "ส.ค.",
+  "ก.ย.",
+  "ต.ค.",
+  "พ.ย.",
+  "ธ.ค.",
 ];
 
 function HistoryPage() {
@@ -123,7 +124,6 @@ function HistoryPage() {
     if (!user) return;
     const role = user?.app_metadata?.role;
 
-    
     if (role === "teacher" || role === "admin") {
       setBookingQuota(
         Math.max(
@@ -203,7 +203,7 @@ function HistoryPage() {
 
   // if (user === "loading") return <Loading />;
   console.log(bookingQuota);
-  
+
   return (
     <section>
       {user ? (
@@ -231,7 +231,8 @@ function HistoryPage() {
                       {/* {userDetails?.classroom} เลขที่ {userDetails?.no} */}
                       {userDetails?.banned_until ? (
                         <span className="text-[13px] text-red-500 text-center md:text-start">
-                          คุณถูกระงับสิทธิ์จนถึงวันที่ {getDate(userDetails?.banned_until)}{" "}
+                          คุณถูกระงับสิทธิ์จนถึงวันที่{" "}
+                          {getDate(userDetails?.banned_until)}{" "}
                           {thaiMonth[getMonth(userDetails?.banned_until)]}{" "}
                           {getYear(userDetails?.banned_until) + 543}{" "}
                         </span>
@@ -281,6 +282,7 @@ function HistoryPage() {
                 bookings={bookings}
                 dayList={dayList}
               /> */}
+                <HistoryTooltip />
               </div>
 
               {/* Status Tabs */}
@@ -382,49 +384,53 @@ function HistoryPage() {
                           </>
                         ) : (
                           <>
-                            {Array.isArray(bookings) && bookings
-                              // .filter((booking) => dayFilterFuction(booking))
-                              .filter(
-                                (booking) =>
-                                  statusFilter === "all" ||
-                                  booking.status === statusFilter
-                              )
-                              .sort((a, b) => {
-                                const dayA = dayList.indexOf(a.day);
-                                const dayB = dayList.indexOf(b.day);
-                                if (dayA == dayB) return a.period - b.period;
-                                return dayA - dayB;
-                              })
-                              .slice(
-                                selectedPage * 5 - 5,
-                                Math.min(selectedPage * 5, totalBookings)
-                              )
-                              .map((booking, index) => (
-                                <tr
-                                  key={booking.booking_id}
-                                  className="relative even:bg-gray-100 bg-white"
-                                >
-                                  <td className="py-2.5 px-4 whitespace-nowrap">
-                                    {String(dayEnToThai[booking.day]).replace('วัน', '')}
-                                  </td>
-                                  <td className="py-2.5 px-4 whitespace-nowrap">
-                                    {booking.period}
-                                  </td>
-                                  <td className="py-2.5 px-4 whitespace-nowrap max-md:hidden">
-                                    {timeSlots[booking.period].from} -{" "}
-                                    {timeSlots[booking.period].to}
-                                  </td>
-                                  <td className="py-2.5 px-4 whitespace-nowrap">
-                                    {booking.room}
-                                  </td>
-                                  <td className="py-2.5 px-4 whitespace-nowrap">
-                                    {booking.type === "activity"
-                                      ? "กิจกรรม"
-                                      : "เรียน"}
-                                  </td>
-                                  <td className="py-2.5 whitespace-nowrap flex items-center justify-center">
-                                    <p
-                                      className={`w-25 py-1 rounded-lg
+                            {Array.isArray(bookings) &&
+                              bookings
+                                // .filter((booking) => dayFilterFuction(booking))
+                                .filter(
+                                  (booking) =>
+                                    statusFilter === "all" ||
+                                    booking.status === statusFilter
+                                )
+                                .sort((a, b) => {
+                                  const dayA = dayList.indexOf(a.day);
+                                  const dayB = dayList.indexOf(b.day);
+                                  if (dayA == dayB) return a.period - b.period;
+                                  return dayA - dayB;
+                                })
+                                .slice(
+                                  selectedPage * 5 - 5,
+                                  Math.min(selectedPage * 5, totalBookings)
+                                )
+                                .map((booking, index) => (
+                                  <tr
+                                    key={booking.booking_id}
+                                    className="relative even:bg-gray-100 bg-white"
+                                  >
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {String(dayEnToThai[booking.day]).replace(
+                                        "วัน",
+                                        ""
+                                      )}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {booking.period}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap max-md:hidden">
+                                      {timeSlots[booking.period].from} -{" "}
+                                      {timeSlots[booking.period].to}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {booking.room}
+                                    </td>
+                                    <td className="py-2.5 px-4 whitespace-nowrap">
+                                      {booking.type === "activity"
+                                        ? "กิจกรรม"
+                                        : "เรียน"}
+                                    </td>
+                                    <td className="py-2.5 whitespace-nowrap flex items-center justify-center">
+                                      <p
+                                        className={`w-25 py-1 rounded-lg
                                         ${
                                           booking.status === "confirmed" &&
                                           "text-green-500 bg-green-300/20"
@@ -438,24 +444,24 @@ function HistoryPage() {
                                           "text-red-500 bg-red-200/20"
                                         }
                                         `}
+                                      >
+                                        {thStatus[booking.status]}
+                                      </p>
+                                    </td>
+                                    <td
+                                      className={`py-2 px-4 text-center sticky z-2 right-0 ${
+                                        index % 2 ? "bg-gray-100" : "bg-white"
+                                      }`}
                                     >
-                                      {thStatus[booking.status]}
-                                    </p>
-                                  </td>
-                                  <td
-                                    className={`py-2 px-4 text-center sticky z-2 right-0 ${
-                                      index % 2 ? "bg-gray-100" : "bg-white"
-                                    }`}
-                                  >
-                                    <div className="flex items-center justify-center">
-                                      <OptionButton
-                                        booking={booking}
-                                        cancelBooking={cancelBooking}
-                                      />
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))}
+                                      <div className="flex items-center justify-center">
+                                        <OptionButton
+                                          booking={booking}
+                                          cancelBooking={cancelBooking}
+                                        />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                ))}
                             {totalBookings === 0 && (
                               <tr>
                                 <td colSpan="7" className="py-4 text-gray-500">
