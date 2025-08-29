@@ -20,7 +20,7 @@ import { toZonedTime } from "date-fns-tz";
 import { getDate } from "@node_modules/date-fns/getDate";
 import { getMonth } from "@node_modules/date-fns/getMonth";
 import { getYear } from "@node_modules/date-fns/getYear";
-import HistoryTooltip from "@components/history_components/historyTooltip";
+import HistoryTooltip from "@components/history_components/HistoryTooltip";
 
 const thStatus = {
   all: "ทั้งหมด",
