@@ -1,32 +1,27 @@
-import { home, home_selected, building, building_selected, checkin, checkin_selected, history, history_selected } from "@public/assets/icons";
 const navLink = [
     {
-        label : 'หน้าแรก',
+        label : 'หน้าหลัก',
+        name : 'main',
         path : '/',
         session : false,
-        icon : home,
-        selectedIcon : home_selected,
     },
     {
         label : 'ตึก',
+        name : 'building',
         path : '/building',
         session : false,
-        icon : building,
-        selectedIcon : building_selected,
     },
     {
         label : 'เช็คอิน',
+        name : 'checkin',
         path : '/checkin',
         session : true,
-        icon : checkin,
-        selectedIcon : checkin_selected,
     },
     {
         label : 'ประวัติ',
+        name : 'history',
         path : '/history',
         session : true,
-        icon : history,
-        selectedIcon : history_selected,
     },
 ]
 

@@ -78,7 +78,6 @@ function Nav() {
       >
         {/* โลโก้ */}
         <Logo />
-
         {/* Link */}
         <ul className="flex flex-1 max-[850px]:hidden md:gap-1 lg:gap-2 text-slate-gray items-center justify-between h-full">
           <>

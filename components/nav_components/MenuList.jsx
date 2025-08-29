@@ -1,4 +1,4 @@
-import Image from "@node_modules/next/image";
+import { Building2, Building2Icon, HistoryIcon, HomeIcon, MapPin } from "lucide-react";
 import Link from "@node_modules/next/link";
 
 function MenuList({ item, setIsShow, checkPath }) {
@@ -13,12 +13,9 @@ function MenuList({ item, setIsShow, checkPath }) {
       >
         <div className="flex item-center gap-3">
           <div className="flex items-center justify-center">
-            <Image
-              src={checkPath(item) ? item.selectedIcon : item.icon}
-              alt={item.label}
-              width={20}
-              height={30}
-            />
+            {item.name === 'main' && <HomeIcon className="w-5 h-5" />}
+            {item.name === 'checkin' && <MapPin className="w-5 h-5" />}
+            {item.name === 'history' && <HistoryIcon className="w-5 h-5" />}
           </div>
           <p className="font-[550]">{item.label}</p>
         </div>
