@@ -9,6 +9,7 @@ import { getYear } from "@node_modules/date-fns/getYear";
 import {
   BookOpen,
   CalendarDays,
+  CalendarDaysIcon,
   Clock,
   MapPin,
   Users,
@@ -283,7 +284,7 @@ function BookingCard({
               onClick={() => handleScheduleClick(room)}
             >
               <span className="w-fit h-fit flex items-center justify-center">
-                <Schedule className="w-6 h-6 text-gray-600" />
+                <CalendarDaysIcon className="w-6 h-6 text-gray-600" />
               </span>
             </button>
           </div>
