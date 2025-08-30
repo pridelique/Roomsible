@@ -158,7 +158,7 @@ function SuccessCard({ room, day, period, buildingId, type, mode }) {
                     สถานที่
                   </span>
                   <p className="font-semibold text-lg text-gray-900">
-                    อาคาร {buildingId} -{" "}
+                    ตึก {buildingId} -{" "}
                     {buildings[buildingId]?.name || "ไม่ระบุ"}
                   </p>
                 </div>

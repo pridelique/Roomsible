@@ -222,7 +222,7 @@ function BookingCard({
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-semibold">
-                  อาคาร {buildingId}
+                  ตึก {buildingId}
                 </span>
                 <span className="text-md text-gray-600">
                   {buildings[buildingId]?.name || "ไม่ระบุ"}

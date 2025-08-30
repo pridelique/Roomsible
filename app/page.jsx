@@ -285,8 +285,8 @@ export default function HomePage() {
                           />
                           <div className="absolute w-full h-full top-0 z-2"></div>
                         </div>
-                        <h2 className="mt-124 text-[40px] leading-13 text-slate-gray w-fit text-center ml-10">
-                          อาคาร 5 {buildings[5].name}
+                        <h2 className="mt-124 text-[40px] leading-13 text-slate-gray w-fit text-center ml-16">
+                          ตึก 5 {buildings[5].name}
                         </h2>
                       </div>
 
@@ -304,7 +304,7 @@ export default function HomePage() {
                             showName={false}
                           />
                           <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
-                            อาคาร 4 <br /> {buildings[4].name}
+                            ตึก 4 <br /> {buildings[4].name}
                           </h2>
                           <div className="absolute w-full h-full top-0 z-2"></div>
                         </div>
@@ -329,8 +329,8 @@ export default function HomePage() {
                             />
                             <div className="absolute w-full h-full top-0 z-2"></div>
                           </div>
-                          <h2 className="mt-154 text-[40px] leading-13 text-slate-gray w-fit text-center ml-22">
-                            อาคาร 6 {buildings[6].name}
+                          <h2 className="mt-154 text-[40px] leading-13 text-slate-gray w-fit text-center ml-30">
+                            ตึก 6 {buildings[6].name}
                           </h2>
                         </div>
                       </div>
@@ -353,7 +353,7 @@ export default function HomePage() {
                               />
                             </div>
                             <h2 className="mt-4 text-[40px] leading-13 text-slate-gray text-lg">
-                              อาคาร 3 {buildings[3].name}
+                              ตึก 3 {buildings[3].name}
                             </h2>
                             <div className="absolute w-full h-full top-0 z-2"></div>
                           </div>
@@ -372,7 +372,7 @@ export default function HomePage() {
                                 showName={false}
                               />
                               <h2 className="mt-4 text-[36px] leading-13 text-slate-gray">
-                                อาคาร 2 <br />
+                                ตึก 2 <br />
                                 {buildings[2].name}
                               </h2>
                               <div className="absolute w-full h-full top-0 z-2"></div>
@@ -390,7 +390,7 @@ export default function HomePage() {
                                 showName={false}
                               />
                               <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
-                                อาคาร 1 <br /> {buildings[1].name}
+                                ตึก 1 <br /> {buildings[1].name}
                               </h2>
                               <div className="absolute w-full h-full top-0 z-2"></div>
                             </div>
@@ -455,7 +455,7 @@ export default function HomePage() {
                             showName={false}
                           />
                           <h2 className="mt-4 text-[40px] leading-13 text-slate-gray">
-                            อาคาร 7 {buildings[7].name}
+                            ตึก 7 {buildings[7].name}
                           </h2>
                           <div className="absolute w-full h-full top-0 z-2"></div>
                         </div>

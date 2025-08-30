@@ -206,7 +206,7 @@ function BuildingPage({ params }) {
     <section className="flex flex-col flex-1 w-full">
       <div className="bg-white flex-1 px-2 text-center">
         <h2 className="text-center max-[500px]:text-[26px] text-[28px] md:text-3xl text-gray-700 font-semibold mt-6 drop-shadow">
-          อาคาร {id} {buildings[id]?.name}
+          ตึก {id} {buildings[id]?.name}
         </h2>
         <p className="text-gray-500 text-base md:text-lg">
             คลิกที่ห้องเพื่อจองห้อง
