@@ -4,12 +4,12 @@ import { logo, schoolname } from "@public/assets/images";
 function Logo() {
   return (
     <Link href="/" className="flex items-center">
-      <Image src={logo} alt="logo" width={0} height={50} />
+      <Image src={logo} alt="logo" width={0} height={45} />
       <Image
         src={schoolname}
         alt="schoolname"
         width={0}
-        height={50}
+        height={45}
         className="flex ml-2"
         priority={true}
       />

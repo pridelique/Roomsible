@@ -72,7 +72,7 @@ function Nav() {
   return (
     <header className="z-10 relative w-full text-[17px] bg-white">
       <nav
-        className={`flex justify-between items-center w-full padding-x h-[75px] ${
+        className={`flex justify-between items-center w-full px-8 h-[65px] ${
           isShow ? "shadow-sm" : "shadow-md"
         } relative z-10`}
       >
@@ -81,7 +81,7 @@ function Nav() {
         {/* Link */}
         <ul className="flex flex-1 max-[850px]:hidden md:gap-1 lg:gap-2 text-slate-gray items-center justify-between h-full">
           <>
-            <div className="flex items-center ml-2 h-full">
+            <div className="flex items-center ml-4 h-full">
               <NavLink
                 navLink={navLink}
                 session={user}
@@ -92,7 +92,7 @@ function Nav() {
           </>
         </ul>
         
-        <div className="flex space-x-2 items-center">
+        <div className="flex gap-2 items-center">
           <DayPeriodSelector
             day={day}
             setDay={setDay}

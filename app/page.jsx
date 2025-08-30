@@ -191,8 +191,8 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section className="flex-1 flex flex-col w-full bg-white py-5 px-2">
-      <header className="w-full max-w-5xl flex flex-col items-center mt-1 mb-5 mx-auto text-center">
+    <section className="flex-1 flex flex-col w-full bg-white py-4 px-2">
+      <header className="w-full max-w-5xl flex flex-col items-center mb-5 mx-auto text-center">
         <h2 className="max-[460px]:text-[26px] text-3xl md:text-4xl font-bold text-gray-700 mb-1 drop-shadow">
           ระบบจองห้องออนไลน์
         </h2>
