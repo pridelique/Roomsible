@@ -14,7 +14,7 @@ function DayPeriodSelector({
   const [tempPeriod, setTempPeriod] = useState(period);
   return (
     <>
-      <div className="relative mr-3">
+      <div className="relative">
         <button
           onClick={() =>
             setTimeout(() => {

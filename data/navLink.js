@@ -23,6 +23,12 @@ const navLink = [
         path : '/history',
         session : true,
     },
+    {
+        label : 'คู่มือ',
+        name : 'docs',
+        path : '/docs',
+        session : false,
+    }
 ]
 
 export default navLink;

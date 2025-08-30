@@ -32,7 +32,7 @@ function Menu({
   })
 
   return (
-    <div className="hidden max-[850px]:flex w-full bg-white shadow-md absolute z-9 text-base flex-col rounded-b-xl" ref={menuRef}>
+    <div className="hidden max-[900px]:flex w-full bg-white shadow-md absolute z-9 text-base flex-col rounded-b-xl" ref={menuRef}>
       {/* Link */}
       <ul className="w-full">
         {navLink

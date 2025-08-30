@@ -79,7 +79,7 @@ function Nav() {
         {/* โลโก้ */}
         <Logo />
         {/* Link */}
-        <ul className="flex flex-1 max-[850px]:hidden md:gap-1 lg:gap-2 text-slate-gray items-center justify-between h-full">
+        <ul className="flex flex-1 max-[900px]:hidden md:gap-1 lg:gap-2 text-slate-gray items-center justify-between h-full">
           <>
             <div className="flex items-center ml-4 h-full">
               <NavLink
@@ -92,14 +92,14 @@ function Nav() {
           </>
         </ul>
         
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-3 items-center">
           <DayPeriodSelector
             day={day}
             setDay={setDay}
             period={period}
             setPeriod={setPeriod}
           />
-          <div className="flex max-[850px]:hidden justify-center items-center gap-4">
+          <div className="flex max-[900px]:hidden justify-center items-center gap-4">
             {/* ปุ่ม login logout */}
             {user != "loading" && (
               <>
@@ -118,7 +118,7 @@ function Nav() {
 
           {/* ปุ่มเมนู */}
           <button
-            className="rounded-xl hover:bg-gray-100 active:bg-gray-200 p-2 hidden max-[850px]:flex justify-center items-center cursor-pointer"
+            className="rounded-xl hover:bg-gray-100 active:bg-gray-200 p-2 hidden max-[900px]:flex justify-center items-center cursor-pointer"
             onClick={() => setTimeout(() => setIsShow(!isShow), 0)}
           >
             <MenuIcon className="size-[28px]" />

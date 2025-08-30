@@ -1,4 +1,4 @@
-import { Building2, Building2Icon, HistoryIcon, HomeIcon, MapPin } from "lucide-react";
+import { BookOpenIcon, HistoryIcon, HomeIcon, MapPin } from "lucide-react";
 import Link from "@node_modules/next/link";
 
 function MenuList({ item, setIsShow, checkPath }) {
@@ -16,6 +16,7 @@ function MenuList({ item, setIsShow, checkPath }) {
             {item.name === 'main' && <HomeIcon className="w-5 h-5" />}
             {item.name === 'checkin' && <MapPin className="w-5 h-5" />}
             {item.name === 'history' && <HistoryIcon className="w-5 h-5" />}
+            {item.name === 'docs' && <BookOpenIcon className="w-5 h-5" />}
           </div>
           <p className="font-[550]">{item.label}</p>
         </div>
