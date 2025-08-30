@@ -197,7 +197,7 @@ export default function HomePage() {
           ระบบจองห้องออนไลน์
         </h2>
         <p className="text-gray-500 text-base md:text-lg">
-            คลิกที่ตึกเพื่อจองห้อง
+            กดที่ตึกเพื่อจองห้อง
         </p>
       </header>
       <div
@@ -234,8 +234,8 @@ export default function HomePage() {
                 >
                   <p className="font-semibold mb-2">วิธีใช้งาน</p>
                   <ul className="list-disc list-inside space-y-1">
-                    <li>คลิกที่ตึกเพื่อจองห้อง</li>
-                    <li>คลิกที่ <span className="inline-block "><CalendarClockIcon className="w-3 h-3"/></span> เพื่อเลือกเวลาที่ต้องการจอง</li>
+                    <li>กดที่ตึกเพื่อจองห้อง</li>
+                    <li>กดที่ <span className="inline-block "><CalendarClockIcon className="w-3 h-3"/></span> เพื่อเลือกเวลาที่ต้องการจอง</li>
                     <li>สีของห้องแสดงสถานะการใช้งาน</li>
                     <li>สามารถเลื่อนและซูมแผนผังได้</li>
                   </ul>

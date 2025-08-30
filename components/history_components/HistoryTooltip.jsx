@@ -44,7 +44,7 @@ function HistoryTooltip() {
         <p className="font-semibold mb-2">วิธีใช้งาน</p>
         <ul className="list-disc list-inside space-y-1">
           <li>เลื่อนซ้ายขวาเพื่อดูข้อมูลการจองทั้งหมด</li>
-          <li>คลิกที่ ⋮ เพื่อดูรายละเอียดหรือยกเลิกการจอง</li>
+          <li>กดที่ ⋮ เพื่อดูรายละเอียดหรือยกเลิกการจอง</li>
         </ul>
       </div>
     </div>
