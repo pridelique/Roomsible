@@ -194,10 +194,10 @@ export default function HomePage() {
     <section className="flex-1 flex flex-col w-full bg-white py-5 px-2">
       <header className="w-full max-w-5xl flex flex-col items-center mt-1 mb-5 mx-auto text-center">
         <h2 className="max-[460px]:text-[26px] text-3xl md:text-4xl font-bold text-gray-700 mb-1 drop-shadow">
-          ระบบการจองห้องออนไลน์
+          ระบบจองห้องออนไลน์
         </h2>
         <p className="text-gray-500 text-base md:text-lg">
-            คลิกที่ตึกเพื่อดำเนินการจองห้อง
+            คลิกที่ตึกเพื่อจองห้อง
         </p>
       </header>
       <div
@@ -234,7 +234,7 @@ export default function HomePage() {
                 >
                   <p className="font-semibold mb-2">วิธีใช้งาน</p>
                   <ul className="list-disc list-inside space-y-1">
-                    <li>คลิกที่ตึกเพื่อดำเนินการจองห้อง</li>
+                    <li>คลิกที่ตึกเพื่อจองห้อง</li>
                     <li>คลิกที่ <span className="inline-block "><CalendarClockIcon className="w-3 h-3"/></span> เพื่อเลือกเวลาที่ต้องการจอง</li>
                     <li>สีของห้องแสดงสถานะการใช้งาน</li>
                     <li>สามารถเลื่อนและซูมแผนผังได้</li>

@@ -43,7 +43,7 @@ function ScheduleTooltip() {
       >
         <p className="font-semibold mb-2">วิธีใช้งาน</p>
         <ul className="list-disc list-inside space-y-1">
-          <li>คลิกที่ห้องที่ว่างอยู่เพื่อดำเนินการจองห้อง</li>
+          <li>คลิกที่ห้องที่ว่างอยู่เพื่อจองห้อง</li>
           <li>สีของห้องแสดงสถานะการใช้งาน</li>
           <li>สามารถเลื่อนตารางซ้ายขวาได้</li>
         </ul>

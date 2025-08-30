@@ -209,7 +209,7 @@ function BuildingPage({ params }) {
           อาคาร {id} {buildings[id]?.name}
         </h2>
         <p className="text-gray-500 text-base md:text-lg">
-            คลิกที่ห้องเพื่อดำเนินการจองห้อง
+            คลิกที่ห้องเพื่อจองห้อง
         </p>
         {day && period && (
           <div className="flex items-center justify-center gap-4 text-gray-500 relative w-full mt-2">
@@ -282,7 +282,7 @@ function BuildingPage({ params }) {
                         >
                           <p className="font-semibold mb-2">วิธีใช้งาน</p>
                           <ul className="list-disc list-inside space-y-1">
-                            <li>คลิกที่ห้องเพื่อดำเนินการจองห้อง</li>
+                            <li>คลิกที่ห้องเพื่อจองห้อง</li>
                             <li>คลิกที่ <span className="inline-block "><CalendarClockIcon className="w-3 h-3"/></span> เพื่อเลือกเวลาที่ต้องการจอง</li>
                             <li>สีของห้องแสดงสถานะการใช้งาน</li>
                             <li>สามารถเลื่อนและซูมแผนผังได้</li>
