@@ -137,7 +137,7 @@ function Schedule() {
                   : `ห้อง ${room}`
                 : "ชื่อห้อง"}
             </h1>
-            <p className="text-lg text-white">ตารางการใช้ห้องเรียน</p>
+            <p className="text-lg text-white">ตารางการใช้งานห้องเรียน</p>
           </div>
         </header>
 
