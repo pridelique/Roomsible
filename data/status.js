@@ -29,7 +29,7 @@ const status = [
   },
   {
     statusEng: "unavailable",
-    statusThai: "ใช้ไม่ได้",
+    statusThai: "จองไม่ได้",
     color: statusColors['unavailable']
   },
 ];
