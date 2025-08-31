@@ -18,7 +18,7 @@ function ConfirmCancelBox({ booking, setIsOpenWarning, cancelBooking}) {
 
           <h3 className="text-2xl text-gray-700 mt-2 font-semibold">ยกเลิกการจอง</h3>
           <p className="leading-6 mt-2 text-slate-gray px-3 whitespace-pre-line">
-            คุณต้องการยกเลิกการจอง{ booking.room.startsWith('ห้อง') ? booking.room : `ห้อง ${booking.room}`} ใช่หรือไม่?
+            คุณต้องยกเลิกการจอง{ booking.room.startsWith('ห้อง') ? booking.room : `ห้อง ${booking.room}`} ใช่หรือไม่?
           </p>
 
           <div className="border flex w-full gap-3">
