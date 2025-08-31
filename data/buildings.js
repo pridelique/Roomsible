@@ -59,7 +59,7 @@ const buildings = {
     rooms: [
       [
         { room: 0, name: "ไม่มีห้อง", col_span: 1 },
-        { room: "โรงยิมส์", name: "โรงยิมส์", col_span: 4 },
+        { room: "โรงยิม", name: "โรงยิม", col_span: 4 },
       ],
       [
         { room: 0, name: "ไม่มีห้อง", col_span: 1 },
@@ -156,9 +156,9 @@ const buildings = {
         { room: "ห้องนาฏศิลป์ 2", name: "ห้องนาฏศิลป์ 2", col_span: 2 },
       ],
       [
-        { room: "ห้องอังกฤษ", name: "ห้องอังกฤษ", col_span: 1 },
+        { room: 6409, name: "6409", col_span: 1 },
         { room: "ห้องพักครูต่างประเทศ", name: "ห้องพักครูต่างประเทศ", col_span: 1 },
-        { room: "ห้องเยอรมัน", name: "ห้องเยอรมัน", col_span: 1 },
+        { room: 6407, name: "6407", col_span: 1 },
         { room: 6406, name: "6406", col_span: 1 },
         { room: 6405, name: "6405", col_span: 1 },
         { room: 6404, name: "6404", col_span: 1 },
@@ -167,13 +167,13 @@ const buildings = {
         { room: 6401, name: "6401", col_span: 1 },
       ],
       [
-        { room: "ห้องฝรั่งเศษ", name: "ห้องฝรั่งเศษ", col_span: 1 },
-        { room: "ห้องพักครูคณิตฯ", name: "ห้องพักครูคณิตฯ", col_span: 1 },
+        { room: 6308, name: "6308", col_span: 1 },
         { room: "ห้องคณิตฯ", name: "ห้องคณิตฯ", col_span: 1 },
+        { room: 6306, name: "6306", col_span: 1 },
         { room: 6305, name: "6305", col_span: 1 },
         { room: 6304, name: "6304", col_span: 1 },
-        { room: "ห้องศิลปวัฒนฯ", name: "ห้องศิลปวัฒนฯ", col_span: 1 },
-        { room: "สมเด็จย่า", name: "สมเด็จย่า", col_span: 1 },
+        { room: 6303, name: "6303", col_span: 1 },
+        { room: 6302, name: "6302", col_span: 1 },
         { room: "ห้องจริยธรรม", name: "ห้องจริยธรรม", col_span: 2 },
       ],
       [
@@ -214,7 +214,8 @@ const buildings = {
         { room: 7405, name: "7405", col_span: 1 },
         { room: 7406, name: "7406", col_span: 1 },
         { room: 7407, name: "7407", col_span: 1 },
-        { room: "self access", name: "self access", col_span: 2 },
+        { room: 7408, name: "7408", col_span: 1 },
+        { room: 7409, name: "7409", col_span: 1 },
         { room: "ห้องญี่ปุ่น", name: "ห้องญี่ปุ่น", col_span: 3 },
       ],
       [
