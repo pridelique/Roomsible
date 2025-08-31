@@ -33,7 +33,10 @@ function ExcelRegister() {
 
     const handleSubmit = async (e) => {
         for (const user of users) {
-            const { firstname, lastname, classroom, no, role, email, password } = user
+            const { firstname, lastname, classroom, no, role, student_id } = user
+            const email = `${student_id}@satriwit.ac.th`
+            const password = `${student_id}_${classroom}`
+            console.log(`${email} ${password}`)
             console.log(firstname)
             if (!email || !password || !firstname || !lastname || !classroom || !no) {
                 setErrors(prevErrors => [...prevErrors, { email, message: "กรอกข้อมูลให้ครบถ้วน" }]);
@@ -49,7 +52,7 @@ function ExcelRegister() {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ firstname, lastname, classroom, no, role: role || 'student', email, password }),
+                    body: JSON.stringify({ firstname, lastname, classroom, no, role: role || 'student', email, password}),
                 })
                 const data = await res.json();
                 if (!res.ok) {
@@ -61,6 +64,8 @@ function ExcelRegister() {
                     } else {
                         setErrors(prevErrors => [...prevErrors, { email, message: data.error || "เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง" }]);
                     }
+                } else {
+                    
                 }
             } catch (error) {
                 console.error(error);
