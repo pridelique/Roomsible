@@ -36,11 +36,29 @@ export const PATCH = async (req) => {
     .from("users")
     .update({ role })
     .eq("user_id", user_id);
-  
+
   if (error) {
     console.error("Error updating user role:", error);
-    return NextResponse.json({ error: "Failed to update user role" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update user role" },
+      { status: 500 }
+    );
   }
+  const { data: user, metaError } =
+    await supabaseAdmin.auth.admin.updateUserById(user_id, {
+      app_metadata: { role },
+    });
+  
+    if (metaError) {
+      console.error("Error updating user app_metadata role:", metaError);
+    return NextResponse.json(
+      { error: "Failed to update user app_metadata role" },
+      { status: 500 }
+    );
+    }
 
-  return NextResponse.json({ message: "User role updated successfully" }, { status: 200 });
+  return NextResponse.json(
+    { message: "User role updated successfully" },
+    { status: 200 }
+  );
 };
