@@ -109,7 +109,9 @@ const buildings = {
       [
         { display: "ห้องเคมี1", name: "ห้องเคมี1", col_span: 2 },
         { display: "ห้องเคมี2", name: "ห้องเคมี2", col_span: 2 },
-        { display: "วิทย์กายฯ ห้องเรียนสี", name: "วิทย์กายฯ ห้องเรียนสี", col_span: 3 },
+        { display: "วิทยบริการ", name: "ห้องวิทยบริการ", col_span: 1 },
+        { display: "ห้องพสวท.", name: "ห้องพสวท.", col_span: 1 },
+        { display: "ห้องเรียน\nสีเขียว", name: "ห้องเรียนสีเขียว", col_span: 1 },
         { display: 5405, name: "5405", col_span: 1 },
         { display: 5406, name: "5406", col_span: 1 },
         { display: "ห้องวิทย์5", name: "ห้องวิทย์5", col_span: 1 },
@@ -226,7 +228,8 @@ const buildings = {
         { display: 7305, name: "7305", col_span: 1 },
         { display: 7306, name: "7306", col_span: 1 },
         { display: 7307, name: "7307", col_span: 1 },
-        { display: "ห้องศูนย์สังคมศึกษา", name: "ห้องศูนย์สังคมศึกษา", col_span: 2 },
+        { display: "อาเซียน", name: "ห้องอาเซียน", col_span: 1 },
+        { display: "ห้องศูนย์สังคม", name: "ห้องศูนย์สังคมศึกษา", col_span: 1 },
         { display: "ห้องพักครูกลุ่มสาระฯวิชาสังคมศึกษา", name: "ห้องพักครูกลุ่มสาระฯวิชาสังคมศึกษา", col_span: 3 },
       ],
       [
