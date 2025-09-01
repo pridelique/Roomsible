@@ -21,6 +21,9 @@ import hand_move_right from './hand_move_right.png';
 import hand_move_left from './hand_move_left.png';
 import right_arrow from './right_arrow.png';
 
+import Login1 from './Login1.png';
+import Login2_3 from './Login2_3.png';
+
 const buildingImages = [
     bordersw,
     building1,
@@ -56,4 +59,7 @@ export {
     hand_move_right,
     hand_move_left,
     right_arrow,
+
+    Login1,
+    Login2_3,
 };
