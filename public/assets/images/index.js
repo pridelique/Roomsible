@@ -33,6 +33,12 @@ import Booking7_8_9 from './Booking7_8_9.png'
 import Booking10 from './Booking10.png'
 import Booking11 from './Booking11.png'
 
+import Cancel1 from './Cancel1.png'
+import Cancel2 from './Cancel2.png'
+import Cancel3 from './Cancel3.png'
+import Cancel4 from './Cancel4.png'
+import Cancel5 from './Cancel5.png'
+
 const buildingImages = [
     bordersw,
     building1,
@@ -80,4 +86,10 @@ export {
     Booking7_8_9,
     Booking10,
     Booking11,
+
+    Cancel1,
+    Cancel2,
+    Cancel3,
+    Cancel4,
+    Cancel5,
 };
