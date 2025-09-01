@@ -104,7 +104,7 @@ function DocsBooking() {
             </li>
           </div>
 
-          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-2xl">
+          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-xl">
             <Image
               src={Booking2_3_4}
               alt="Booking2_3_4"
@@ -130,7 +130,7 @@ function DocsBooking() {
             </li>
           </div>
 
-          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-2xl">
+          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-xl">
             <Image
               src={Booking5}
               alt="Booking5"
@@ -168,7 +168,7 @@ function DocsBooking() {
             </li>
           </div>
 
-          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-2xl">
+          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-xl">
             <Image
               src={Booking6}
               alt="Booking6"
@@ -209,7 +209,7 @@ function DocsBooking() {
           </div>
 
           {/* 11 */}
-          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-2xl">
+          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-xl">
             <Image
               src={Booking7_8_9}
               alt="Booking7_8_9"
@@ -235,7 +235,7 @@ function DocsBooking() {
             </li>
           </div>
 
-          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-2xl">
+          <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-xl">
             <Image
               src={Booking11}
               alt="Booking11"
@@ -255,7 +255,7 @@ function DocsBooking() {
     
   </div>
 
-  <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-2xl">
+  <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 mb-2 gap-3 max-w-xl">
     <Image
       src={Booking2_3_4}
       alt="Booking2_3_4"
