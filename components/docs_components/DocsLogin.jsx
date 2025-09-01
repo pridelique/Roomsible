@@ -4,7 +4,7 @@ import React from "react";
 
 function DocsLogin() {
   return (
-    <div className="flex flex-col xl:flex-row w-full">
+    <div className="flex flex-col w-full">
       <div className="max-w-xl">
         <div className="flex items-center mb-4 gap-3">
           <span className="border-[2.5px] border-red-400 h-12 rounded-full"></span>
@@ -36,9 +36,9 @@ function DocsLogin() {
           </li>
         </ol>
       </div>
-      <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 gap-3">
-        <Image src={Login1} alt="Login1" width={200} height={200} className="shadow-lg" />
-        <Image src={Login2_3} alt="Login2_3" width={200} height={200} className="shadow-lg" />
+      <div className="flex flex-col sm:flex-row flex-1 justify-evenly items-center mt-6 gap-3 max-w-2xl">
+        <Image src={Login1} alt="Login1" width={200} height={200} className="shadow-lg rounded-lg" />
+        <Image src={Login2_3} alt="Login2_3" width={200} height={200} className="shadow-lg rounded-lg" />
       </div>
     </div>
   );
