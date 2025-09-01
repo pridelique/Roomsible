@@ -1,43 +1,107 @@
-'use client'
-import React, { useState } from 'react'
+"use client";
+import React, { useState } from "react";
 
 function UserDeletePage() {
-    const [classroom, setClassroom] = useState("");
+  const [classroom, setClassroom] = useState("");
 
-    const handleDeleteUser = async (e) => {
-      e.preventDefault();
+  const handleDeleteAllUser = async (e) => {
+    e.preventDefault();
 
-      try {
-        const getUserRes = await fetch(`/api/users?classroom=${classroom.replace('ม.', '')}`);
-        const { users } = await getUserRes.json();
-  
-        if (getUserRes.ok) {
-          console.log(users);
-          
-          for (const user of users) {
-            const deleteUserRes = await fetch(`/api/users`, {
-              method: 'DELETE',
-              headers: {
-                'content-type': 'application/json'
-              },
-              body: JSON.stringify({ user_id: user.user_id })
-            });
+    for (let i = 1; i <= 6; i++) {
+      for (let j = 1; j <= 14; j++) {
+        const classroomTemp = `${i}.${j}`;
+        console.log(classroomTemp);
 
-            if (!deleteUserRes.ok) {
-              console.error('❌ Error deleting user: ', deleteUserRes);
-            } else {
-              console.log('✅ User deleted successfully: ', user.user_id);
+        try {
+          const getUserRes = await fetch(
+            `/api/users?classroom=${classroomTemp.replace("ม.", "")}`
+          );
+          const { users } = await getUserRes.json();
+
+          if (getUserRes.ok) {
+            console.log(users);
+            let totalDeleted = 0;
+            for (const user of users) {
+              if (await deleteUser(user.user_id)) {
+                totalDeleted++;
+              }
             }
+          } else {
+            console.error("Error fetching users: ", getUserRes);
           }
-          console.log(`✅ All users deleted successfully: ${users.length}`);
-
-        } else {
-          console.error('Error fetching users: ', getUserRes);
+        } catch (error) {
+          console.error("Unexpected error occurred: ", error);
         }
-      } catch (error) {
-        console.error('Error fetching users: ', error);
       }
-    };
+    }
+    try {
+      const getUserRes = await fetch(
+        `/api/users?classroom=${classroom.replace("ม.", "")}`
+      );
+      const { users } = await getUserRes.json();
+
+      if (getUserRes.ok) {
+        console.log(users);
+        let totalDeleted = 0;
+        for (const user of users) {
+          if (await deleteUser(user.user_id)) {
+            totalDeleted++;
+          }
+        }
+      } else {
+        console.error("Error fetching users: ", getUserRes);
+      }
+    } catch (error) {
+      console.error("Unexpected error occurred: ", error);
+    }
+  };
+  const handleDeleteUser = async (e) => {
+    e.preventDefault();
+
+    try {
+      const getUserRes = await fetch(
+        `/api/users?classroom=${classroom.replace("ม.", "")}`
+      );
+      const { users } = await getUserRes.json();
+
+      if (getUserRes.ok) {
+        console.log(users);
+        let totalDeleted = 0;
+        for (const user of users) {
+          if (await deleteUser(user.user_id)) {
+            totalDeleted++;
+          }
+        }
+      } else {
+        console.error("Error fetching users: ", getUserRes);
+      }
+    } catch (error) {
+      console.error("Unexpected error occurred: ", error);
+    }
+  };
+
+  const deleteUser = async (user_id) => {
+    try {
+      const deleteUserRes = await fetch(`/api/users`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ user_id }),
+      });
+
+      if (!deleteUserRes.ok) {
+        console.error("❌ Error deleting user: ", deleteUserRes);
+        return true;
+      } else {
+        console.log("✅ User deleted successfully: ", user_id);
+        return false;
+      }
+    } catch (error) {
+      console.error("Unexpected error occurred: ", error);
+      return false;
+    }
+  };
 
   return (
     <div className="padding-x">
@@ -61,8 +125,16 @@ function UserDeletePage() {
           Delete User
         </button>
       </form>
+      <form onSubmit={(e) => handleDeleteAllUser(e)}>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-red-500 text-white rounded-xl mt-2"
+        >
+          Delete All Users
+        </button>
+      </form>
     </div>
-  )
+  );
 }
 
-export default UserDeletePage
+export default UserDeletePage;
