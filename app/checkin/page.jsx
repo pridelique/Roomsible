@@ -114,7 +114,7 @@ export default function FullScreenQRScanner() {
     setTimeout(() => {
       if (isScanning.current) return; // Prevent multiple scans
       startScaning();
-      console.log("Starting QR code scanning...");
+      // console.log("Starting QR code scanning...");
     }, 200);
     return () => {
       if (controlRef.current) {

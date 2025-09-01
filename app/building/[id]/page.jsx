@@ -127,7 +127,7 @@ function BuildingPage({ params }) {
       const scaleY =
         Math.min(outer.clientHeight, maxHeight) / (inner.offsetHeight * scaleX);
 
-      console.log(scaleX, scale);
+      // console.log(scaleX, scale);
       setStatusScale(Math.min(1, statusScale));
       setScale(Math.min(1, scaleX));
       setMaxScale(Math.max(1, scaleY));

@@ -77,7 +77,7 @@ export default function HomePage() {
     if (building5Ref.current) {
       const building5 = building5Ref.current;
       const size5 = building5.getBoundingClientRect();
-      console.log(size5);
+      // console.log(size5);
 
       setBuilding5Size({
         width: size5.width,
@@ -87,7 +87,7 @@ export default function HomePage() {
     if (building6Ref.current) {
       const building6 = building6Ref.current;
       const size6 = building6.getBoundingClientRect();
-      console.log(size6);
+      // console.log(size6);
 
       setBuilding6Size({
         width: size6.width,

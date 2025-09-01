@@ -29,7 +29,7 @@ function ChangeRolePage() {
       const firstname = String(cleaned.split(" ")[0]);
       const lastname = String(cleaned.split(" ")[1]);
       const classroom = String(cleaned.split(" ")[2].replace("ม.", ""));
-      console.log(firstname, lastname, classroom, role);
+      // console.log(firstname, lastname, classroom, role);
 
       const res = await fetch("/api/users/change-role", {
         method: "PATCH",
