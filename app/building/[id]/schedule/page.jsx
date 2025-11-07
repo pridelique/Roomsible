@@ -117,7 +117,7 @@ function Schedule() {
     { text: "ไม่ว่าง", color: "bg-red-500", iconColor: "text-red-500" },
   ];
 
-  console.log(status);
+  // console.log(status);
 
   return (
     <section className="min-[460px]:px-4 min-[460px]:py-4 max-container w-full flex-1 flex">

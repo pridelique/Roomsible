@@ -190,7 +190,7 @@ function HistoryPage() {
       if (error && error.code !== "PGRST116") {
         console.log("Error fetching bookings:", error);
       } else {
-        console.log(bookings);
+        // console.log(bookings);
         // setBookings(bookings.filter((item) => item.status != "cancelled"));
         setBookings(bookings);
         setAllBookings(bookings);
@@ -202,7 +202,7 @@ function HistoryPage() {
   }, [user]);
 
   // if (user === "loading") return <Loading />;
-  console.log(bookingQuota);
+  // console.log(bookingQuota);
 
   return (
     <section>

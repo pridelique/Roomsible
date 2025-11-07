@@ -75,7 +75,7 @@ function BookingForm() {
         }),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       if (res.ok) {
         setSuccess("จองห้องเรียนสำเร็จ");

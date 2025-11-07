@@ -52,7 +52,7 @@ function DocsFAQ() {
                 openIndex === index ? "max-h-40 py-2" : "max-h-0 py-0"
               }`}
             >
-              <p className="text-gray-600">{faq.answer}</p>
+              <div className="text-gray-600">{faq.answer}</div>
             </div>
           </div>
         ))}

@@ -26,7 +26,7 @@ function ExcelRegister() {
                 }
             })
             setUsers(json)
-            console.log(json)
+            // console.log(json)
         }
         reader.readAsArrayBuffer(file)
     }
@@ -56,7 +56,7 @@ function ExcelRegister() {
                 })
                 const data = await res.json();
                 if (!res.ok) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.message === "Invalid input") {
                         setErrors(prevErrors => [...prevErrors, { email, message: "กรุณากรอกข้อมูลให้ถูกต้อง" }]);
                     } else if (data.message === "A user with this email address has already been registered") {

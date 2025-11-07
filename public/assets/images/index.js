@@ -21,6 +21,24 @@ import hand_move_right from './hand_move_right.png';
 import hand_move_left from './hand_move_left.png';
 import right_arrow from './right_arrow.png';
 
+import Login1 from './Login1.png';
+import Login2_3 from './Login2_3.png';
+
+import Booking2_3_4 from './Booking2_3_4.png'
+import Booking4 from './Booking4.png'
+import Booking5 from './Booking5.png'
+import Booking6 from './Booking6.png'
+import Booking6_2 from './Booking6_2.png'
+import Booking7_8_9 from './Booking7_8_9.png'
+import Booking10 from './Booking10.png'
+import Booking11 from './Booking11.png'
+
+import Cancel1 from './Cancel1.png'
+import Cancel2 from './Cancel2.png'
+import Cancel3 from './Cancel3.png'
+import Cancel4 from './Cancel4.png'
+import Cancel5 from './Cancel5.png'
+
 const buildingImages = [
     bordersw,
     building1,
@@ -56,4 +74,22 @@ export {
     hand_move_right,
     hand_move_left,
     right_arrow,
+
+    Login1,
+    Login2_3,
+
+    Booking2_3_4,
+    Booking4,
+    Booking5,
+    Booking6,
+    Booking6_2,
+    Booking7_8_9,
+    Booking10,
+    Booking11,
+
+    Cancel1,
+    Cancel2,
+    Cancel3,
+    Cancel4,
+    Cancel5,
 };

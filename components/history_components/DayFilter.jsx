@@ -39,7 +39,7 @@ function DayFilter({
   };
 
   const handleCloseDropdown = () => {
-      console.log(selectedDate, previousdayFilterRef.current, dayFilter);
+      // console.log(selectedDate, previousdayFilterRef.current, dayFilter);
       
       if (previousdayFilterRef.current !== "options") {        
         setdayFilter(previousdayFilterRef.current);

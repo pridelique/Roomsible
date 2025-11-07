@@ -87,7 +87,7 @@ function Building({
   useEffect(() => {
     if (!id || !day || !period) return;
     getBookings();
-    console.log(`Fetched bookings for building: ${id}`);
+    // console.log(`Fetched bookings for building: ${id}`);
   }, [day, period, id]);
 
   // handle refresh
@@ -97,7 +97,7 @@ function Building({
     clearTimeout(refreshTimeout.current);
     if (refresh) {
       getBookings();
-      console.log(`Fetched bookings for building: ${id}`);
+      // console.log(`Fetched bookings for building: ${id}`);
     }
     if (setRefresh) {
       refreshTimeout.current = setTimeout(() => {

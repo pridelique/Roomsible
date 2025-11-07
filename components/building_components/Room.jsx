@@ -2,9 +2,9 @@ import { statusColors } from "@data";
 import { Schedule } from "@public/assets/icons";
 
 function Room({
-  room,
   status,
   name,
+  display,
   col_span,
   handleOnClick,
   // handleScheduleClick,
@@ -27,7 +27,7 @@ function Room({
         </div>
       ) : (
         <div
-          className={`relative z-1 bg-gray-200 rounded-md shadow-sm  flex justify-center items-center text-center text-sm w-full h-full p-1 transition-all duration-200 ease-in-out
+          className={`relative z-1 bg-gray-200 rounded-md shadow-sm  flex justify-center items-center text-center text-sm w-full h-full p-1 transition-all duration-200 ease-in-out whitespace-pre-line
         ${status === "none" ? "hidden" : ""}
         ${
           (status !== "none" && status !== "unavailable")
@@ -37,11 +37,11 @@ function Room({
           style={{ backgroundColor: statusColors[status] }}
           onClick={
             (status !== "none" && status !== "unavailable")
-              ? () => handleOnClick(room, status)
+              ? () => handleOnClick(name, status)
               : () => {}
           }
         >
-          {showName && name}
+          {showName && display}
           {/* {showName && status !== "none" && status !== "unavailable" && (
             <button 
               className="absolute bottom-[6px] right-[6px] cursor-pointer hover:scale-110 active:scale-110 active:shadow-md transition-all duration-200 ease-in-out"
