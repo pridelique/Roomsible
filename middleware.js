@@ -62,7 +62,7 @@ export const middleware = async (req) => {
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
   const nowTime = new Date().getTime();
-  // console.log("Middleware triggered");
+  console.log("Middleware triggered");
 
   // Get user session and role
   const {
@@ -76,7 +76,7 @@ export const middleware = async (req) => {
     closedDateCache.reset();
   }
   if (closedDateCache.get("isEnabled") === undefined) {
-    checkClosedSchedule(supabase, nowTime);
+    await checkClosedSchedule(supabase, nowTime);
   }
   if (pathname.startsWith("/hacker-login")) {
     return res;
@@ -161,7 +161,6 @@ export const middleware = async (req) => {
 };
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|favicon.ico).*)", // regex: ทุกหน้า ยกเว้น api, next static, favicon
+  matcher: [ "/((?!api|_next/static|favicon.ico).*)", // regex: ทุกหน้า ยกเว้น api, next static, favicon
   ],
 };
