@@ -173,15 +173,15 @@ function ClosedPage() {
               <div className="flex max-[440px]:gap-0.5 gap-1 sm:gap-2">
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold tenday">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold day">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
               </div>
               <p className="text-white text-center mt-2 max-[440px]:text-xs text-sm sm:text-base md:text-[20px]">
@@ -194,15 +194,15 @@ function ClosedPage() {
               <div className="flex max-[440px]:gap-0.5 gap-1 sm:gap-2">
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold tenhour">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold hour">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
               </div>
               <p className="text-white text-center mt-2 max-[440px]:text-xs text-sm sm:text-base md:text-[20px]">
@@ -215,15 +215,15 @@ function ClosedPage() {
               <div className="flex max-[440px]:gap-0.5 gap-1 sm:gap-2">
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold tenmin">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold min">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
               </div>
               <p className="text-white text-center mt-2 max-[440px]:text-xs text-sm sm:text-base md:text-[20px]">
@@ -236,15 +236,15 @@ function ClosedPage() {
               <div className="flex max-[440px]:gap-0.5 gap-1 sm:gap-2">
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold tensec">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
                 <div className="digit relative max-[440px]:w-8 max-[440px]:h-12 w-10 h-15 sm:w-14 sm:h-21 md:w-16 md:h-24 bg-white rounded-md text-center max-[440px]:text-[26px] text-[32px] sm:text-[44px] md:text-[52px] text-[#333] font-semibold sec">
                   <span className="base"></span>
-                  <div className="flap over front"></div>
-                  <div className="flap over back"></div>
-                  <div className="flap under"></div>
+                  <div className="rounded-md flap over front"></div>
+                  <div className="rounded-md flap over back"></div>
+                  <div className="rounded-md flap under"></div>
                 </div>
               </div>
               <p className="text-white text-center mt-2 max-[440px]:text-xs text-sm sm:text-base md:text-[20px]">

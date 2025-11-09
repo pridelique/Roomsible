@@ -46,7 +46,7 @@ body {
   background-color: #fff;
   left: 0;
   top: 0;
-  border-radius: 1vw 1vw 0 0;
+  /* border-radius: 1vw 1vw 0 0; */
   transform-origin: 50% 100%;
   backface-visibility: hidden;
   overflow: hidden;
