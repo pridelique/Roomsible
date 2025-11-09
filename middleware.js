@@ -82,7 +82,7 @@ export const middleware = async (req) => {
     if (closedDateCache.get("isEnabled") === true) {
       return NextResponse.redirect(new URL("/", req.url));
     }
-  } else if (!pathname.startsWith("/admin")) {
+  } else if (role !== "admin") {
     if (closedDateCache.get("isEnabled") === false) {
       return NextResponse.redirect(new URL("/closed", req.url));
     }
