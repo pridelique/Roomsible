@@ -70,7 +70,7 @@ function Nav() {
   };
 
   return (
-    <header className="z-10 relative w-full text-[17px] bg-white">
+    <header className={`z-10 relative w-full text-[17px] bg-white ${pathname === "/closed" ? "hidden" : ""}`}>
       <nav
         className={`flex justify-between items-center w-full px-8 h-[65px] ${
           isShow ? "shadow-sm" : "shadow-md"

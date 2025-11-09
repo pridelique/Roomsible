@@ -5,6 +5,7 @@ import Guest_Profile from './guest_profile.svg';
 
 import bordersw from './bordersw.jpg';
 import loginImage from './loginImage.jpg';
+import swBackground from './swBackground.jpg';
 
 import building1 from './building1.jpg';
 import building2 from './building2.jpg';
@@ -58,6 +59,7 @@ export {
 
     bordersw,
     loginImage,
+    swBackground,
 
     building1,
     building2,
