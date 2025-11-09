@@ -79,7 +79,7 @@ t.start()
 # ห้ามลืมเปลี่ยน path (จาก Directory)
 
 
-pdf_path = "app/admin/pdf_files/ตารางการใช้ห้อง.pdf"
+pdf_path = "app/admin/pdf_files/ตารางการใช้ห้อง 2_68.pdf"
 rooms_json = extract_schedule_from_pdf(pdf_path)
 
 script_path = Path(__file__).resolve()
