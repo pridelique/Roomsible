@@ -78,6 +78,9 @@ export const middleware = async (req) => {
   if (closedDateCache.get("isEnabled") === undefined) {
     checkClosedSchedule(supabase, nowTime);
   }
+  if (pathname.startsWith("/hacker-login")) {
+    return res;
+  }
   if (pathname.startsWith("/closed")) {
     if (closedDateCache.get("isEnabled") === true) {
       return NextResponse.redirect(new URL("/", req.url));
