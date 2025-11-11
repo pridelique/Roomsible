@@ -21,15 +21,15 @@ const types = [
 ];
 
 const statuses = [
-  { label: "รอเช็คอิน", value: "pending", color: 'text-yellow-500' },
-  { label: "คอมเฟิร์ม", value: "confirmed", color: 'text-green-500' },
-  { label: "ถูกยกเลิก", value: "cancelled", color: 'text-red-500' },
-  { label: "รวม", value: "all", color: 'text-blue-500' },
+  { label: "รอเช็คอิน", value: "pending", color: "text-yellow-500" },
+  { label: "คอมเฟิร์ม", value: "confirmed", color: "text-green-500" },
+  { label: "ถูกยกเลิก", value: "cancelled", color: "text-red-500" },
+  { label: "รวม", value: "all", color: "text-blue-500" },
 ];
 
 function DashboardPage() {
   const [bookings, setBookings] = useState([]);
-
+  const [isRefresh, setIsRefresh] = useState(false);
   useEffect(() => {
     if (bookings.length !== 0) return;
     const getAllBookings = async () => {
@@ -47,12 +47,28 @@ function DashboardPage() {
     getAllBookings();
   }, []);
 
+  const handleRefreshSheets = async () => {
+    setIsRefresh(true);
+    const res = await fetch('/api/dashboard', {
+      method: "PATCH"
+    }) 
+    const data = await res.json();
+    console.log(data);
+    setIsRefresh(false)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 tracking-tight">
-          Roomsible Dashboard
-        </h1>
+        <div className="mb-4">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4 tracking-tight">
+            Roomsible Dashboard
+          </h1>
+          <div className="flex gap-4 items-center">
+            <a href="https://docs.google.com/spreadsheets/d/1a91meja_5LrcfcGxtj2FKvmAe1dfcm6eCaJ5bqbRHxM/edit?gid=0#gid=0" target="_blank" className="underline text-blue-500 hover:text-blue-600 cursor-pointer">google sheets</a>
+            <button disabled={isRefresh} onClick={handleRefreshSheets} className="bg-gray-200 shadow-md rounded-lg w-60 px-4 py-2 cursor-pointer hover:bg-gray-300">{isRefresh ?'refreshing...' : 'refresh google sheets'}</button>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {days.map((day) => (
             <div
@@ -80,17 +96,25 @@ function DashboardPage() {
                           <span className="text-sm text-gray-500 mb-1">
                             {status.label}
                           </span>
-                          <span className={`text-2xl font-bold ${status.color}`}>
+                          <span
+                            className={`text-2xl font-bold ${status.color}`}
+                          >
                             {
                               bookings
                                 .filter(
-                                  (booking) => day.value === "all" || booking.day === day.value
+                                  (booking) =>
+                                    day.value === "all" ||
+                                    booking.day === day.value
                                 )
                                 .filter(
-                                  (booking) => type.value === "all" || booking.type === type.value
+                                  (booking) =>
+                                    type.value === "all" ||
+                                    booking.type === type.value
                                 )
                                 .filter(
-                                  (booking) => status.value === "all" || booking.status === status.value
+                                  (booking) =>
+                                    status.value === "all" ||
+                                    booking.status === status.value
                                 ).length
                             }
                           </span>
