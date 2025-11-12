@@ -246,7 +246,7 @@ export const PATCH = async (req) => {
   } catch (error) {
     console.error("Error in PATCH:", error);
     return NextResponse.json(
-      { message: "Internal Server Error", error: error.message },
+      { message: "Internal Server Error", error: error.message, credentials: process.env.GOOGLE_CREDENTIALS },
       { status: 500 }
     );
   }
