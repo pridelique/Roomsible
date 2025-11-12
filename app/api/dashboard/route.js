@@ -46,6 +46,7 @@ const column = [
 ];
 
 export const PATCH = async (req) => {
+  if (!process.env.GOOGLE_CREDENTIALS) return NextResponse.json({ message: "GOOGLE_CREDENTIALS is required!"}, { status: 400 });
   const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
   credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
 
