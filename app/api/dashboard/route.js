@@ -52,7 +52,7 @@ export const PATCH = async (req) => {
         { message: "GOOGLE_CREDENTIALS is required!" },
         { status: 400 }
       );
-    const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+    const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS.replace("GOOGLE_CREDENTIALS=", ""));
     credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
 
     const auth = new google.auth.GoogleAuth({
@@ -228,17 +228,6 @@ export const PATCH = async (req) => {
       },
     });
 
-    // update count
-
-    // const updateCountResult = await sheets.spreadsheets.values.update({
-    //   spreadsheetId,
-    //   range: `${year}Z2:Z2`,
-    //   valueInputOption: "RAW",
-    //   requestBody: {
-    //     values: [[cnt + 1]],
-    //   },
-    // });
-
     return NextResponse.json(
       { message: "Spreadsheet updated successfully" },
       { status: 200 }
@@ -246,7 +235,7 @@ export const PATCH = async (req) => {
   } catch (error) {
     console.error("Error in PATCH:", error);
     return NextResponse.json(
-      { message: "Internal Server Error", error: error.message, credentials: process.env.GOOGLE_CREDENTIALS },
+      { message: "Internal Server Error", error: error.message },
       { status: 500 }
     );
   }
