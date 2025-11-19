@@ -15,7 +15,8 @@ import { isBookable } from "@utils/isBookable";
 import SuccessCard from "@components/SuccessCard";
 import { ArrowRight, CalendarDays, Clock } from "@node_modules/lucide-react";
 import { customStyles } from "@data/form";
-
+import Image from "@node_modules/next/image";
+import CheckInWarning from "@components/form_components/CheckInWarning";
 
 function BookingForm() {
   const [mode, setMode] = useState("");
@@ -28,6 +29,7 @@ function BookingForm() {
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(null);
+  const [warning, setWarning] = useState(null);
   const [success, setSuccess] = useState(null);
   const { user } = useContext(SessionContext);
   const [role, setRole] = useState(user?.app_metadata?.role || "student");
@@ -78,7 +80,11 @@ function BookingForm() {
       // console.log(data);
 
       if (res.ok) {
-        setSuccess("จองห้องเรียนสำเร็จ");
+        if (mode == "activity") {
+          setWarning(true);
+        } else {
+          setSuccess("จองห้องเรียนสำเร็จ");
+        }
         setError(null);
       } else {
         if (data.message === "Already booked") {
@@ -118,6 +124,10 @@ function BookingForm() {
     }
   }, [teacher, subject, studentClass, activityDetail]);
 
+  const handleOnWarningClick = () => {
+    setWarning(false);
+    setSuccess('จองสำเร็จ');
+  }
   // ตรวจสอบสิทธิ์ของผู้ใช้
   useEffect(() => {
     if (user && user != "loading") {
@@ -150,16 +160,19 @@ function BookingForm() {
             />
           )}
 
-          {success && (
-            <SuccessCard
-              room={room}
-              day={day}
-              period={period}
-              buildingId={buildingId}
-              type="booking"
-              mode={mode}
-            />
+          {warning && (
+            <CheckInWarning room={room} day={day} period={period} handleOnClick={handleOnWarningClick}/>
           )}
+          {success && (
+              <SuccessCard
+                room={room}
+                day={day}
+                period={period}
+                buildingId={buildingId}
+                type="booking"
+                mode={mode}
+              />
+            )}
         </>
       ) : (
         <div className="bg-white px-7 sm:px-10 py-9 sm:py-12  rounded-3xl shadow-xl w-full max-w-md mx-auto flex flex-col items-center max-[460px]:border-none max-[460px]:shadow-none max-[460px]:rounded-none min-[460px]:h-fit max-[460px]:flex-1 min-[460px]:my-auto">
